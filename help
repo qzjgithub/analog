@@ -1,1 +1,15 @@
+ant design 使用指导
 https://ng.ant.design/#/docs/angular/introduce
+
+装electron指导
+npm install -g electron-prebuilt
+npm install -g electron-packager
+
+sqlite在electron中使用指导
+npm install --save sqlite3
+npm install --save-dev electron-rebuild
+npm install --save-dev electron-prebuilt
+.\node_modules\.bin\electron-rebuild.cmd
+npm install --global --production windows-build-tools
+npm config set msvs_version 2015 --global
+npm install sqlite3 --build-from-source --runtime=electron --target=1.7.9 --dist-url=https://atom.io/download/electron
