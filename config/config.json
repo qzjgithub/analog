@@ -1,0 +1,22 @@
+{
+  "activeState": false,
+  "defaultPwd": "000000",
+  "systemName": "ISS",
+  "openMail": true,
+  "outbox": {
+    "mailbox": "",
+    "smtpAddress":"",
+    "smtpPort":"",
+    "smtpUserName":"",
+    "smtpPwd":""
+  },
+  "localService": {
+    "port": "",
+    "prefix": ""
+  },
+  "remoteService": {
+    "address": "",
+    "port": "",
+    "prefix": ""
+  }
+}
