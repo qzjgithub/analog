@@ -1,6 +1,10 @@
-<section>
+<section class="box_center">
+  <a class="link-service">连接远程服务</a>
   <article>
-    <header>登录</header>
+    远程服务链接配置
+  </article>
+  <article>
+    <header><h2>接口模拟系统</h2></header>
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="_submitForm()">
       <div nz-form-item>
         <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
@@ -24,13 +28,9 @@
       </div>
       <div nz-form-item>
         <div nz-form-control>
-          <label nz-checkbox formControlName="remember">
-            <span>Remember me</span>
-          </label>
           <a class="login-form-forgot" class="login-form-forgot">Forgot password</a>
-          <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">Log in</button>
-          Or
-          <a href="">register now!</a>
+          <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">登录</button>
+          <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">注册</button>
         </div>
       </div>
     </form>
