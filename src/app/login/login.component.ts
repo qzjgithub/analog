@@ -8,19 +8,32 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 })
 export class LoginComponent implements OnInit {
 
-  validateForm: FormGroup;
+  /**
+   * 登录表单
+   */
+  loginForm: FormGroup;
+
+  /**
+   * 当前连接模式，是本地还是服务端
+   */
+  pattern: String;
 
   _submitForm() {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[ i ].markAsDirty();
+    for (const i in this.loginForm.controls) {
+      this.loginForm.controls[ i ].markAsDirty();
     }
   }
 
+  changePattern(){
+    this.pattern = this.pattern==='local' ? 'remote' : 'local';
+  }
+
   constructor(private fb: FormBuilder) {
+    this.pattern = 'local';
   }
 
   ngOnInit() {
-    this.validateForm = this.fb.group({
+    this.loginForm = this.fb.group({
       userName: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ],
       remember: [ true ],
