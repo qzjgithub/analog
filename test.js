@@ -1,7 +1,7 @@
 /**
  * Created by qiuzhujun on 2017/11/5.
  */
-var sqlite3 = require('sqlite3').verbose();
+/*var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(':memory:');
 
 db.serialize(function() {
@@ -18,4 +18,7 @@ db.serialize(function() {
   });
 });
 
-db.close();
+db.close();*/
+
+var ejsExcel = require('ejsexcel');
+
