@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login-manager',
+  templateUrl: './login-manager.component.html',
+  styleUrls: ['./login-manager.component.css']
 })
-export class LoginComponent implements OnInit {
-
+export class LoginManagerComponent implements OnInit {
   /**
    * 登录表单
    */
@@ -39,5 +38,4 @@ export class LoginComponent implements OnInit {
       remember: [ true ],
     });
   }
-
 }

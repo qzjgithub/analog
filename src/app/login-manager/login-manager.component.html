@@ -1,0 +1,7 @@
+<section class="box_center">
+  <a class="link-service" (click)="changePattern($event)">连接远程服务</a>
+  <article *ngIf="pattern==='remote'">
+    远程服务链接配置
+  </article>
+  <app-login></app-login>
+</section>
