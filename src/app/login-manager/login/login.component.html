@@ -1,29 +1,28 @@
 <article>
-  <header><h2>接口模拟系统</h2></header>
+  <header><h2>登录</h2></header>
   <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="_submitForm()">
     <div nz-form-item>
       <div nz-form-control [nzValidateStatus]="loginForm.controls.userName">
-        <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
+        <nz-input formControlName="userName" [nzPlaceHolder]="'账号'" [nzSize]="'large'">
           <ng-template #prefix>
             <i class="anticon anticon-user"></i>
           </ng-template>
         </nz-input>
-        <div nz-form-explain *ngIf="loginForm.controls.userName.dirty&&loginForm.controls.userName.hasError('required')">Please input your username!</div>
+        <div nz-form-explain *ngIf="loginForm.controls.userName.dirty&&loginForm.controls.userName.hasError('required')">请输入您的账号!</div>
       </div>
     </div>
     <div nz-form-item>
       <div nz-form-control [nzValidateStatus]="loginForm.controls.password">
-        <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
+        <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'密码'" [nzSize]="'large'">
           <ng-template #prefix>
             <i class="anticon anticon-lock"></i>
           </ng-template>
         </nz-input>
-        <div nz-form-explain *ngIf="loginForm.controls.password.dirty&&loginForm.controls.password.hasError('required')">Please input your Password!</div>
+        <div nz-form-explain *ngIf="loginForm.controls.password.dirty&&loginForm.controls.password.hasError('required')">请输入您的密码!</div>
       </div>
     </div>
     <div nz-form-item>
       <div nz-form-control>
-        <a class="login-form-forgot">Forgot password</a><br>
         <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">登录</button>
         <button nz-button class="login-form-button" [nzType]="'default'" [nzSize]="'large'">注册</button>
       </div>

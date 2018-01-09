@@ -20,5 +20,6 @@ db.serialize(function() {
 
 db.close();*/
 
-var ejsExcel = require('ejsexcel');
+var config = require('./service/config/config');
+
 

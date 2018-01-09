@@ -5,9 +5,10 @@
 }
 h2{
   line-height: 50px;
+  text-align: center;
 }
-.login-form-forgot{
-  float: right;
+.login-form-button{
+  width: 47%;
 }
 .login-form-button:last-child{
   float:right;

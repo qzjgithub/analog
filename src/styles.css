@@ -68,3 +68,13 @@
   -webkit-box-flex: 1;
   -ms-flex: 1
 }
+
+.form-header{
+  border-bottom: 1px solid #dddddd;
+  margin: 0 5%;
+  margin-bottom: 20px;
+}
+
+.form-header>h2{
+  line-height: 50px;
+}

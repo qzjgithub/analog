@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-login-manager',
+  selector: 'login-manager',
   templateUrl: './login-manager.component.html',
   styleUrls: ['./login-manager.component.css']
 })

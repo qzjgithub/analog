@@ -9,9 +9,9 @@ section{
 h2{
   line-height: 50px;
 }
-.login-form-forgot{
-  float: right;
-}
-.login-form-button:last-child{
-  float:right;
+.division{
+  width: 1px;
+  border-right: 1px solid #dddddd;
+  height: 60%;
+  margin-right: 50px;
 }

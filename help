@@ -13,3 +13,44 @@ npm install --save-dev electron-prebuilt
 npm install --global --production windows-build-tools
 npm config set msvs_version 2015 --global
 npm install sqlite3 --build-from-source --runtime=electron --target=1.7.9 --dist-url=https://atom.io/download/electron
+
+
+
+electron-packager <location of project> <name of project> <platform> <architecture> <electron version> <optional options>
+命令说明：
+* location of project：项目所在路径
+* name of project：打包的项目名字
+* platform：确定了你要构建哪个平台的应用（Windows、Mac 还是 Linux）
+* architecture：决定了使用 x86 还是 x64 还是两个架构都用
+* electron version：electron 的版本
+* optional options：可选选项
+
+命令比较长，每次要是都用这个命令来打包会很烦，可以使用第二种方法；
+
+2、首先在项目根目录下面的 package.json 里添加代码，
+"packager": "electron-packager ./ '接口模拟系统' --all --out ./packageOut --electron-version 1.4.13 --ignore=node_modules --ignore=.gitignore --overwrite --icon=./src/favicon.ico"
+electron-packager . --platform=win32 --arch=ia32 --electron-version=1.4.13 --overwrite --ignore=node_modules --ignore=.gitignore
+npm run-script packager
+
+
+安装淘宝的包： npm install -g cnpm 
+
+ 
+
+安装eclectron： cnpm install electron 
+
+ 
+
+安装打包：npm install electron-packager 
+
+ 
+
+打包命令：electron-packager ./ electron --platform=win32 --arch=x64 --version 1.6.2 
+
+Ele + ang 
+
+Ng new --ng4  
+
+Ng build 得到dist目录 
+
+将electron默认读取文件改为dist目录的index.html文件 
