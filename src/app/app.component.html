@@ -1,1 +1,2 @@
-<login-manager></login-manager>
+<div *ngIf="!initFlag" class="box_center"><nz-spin [nzTip]="tip"></nz-spin></div>
+<login-manager *ngIf="initFlag"></login-manager>

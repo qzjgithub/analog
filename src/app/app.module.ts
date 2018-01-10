@@ -11,7 +11,9 @@ import { LoginManagerComponent } from './login-manager/login-manager.component';
 import { SetConfigComponent } from './set-config/set-config.component';
 import { RemoteServerComponent } from './set-config/remote-server/remote-server.component';
 
-import {USER_PROVIDERS} from "../control/user/user.service";
+import { USER_PROVIDERS } from "../control/user/user.service";
+import { CONFIG_PROVIDERS } from "../control/config/config.service";
+import { appStoreProviders } from "../control/app.store";
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import {USER_PROVIDERS} from "../control/user/user.service";
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    USER_PROVIDERS
+    appStoreProviders,
+    USER_PROVIDERS,
+    CONFIG_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

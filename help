@@ -33,24 +33,28 @@ electron-packager . --platform=win32 --arch=ia32 --electron-version=1.4.13 --ove
 npm run-script packager
 
 
-安装淘宝的包： npm install -g cnpm 
+安装淘宝的包： npm install -g cnpm
 
- 
 
-安装eclectron： cnpm install electron 
 
- 
+安装eclectron： cnpm install electron
 
-安装打包：npm install electron-packager 
 
- 
 
-打包命令：electron-packager ./ electron --platform=win32 --arch=x64 --version 1.6.2 
+安装打包：npm install electron-packager
 
-Ele + ang 
 
-Ng new --ng4  
 
-Ng build 得到dist目录 
+打包命令：electron-packager ./ electron --platform=win32 --arch=x64 --version 1.6.2
 
-将electron默认读取文件改为dist目录的index.html文件 
+Ele + ang
+
+Ng new --ng4
+
+Ng build 得到dist目录
+
+将electron默认读取文件改为dist目录的index.html文件
+
+
+typescript 使用js，在配置文件中加 allowJs:true
+使用async await在配置文件中lib加2015

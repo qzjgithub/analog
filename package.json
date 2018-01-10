@@ -26,6 +26,8 @@
     "ejsexcel": "^3.4.9",
     "ng-zorro-antd": "^0.6.0-rc.2",
     "pm2": "^2.7.2",
+    "redux": "^3.7.2",
+    "reselect": "^3.0.1",
     "rxjs": "^5.1.0",
     "sqlite3": "^3.1.13",
     "zone.js": "^0.8.4"

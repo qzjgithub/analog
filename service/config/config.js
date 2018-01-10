@@ -4,23 +4,28 @@
 const fs = require('fs');
 const path = require('path');
 
-const configPath = path.join(__dirname , '../../config/config.json');
+initSystem = ()=>{}
 
 /**
  * 读取配置文件内容
  */
-const getConfig = ()=>{
-  return new Promise((reslove, reject)=>{
+const getConfigBack = (configPath)=>{
+  return new Promise((resolve, reject)=>{
+    path.join(__dirname , configPath)
     fs.readFile(configPath, (err, data)=>{
       if(err){
         reject(err);
       }else{
-        reslove(JSON.parse(data));
+        data = JSON.parse(data);
+        resolve(data);
+        if(!data.activeState){
+          initSystem();
+        }
       }
     })
   });
 }
 
 module.exports = {
-  getConfig
+  getConfigBack
 }
