@@ -20,6 +20,15 @@ db.serialize(function() {
 
 db.close();*/
 
-var config = require('./service/config/config');
+/*const dbutil = require('../db/dbutil');
+dbutil.initSystem();*/
 
+/*const fs = require('fs');
+fs.writeFile('test.txt',JSON.stringify({test:'aaa'}),(err,data)=>{
+  if(err){
+    console.log(err);
+  }
+  console.log(data);
+});*/
 
+const sqlite3 = require('sqlite3').verbose();

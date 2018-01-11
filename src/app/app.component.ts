@@ -27,10 +27,12 @@ export class AppComponent {
 
   constructor(@Inject(AppStore) private store: Store<AppState>,private configService: ConfigService){
     store.subscribe(()=>this.updateInitFlag());
-    configService.getConfig().then((data)=>{
-      this.store.dispatch(ConfigActions.getConfig(data));
-    });
+    configService.getConfig();
   }
+
+  /**
+   * 更新系统状态
+   */
   updateInitFlag(){
     const state = this.store.getState();
     let config = getConfigState(state);

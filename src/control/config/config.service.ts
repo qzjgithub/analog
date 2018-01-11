@@ -2,15 +2,31 @@
  * Created by admin on 2018/1/10.
  */
 import {Injectable, Inject} from "@angular/core";
-import {getConfigBack} from '../../../service/config/config';
+import {getConfigBack, initSystem} from '../../../service/config/config';
+import {Store} from "redux";
+import {AppStore} from "../app.store";
+import {AppState} from "../app.reducer";
+
+import * as ConfigActions from './config.action';
 
 @Injectable()
 export class ConfigService{
-  constructor(){}
+  constructor(@Inject(AppStore) private store: Store<AppState>){}
 
   getConfig = ()=>{
-    let path = 'config/config.json';
-    return getConfigBack(path);
+    getConfigBack()
+      .then((data)=>{
+        this.store.dispatch(ConfigActions.getConfig(data));
+        if(!data['activeState']){
+          initSystem(data)
+            .then((newdata)=>{
+              this.store.dispatch(ConfigActions.getConfig(newdata));
+            })
+        }
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
   }
 
 }
