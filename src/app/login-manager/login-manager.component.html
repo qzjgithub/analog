@@ -1,5 +1,5 @@
 <section class="box_center">
-  <a class="link-service" (click)="changePattern($event)">连接远程服务</a>
+  <a class="link-service" (click)="changePattern($event)">{{ pattern === 'remote' ? '使用本地系统':'连接远程服务' }}</a>
   <remote-server *ngIf="pattern==='remote'"></remote-server>
   <div *ngIf="pattern==='remote'" class="division"></div>
   <login></login>

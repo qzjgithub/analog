@@ -2,8 +2,10 @@
  * Created by admin on 2018/1/10.
  */
 const sqlite3 = require('sqlite3').verbose();
+const crypto = require('crypto');
 const fs = require('fs');
 const dbroot = 'data/';
+const system_name = 'ISS-QZJ';
 
 /**
  * 获取某个数据库
@@ -120,7 +122,7 @@ const addAdminUser = (db)=>{
   `;
   let data = {
     account : "admin",
-    password : "000000",
+    password : passEncrypt("000000"),
     role : "admin",
     name : "管理员",
     phone : "1234567890",
@@ -188,7 +190,7 @@ const createUser = (db) => {
   phone TEXT, 
   email TEXT, 
   comment TEXT, 
-  active TEXT 
+  active BOOLEAN 
   );
   `;
   return new Promise((resolve , reject) => {
@@ -202,9 +204,15 @@ const createUser = (db) => {
   });
 }
 
+const passEncrypt = (data) => {
+  const ciper = crypto.createCipher('aes192', system_name);
+  let encrypted = ciper.update(data, 'utf-8', 'hex');
+  return encrypted + ciper.final('hex');
+};
+
 module.exports = {
   getRootDB, getProjectDB,
-  sql,
+  sql, passEncrypt,
   createDir, removeDir,
   initSystem
 }

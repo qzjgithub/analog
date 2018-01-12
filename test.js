@@ -31,4 +31,4 @@ fs.writeFile('test.txt',JSON.stringify({test:'aaa'}),(err,data)=>{
   console.log(data);
 });*/
 
-const sqlite3 = require('sqlite3').verbose();
+/*const sqlite3 = require('sqlite3').verbose();*/

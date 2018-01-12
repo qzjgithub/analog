@@ -20,19 +20,24 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,private userService: UserService) {
   }
 
-  _submitForm = async ()=> {
+  _submitForm = ()=> {
     for (const i in this.loginForm.controls) {
       this.loginForm.controls[ i ].markAsDirty();
     }
     if(!this.loginForm.valid) return;
     console.log(this.loginForm.value);
-    let result = await this.userService.validLogin({});
-    console.log(result);
+    this.userService.validLogin(this.loginForm.value)
+      .then((data)=>{
+        console.log(data);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
   }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      userName: [ null, [ Validators.required ] ],
+      account: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ]
     });
   }
