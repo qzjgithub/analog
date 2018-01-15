@@ -94,8 +94,8 @@ const initSystem = () => {
       .then((db) => createProjectUser(db))
       .then((db) => createSelect(db))
       .then((db) => addAdminUser(db))
-      .then(async (db) => {
-        await initPositionSelect(db);
+      .then((db) => {
+        initPositionSelect();
         db.close();
         resolve();
       })
@@ -273,14 +273,10 @@ const addSelect = (db,data) => {
     obj_data['$'+key] = data[key];
   }
 
-  return new Promise((resolve , reject) => {
+  sql(getRootDB()).then((db)=>{
     let stm = db.prepare(sql);
     stm.run(obj_data,function(err,data){
-      if(err){
-        reject(err);
-      }else{
-        resolve(db);
-      }
+      db.close();
     });
     stm.finalize();
   });
@@ -290,13 +286,13 @@ const addSelect = (db,data) => {
  * 初始化职位信息
  * @param db
  */
-const initPositionSelect = async (db) => {
+const initPositionSelect = () => {
   let datas = [
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
     { name: 'position', value: 'PythonEngineer', text: 'Python工程师'},
   ];
   for(let i = 0;i<datas.length;i++){
-    await addSelect(db,datas);
+    addSelect(db,datas[i]);
   }
 }
 
