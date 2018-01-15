@@ -67,7 +67,6 @@ const addUser = (data) => {
   return excuteParam(sql, data, run);
 }
 
-getLoginUser({account:'admin',password:'000000'});
 module.exports = {
   getLoginUser, addUser
 }

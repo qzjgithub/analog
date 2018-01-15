@@ -91,8 +91,11 @@ const initSystem = () => {
     sql(getRootDB())
       .then((db) => createUser(db))
       .then((db) => createProject(db))
+      .then((db) => createProjectUser(db))
+      .then((db) => createSelect(db))
       .then((db) => addAdminUser(db))
-      .then((db) => {
+      .then(async (db) => {
+        await initPositionSelect(db);
         db.close();
         resolve();
       })
@@ -151,10 +154,10 @@ const addAdminUser = (db)=>{
  * 创建项目表
  */
 const createProject = (db) =>{
-  const project_sql = `
+  const sql = `
    CREATE TABLE IF NOT EXISTS project(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   account TEXT,
+   account TEXT NOT NULL UNIQUE,
    name TEXT, 
    port TEXT, 
    url TEXT, 
@@ -162,11 +165,12 @@ const createProject = (db) =>{
    comment TEXT, 
    createTime TEXT,
    creator TEXT, 
-   valid BOOLEAN 
+   valid BOOLEAN,
+   FOREIGN KEY(creator) REFERENCES user(account)
    );
   `;
   return new Promise((resolve , reject) => {
-    db.run(project_sql,(err)=>{
+    db.run(sql,(err)=>{
       if(!err){
         resolve(db)
       }else{
@@ -180,10 +184,10 @@ const createProject = (db) =>{
  * 创建用户表
  */
 const createUser = (db) => {
-  const user_sql = `
+  const sql = `
   CREATE TABLE IF NOT EXISTS user(
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  account TEXT, 
+  account TEXT NOT NULL UNIQUE, 
   password TEXT, 
   role TEXT, 
   name TEXT, 
@@ -194,7 +198,7 @@ const createUser = (db) => {
   );
   `;
   return new Promise((resolve , reject) => {
-    db.run(user_sql,(err)=>{
+    db.run(sql,(err)=>{
       if(!err){
         resolve(db);
       }else{
@@ -202,6 +206,98 @@ const createUser = (db) => {
       }
     });
   });
+}
+
+/**
+ * 创建项目用户关联表
+ * @param db
+ */
+const createProjectUser = (db) => {
+  const sql = `
+  CREATE TABLE IF NOT EXISTS project_user(
+  userAccount TEXT,
+  ProjectAccount TEXT,
+  relation TEXT,
+  FOREIGN KEY(userAccount) REFERENCES user(account),
+  FOREIGN KEY(ProjectAccount) REFERENCES project(account)
+  );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db);
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 创建选项表
+ * @param db
+ */
+const createSelect = (db) => {
+  const sql = `
+  CREATE TABLE IF NOT EXISTS select(
+  name TEXT NOT NULL,
+  value TEXT NOT NULL, 
+  text TEXT
+  );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db);
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 添加选项表
+ * @param db
+ */
+const addSelect = (db,data) => {
+  let sql = `
+  INSERT INTO select VALUES(
+    $name , 
+    $value , 
+    $text 
+  );
+  `;
+  let obj_data = {};
+  for(let key in data){
+    obj_data['$'+key] = data[key];
+  }
+
+  return new Promise((resolve , reject) => {
+    let stm = db.prepare(sql);
+    stm.run(obj_data,function(err,data){
+      if(err){
+        reject(err);
+      }else{
+        resolve(db);
+      }
+    });
+    stm.finalize();
+  });
+}
+
+/**
+ * 初始化职位信息
+ * @param db
+ */
+const initPositionSelect = async (db) => {
+  let datas = [
+    { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
+    { name: 'position', value: 'PythonEngineer', text: 'Python工程师'},
+  ];
+  for(let i = 0;i<datas.length;i++){
+    await addSelect(db,datas);
+  }
 }
 
 const passEncrypt = (data) => {

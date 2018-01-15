@@ -2,5 +2,5 @@
   <a class="link-service" (click)="changePattern($event)">{{ pattern === 'remote' ? '使用本地系统':'连接远程服务' }}</a>
   <remote-server *ngIf="pattern==='remote'"></remote-server>
   <div *ngIf="pattern==='remote'" class="division"></div>
-  <login></login>
+  <router-outlet name="userEnter"></router-outlet>
 </section>

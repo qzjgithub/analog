@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../../control/user/user.service";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'login',
@@ -17,7 +18,10 @@ export class LoginComponent implements OnInit {
    */
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private userService: UserService) {
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   _submitForm = ()=> {
@@ -40,6 +44,11 @@ export class LoginComponent implements OnInit {
       account: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ]
     });
+  }
+
+  gotoRegister(){
+    this.router.navigate([{outlets: {'userEnter': 'register'}}],{relativeTo: this.route});
+    return false;
   }
 
 }

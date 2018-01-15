@@ -15,6 +15,17 @@ import { USER_PROVIDERS } from "../control/user/user.service";
 import { CONFIG_PROVIDERS } from "../control/config/config.service";
 import { appStoreProviders } from "../control/app.store";
 
+import {Routes, RouterModule} from "@angular/router";
+import { RegisterComponent } from './login-manager/register/register.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
+  { path: 'loginManage',component: LoginManagerComponent ,children:[
+    {path:'',component: LoginComponent, outlet: 'userEnter' } ,
+    {path:'register',component: RegisterComponent , outlet: 'userEnter' }
+  ]}
+]
+
 
 @NgModule({
   declarations: [
@@ -22,7 +33,8 @@ import { appStoreProviders } from "../control/app.store";
     LoginComponent,
     LoginManagerComponent,
     SetConfigComponent,
-    RemoteServerComponent
+    RemoteServerComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +42,8 @@ import { appStoreProviders } from "../control/app.store";
     ReactiveFormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule.forRoot()
+    NgZorroAntdModule.forRoot(),
+    RouterModule.forRoot(routes)
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

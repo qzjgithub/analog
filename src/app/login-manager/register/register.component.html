@@ -1,0 +1,99 @@
+<header><h2>注册</h2></header>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+  <header class="form-header"><h2>账号信息</h2></header>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="account" nz-form-item-required>账号</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="account" [nzId]="'account'"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('account').dirty&&getFormControl('account').hasError('required')">请设置您的账户</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="password" nz-form-item-required>密码</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="password" [nzType]="'password'" [nzId]="'password'" (ngModelChange)="updateConfirmValidator()"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('password').dirty&&getFormControl('password').hasError('required')">您输入您的密码</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="checkPassword" nz-form-item-required>确认密码</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="checkPassword" [nzType]="'password'" [nzId]="'checkPassword'"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('checkPassword').dirty&&getFormControl('checkPassword').hasError('required')">请再次输入您的密码</div>
+      <div nz-form-explain *ngIf="getFormControl('checkPassword').dirty&&getFormControl('checkPassword').hasError('confirm')">您两次输入的密码不相同</div>
+    </div>
+  </div>
+  <header class="form-header"><h2>基本信息</h2></header>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="name" nz-form-item-required>
+            <span>
+              名称
+              <nz-tooltip [nzTitle]="'您想让别人怎么称呼您'">
+                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+              </nz-tooltip>
+            </span>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="name" [nzId]="'name'"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('name').dirty&&getFormControl('name').hasError('required')">请输入您的名称</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label nz-form-item-required>职位</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-select formControlName="position" [nzSize]="'large'">
+        <nz-option [nzLabel]="'China'" [nzValue]="'China'"></nz-option>
+        <nz-option [nzLabel]="'U.S.A'" [nzValue]="'U.S.A'"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="phone" nz-form-item-required>电话号码</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="validateForm.controls['phoneNumber']">
+      <nz-input-group [nzSize]="'large'" nzCompact>
+        <nz-select formControlName="phoneNumberPrefix" style="width: 25%;">
+          <nz-option [nzLabel]="'+86'" [nzValue]="'+86'"></nz-option>
+          <nz-option [nzLabel]="'+87'" [nzValue]="'+87'"></nz-option>
+        </nz-select>
+        <input formControlName="phone" id="'phone'" nz-input style="width: 75%;">
+      </nz-input-group>
+      <div nz-form-explain *ngIf="getFormControl('phone').dirty">请输入您的电话号码</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="email" nz-form-item-required>E-mail</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="email" [nzId]="'email'"></nz-input>
+      <div nz-form-explain *ngIf="getFormControl('email').dirty&&getFormControl('email').hasError('email')">您输入的邮箱格式不对</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-col [nzSpan]="7" nz-form-label>
+      <label nz-form-item-required>备注</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control>
+      <nz-input formControlName="comment" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="'write any thing'" [nzSize]="'large'">
+      </nz-input>
+      <div nz-form-explain *ngIf="getFormControl('comment').dirty">请随意输入您想补充的信息</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row style="margin-bottom:8px;">
+    <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+      <button nz-button [nzSize]="'large'" [nzType]="'primary'">Register</button>
+    </div>
+  </div>
+</form>

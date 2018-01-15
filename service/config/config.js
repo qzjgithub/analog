@@ -10,7 +10,7 @@ const configPath = 'config/config.json';
 const initSystem = (data) => {
   return new Promise((resolve, reject)=>{
     data.activeState = true;
-    setConfig(configPath,data)
+    setConfig(data)
       .then(()=>dbutil.initSystem())
       .then(()=>{
         resolve(data);
@@ -42,18 +42,18 @@ const getConfigBack = ()=>{
  * @param configPath
  * @param data
  */
-const setConfig = (configPath, data) => {
+const setConfig = (data) => {
   return new Promise((resolve,reject) => {
     fs.writeFile(configPath,JSON.stringify(data),(err) =>{
       if(err){
         reject(err);
       }else {
-        resolve();
+        resolve(data);
       }
     });
   });
 }
 
 module.exports = {
-  getConfigBack, initSystem
+  getConfigBack, initSystem,setConfig
 }
