@@ -239,7 +239,7 @@ const createProjectUser = (db) => {
  */
 const createSelect = (db) => {
   const sql = `
-  CREATE TABLE IF NOT EXISTS select(
+  CREATE TABLE IF NOT EXISTS select_list(
   name TEXT NOT NULL,
   value TEXT NOT NULL, 
   text TEXT
@@ -260,9 +260,9 @@ const createSelect = (db) => {
  * 添加选项表
  * @param db
  */
-const addSelect = (db,data) => {
+const addSelect = (data) => {
   let sql = `
-  INSERT INTO select VALUES(
+  INSERT INTO select_list VALUES(
     $name , 
     $value , 
     $text 
@@ -292,7 +292,7 @@ const initPositionSelect = () => {
     { name: 'position', value: 'PythonEngineer', text: 'Python工程师'},
   ];
   for(let i = 0;i<datas.length;i++){
-    addSelect(db,datas[i]);
+    addSelect(datas[i]);
   }
 }
 
