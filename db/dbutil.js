@@ -261,7 +261,7 @@ const createSelect = (db) => {
  * @param db
  */
 const addSelect = (data) => {
-  let sql = `
+  let sqls = `
   INSERT INTO select_list VALUES(
     $name , 
     $value , 
@@ -274,7 +274,7 @@ const addSelect = (data) => {
   }
 
   sql(getRootDB()).then((db)=>{
-    let stm = db.prepare(sql);
+    let stm = db.prepare(sqls);
     stm.run(obj_data,function(err,data){
       db.close();
     });
@@ -289,7 +289,8 @@ const addSelect = (data) => {
 const initPositionSelect = () => {
   let datas = [
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
-    { name: 'position', value: 'PythonEngineer', text: 'Python工程师'},
+    { name: 'position', value: 'pythonEngineer', text: 'Python工程师'},
+    { name: 'position', value: 'javaEngineer', text: 'Java工程师'}
   ];
   for(let i = 0;i<datas.length;i++){
     addSelect(datas[i]);
