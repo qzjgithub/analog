@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   gotoRegister(){
-    this.router.navigate([{outlets: {'userEnter': 'register'}}],{relativeTo: this.route});
+    this.router.navigate([{outlets: {'userEnter': 'register'}}],{relativeTo: this.route.parent});
     return false;
   }
 

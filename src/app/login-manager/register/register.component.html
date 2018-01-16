@@ -93,7 +93,8 @@
   </div>
   <div nz-form-item nz-row style="margin-bottom:8px;">
     <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
-      <button nz-button [nzSize]="'large'" [nzType]="'primary'">Register</button>
+      <button nz-button [nzSize]="'large'" [nzType]="'primary'">确定</button>
+      <button nz-button [nzSize]="'large'" (click)="backLogin($event)">取消</button>
     </div>
   </div>
 </form>

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'register',
   templateUrl: 'register.component.html',
-  styleUrls: ['register.component.css']
+  styleUrls: ['register.component.css'],
+  host: {
+    'style' : 'width:35%;display:block;max-width:400px'
+  }
 })
 export class RegisterComponent implements OnInit {
   validateForm: FormGroup;
@@ -15,7 +19,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   updateConfirmValidator() {
@@ -39,20 +45,25 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.validateForm = this.fb.group({
-      email            : [ null, [ Validators.email ] ],
+      account            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      nickname         : [ null, [ Validators.required ] ],
+      name         : [ null, [ Validators.required ] ],
+      position    : [ null ],
       phoneNumberPrefix: [ '+86' ],
-      phoneNumber      : [ null, [ Validators.required ] ],
-      website          : [ null, [ Validators.required ] ],
-      captcha          : [ null, [ Validators.required ] ],
-      agree            : [ false ]
+      phone      : [ null, [ Validators.required ] ],
+      email          : [ null, [ Validators.email ] ],
+      comment          : [ null ],
     });
   }
 
   getFormControl(name) {
     return this.validateForm.controls[ name ];
+  }
+
+  backLogin(e){
+    this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route.parent});
+    return false;
   }
 
 }

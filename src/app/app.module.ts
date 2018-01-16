@@ -21,7 +21,7 @@ import { RegisterComponent } from './login-manager/register/register.component';
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
   { path: 'loginManage',component: LoginManagerComponent ,children:[
-    {path:'',component: LoginComponent, outlet: 'userEnter' } ,
+    {path:'login',component: LoginComponent , outlet: 'userEnter' },
     {path:'register',component: RegisterComponent , outlet: 'userEnter' }
   ]}
 ]

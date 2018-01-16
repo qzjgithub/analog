@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Validators, FormBuilder, FormGroup} from "@angular/forms";
 import {NzMessageService} from "ng-zorro-antd";
 import {ConfigService} from "../../control/config/config.service";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'login-manager',
@@ -9,21 +10,11 @@ import {ConfigService} from "../../control/config/config.service";
   styleUrls: ['./login-manager.component.css']
 })
 export class LoginManagerComponent implements OnInit {
-  /**
-   * 登录表单
-   */
-  loginForm: FormGroup;
 
   /**
    * 当前连接模式，是本地还是服务端
    */
   pattern: String;
-
-  _submitForm() {
-    for (const i in this.loginForm.controls) {
-      this.loginForm.controls[ i ].markAsDirty();
-    }
-  }
 
   changePattern(){
     this.configService.setOpenRemote(this.pattern==='local' ? true : false)
@@ -38,17 +29,14 @@ export class LoginManagerComponent implements OnInit {
 
   }
 
-  constructor(private fb: FormBuilder,
-              private configService: ConfigService,
-              private _message: NzMessageService) {
+  constructor(private configService: ConfigService,
+              private _message: NzMessageService,
+              private route: ActivatedRoute,
+              private router: Router) {
     this.pattern = 'local';
   }
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      userName: [ null, [ Validators.required ] ],
-      password: [ null, [ Validators.required ] ],
-      remember: [ true ],
-    });
+    this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route});
   }
 }
