@@ -37,6 +37,8 @@ export class LoginManagerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route});
+    if(this.router.url==="/loginManage"){
+      this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route});
+    }
   }
 }
