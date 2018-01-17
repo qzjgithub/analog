@@ -2,7 +2,8 @@
  * Created by admin on 2018/1/9.
  */
 import {Injectable, Inject} from "@angular/core";
-import { validLoginUser } from "../../../service/user/user";
+import { validLoginUser, addUser, validExistUser } from "../../../service/user/user";
+import { getUserSelect } from "../../../service/selectList/selectList";
 
 @Injectable()
 export class UserService{
@@ -15,6 +16,31 @@ export class UserService{
    */
   validLogin = (param)=>{
     return validLoginUser(param);
+  }
+
+  /**
+   * 得到用户相关选项
+   * @returns {any}
+   */
+  getSelect = () =>{
+    return getUserSelect();
+  }
+
+  /**
+   * 添加用户
+   * @returns {any}
+   */
+  add = (data) =>{
+    return addUser(data);
+  }
+
+  /**
+   * 验证该账号是否存在
+   * @param data
+   * @returns {any}
+   */
+  validExist = (data) => {
+    return validExistUser(data);
   }
 
 }

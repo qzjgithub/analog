@@ -20,6 +20,40 @@ const validLoginUser = (data) => {
   })
 }
 
+/**
+ * 验证用户是否存在
+ * @param data
+ */
+const validExistUser = (data) => {
+  return new Promise((resolve, reject)=>{
+    dbuser.getValidUser({account: data.account})
+      .then((data)=>{
+        if(data.length){
+          reject({text:'已存在相同账号的用户'})
+        }else{
+          resolve();
+        }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  })
+}
+
+/**
+ * 添加用户
+ * @param data
+ */
+const addUser = (data) => {
+  return new Promise((resolve, reject)=>{
+    data['role'] = 'user';
+    validExistUser(data)
+      .then(() => dbuser.addUser(data))
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  })
+}
+
 module.exports = {
-  validLoginUser
+  validLoginUser,addUser,validExistUser
 }

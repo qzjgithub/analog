@@ -57,6 +57,7 @@ const addUser = (data) => {
     $password , 
     $role , 
     $name , 
+    $position ,
     $phone , 
     $email , 
     $comment , 
@@ -64,9 +65,21 @@ const addUser = (data) => {
   );
   `;
   data.password = dbutil.passEncrypt(data.password);
-  return excuteParam(sql, data, run);
+  return excuteParam(sql, data, 'run');
+}
+
+/**
+ * 得到做验证用户的数据
+ * @param data
+ */
+const getValidUser = (data) => {
+  let sql = `
+  SELECT * FROM user WHERE account=$account;
+  `;
+  console.log(data);
+  return excuteParam(sql, data, 'all');
 }
 
 module.exports = {
-  getLoginUser, addUser
+  getLoginUser, addUser, getValidUser
 }

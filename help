@@ -58,3 +58,19 @@ Ng build 得到dist目录
 
 typescript 使用js，在配置文件中加 allowJs:true
 使用async await在配置文件中lib加2015
+
+
+T报错
+删掉 = void
+
+app.module.ts version 3 expected 4
+.version = 5
+
+typeScript >=2.4
+npm i -g typescript@next  //安装最新的typescript
+tsc --version //查看typescript版本
+npm install tsd -g
+npm install @types/angular@latest --save-dev
+
+sqlite3 命令
+.open E:\\study\\eleang\\analog\\data\\common.db
