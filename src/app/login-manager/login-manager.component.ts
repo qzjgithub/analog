@@ -34,9 +34,13 @@ export class LoginManagerComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {
     this.pattern = 'local';
+    let config = configService.getStateConfig();
+    this.pattern = config['openRemote'] ? 'remote' : 'local';
   }
 
   ngOnInit() {
-    this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route});
+    if(this.router.url==='/loginManage'){
+      this.router.navigate([{outlets: {'userEnter': 'login'}}],{relativeTo: this.route});
+    }
   }
 }

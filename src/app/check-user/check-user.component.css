@@ -1,0 +1,13 @@
+.login-form-button{
+  width: 47%;
+}
+.login-form-button:last-child{
+  float:right;
+}
+h2{
+  line-height: 50px;
+  text-align: center;
+}
+.check_user_panel{
+  width:25%;display:block;max-width:400px;min-width:300px;
+}

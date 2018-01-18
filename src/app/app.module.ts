@@ -16,12 +16,20 @@ import {LoginManagerComponent} from "./login-manager/login-manager.component";
 import {SetConfigComponent} from "./set-config/set-config.component";
 import {RemoteServerComponent} from "./set-config/remote-server/remote-server.component";
 import {RegisterComponent} from "./login-manager/register/register.component";
+import { HomeComponent } from './home/home.component';
+import { CheckUserComponent } from './check-user/check-user.component';
+import { PersonCenterComponent } from './person-center/person-center.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
   { path: 'loginManage',component: LoginManagerComponent ,children:[
     {path:'login',component: LoginComponent , outlet: 'userEnter' },
     {path:'register',component: RegisterComponent , outlet: 'userEnter' }
+  ]},
+  { path: 'checkUser',component: CheckUserComponent },
+  { path: 'home',component: HomeComponent ,children:[
+    {path:'',component: PersonCenterComponent , outlet: 'content' },
+    {path:'person',component: PersonCenterComponent , outlet: 'content' },
   ]}
 ]
 
@@ -33,7 +41,10 @@ const routes: Routes = [
     LoginManagerComponent,
     SetConfigComponent,
     RemoteServerComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    CheckUserComponent,
+    PersonCenterComponent
   ],
   imports: [
     BrowserModule,

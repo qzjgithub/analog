@@ -17,7 +17,7 @@
     </div>
     <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
       <nz-input [nzSize]="'large'" formControlName="password" [nzType]="'password'" [nzId]="'password'" (ngModelChange)="updateConfirmValidator()"></nz-input>
-      <div nz-form-explain *ngIf="getFormControl('password').dirty&&getFormControl('password').hasError('required')">您输入您的密码</div>
+      <div nz-form-explain *ngIf="getFormControl('password').dirty&&getFormControl('password').hasError('required')">请输入您的密码</div>
     </div>
   </div>
   <div nz-form-item nz-row>

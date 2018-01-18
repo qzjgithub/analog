@@ -9,7 +9,7 @@ import {NzMessageService} from "ng-zorro-antd";
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.css'],
   host: {
-    'style' : 'width:35%;display:block;'
+    'style' : 'width:35%;display:block;min-width:300px;'
   }
 })
 export class RegisterComponent implements OnInit {
@@ -26,9 +26,18 @@ export class RegisterComponent implements OnInit {
     if(!this.validateForm.valid) return;
     console.log(this.validateForm.value);
     let value = this.validateForm.value;
+    value = {
+      account: value.account,
+      password: value.password,
+      name: value.name,
+      position: value.position,
+      phoneNumberPrefix: value.phoneNumberPrefix,
+      phone: value.phone,
+      email: value.email,
+      comment: value.comment
+    }
     value['phone'] = value['phoneNumberPrefix']+'-'+value['phone'];
     value['active'] = true;
-    delete value['checkPassword'];
     delete value['phoneNumberPrefix'];
     this.userService.add(value)
       .then((data)=>{
@@ -36,7 +45,7 @@ export class RegisterComponent implements OnInit {
         this.backLogin({});
       })
       .catch((err)=>{
-        this._message.create('error',err.text);
+        this._message.create('error',err.message);
       })
   }
 

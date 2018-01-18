@@ -121,7 +121,8 @@ const addAdminUser = (db)=>{
     $phone , 
     $email , 
     $comment , 
-    $active 
+    $active ,
+    $createdTime 
   );
   `;
   let data = {
@@ -133,7 +134,8 @@ const addAdminUser = (db)=>{
     phone : "1234567890",
     email : "111@qq.com",
     comment : "aaaaa",
-    active : true
+    active : false,
+    createdTime : new Date()
   };
   let obj_data = {};
   for(let key in data){
@@ -168,6 +170,7 @@ const createProject = (db) =>{
    createTime TEXT,
    creator TEXT, 
    valid BOOLEAN,
+   createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
    );
   `;
@@ -197,7 +200,8 @@ const createUser = (db) => {
   phone TEXT, 
   email TEXT, 
   comment TEXT, 
-  active BOOLEAN 
+  active BOOLEAN ,
+  createdTime DATE 
   );
   `;
   return new Promise((resolve , reject) => {

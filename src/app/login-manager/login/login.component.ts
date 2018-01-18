@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../../control/user/user.service";
 import {Router, ActivatedRoute} from "@angular/router";
+import {NzMessageService} from "ng-zorro-antd";
 
 @Component({
   selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.css'],
   host: {
-    'style' : 'width:25%;display:block;max-width:300px'
+    'style' : 'width:25%;display:block;max-width:300px;min-width:200px;'
   }
 })
 export class LoginComponent implements OnInit {
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(private fb: FormBuilder,
+              private _message: NzMessageService,
               private userService: UserService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -29,12 +31,13 @@ export class LoginComponent implements OnInit {
       this.loginForm.controls[ i ].markAsDirty();
     }
     if(!this.loginForm.valid) return;
-    console.log(this.loginForm.value);
     this.userService.validLogin(this.loginForm.value)
       .then((data)=>{
-        console.log(data);
+        sessionStorage.setItem('userId',data['id']);
+        this.router.navigate(['checkUser']);
       })
       .catch((err)=>{
+        this._message.create('error',err.message);
         console.log(err);
       })
   }

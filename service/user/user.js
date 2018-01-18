@@ -9,9 +9,10 @@ const validLoginUser = (data) => {
     dbuser.getLoginUser(data)
       .then((data) => {
         if(data.length){
+          delete data[0]['password'];
           resolve(data[0]);
         }else{
-          reject();
+          reject({ message:'用户名或密码错误' });
         }
       })
       .catch((err) => {
@@ -29,7 +30,7 @@ const validExistUser = (data) => {
     dbuser.getValidUser({account: data.account})
       .then((data)=>{
         if(data.length){
-          reject({text:'已存在相同账号的用户'})
+          reject({ message:'已存在相同账号的用户' })
         }else{
           resolve();
         }
@@ -54,6 +55,35 @@ const addUser = (data) => {
   })
 }
 
+/**
+ * 修改密码
+ * @param data
+ */
+const modifyPwdUser = (data) => {
+  return dbuser.modifyPwd(data);
+}
+
+/**
+ * 根据id获取用户
+ * @param data
+ * @returns {any}
+ */
+const getUserById = (data) => {
+  return new Promise((resolve, reject)=>{
+    dbuser.getUserById(data)
+      .then((data)=>{
+        if(data.length){
+          delete data[0].password;
+          resolve(data[0]);
+        }else{
+          reject({ message: '用户不存在' })
+        }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  })
+}
 module.exports = {
-  validLoginUser,addUser,validExistUser
+  validLoginUser,addUser,validExistUser,modifyPwdUser,getUserById
 }

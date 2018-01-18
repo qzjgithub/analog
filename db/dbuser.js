@@ -61,9 +61,11 @@ const addUser = (data) => {
     $phone , 
     $email , 
     $comment , 
-    $active 
+    $active ,
+    $createdTime 
   );
   `;
+  data.createdTime = new Date();
   data.password = dbutil.passEncrypt(data.password);
   return excuteParam(sql, data, 'run');
 }
@@ -80,6 +82,30 @@ const getValidUser = (data) => {
   return excuteParam(sql, data, 'all');
 }
 
+/**
+ * 修改密码
+ * @param data
+ */
+const modifyPwd = (data) => {
+  let sql = `
+  UPDATE user 
+  SET password=$password ,active=$active 
+  WHERE id=$id
+  ;
+  `;
+  data.password = dbutil.passEncrypt(data.password);
+  return excuteParam(sql, data, 'run');
+}
+
+const getUserById = (data) => {
+  let sql = `
+  SELECT * FROM user 
+  WHERE id=$id
+  ;
+  `;
+  return excuteParam(sql, data, 'all');
+}
+
 module.exports = {
-  getLoginUser, addUser, getValidUser
+  getLoginUser, addUser, getValidUser, modifyPwd,getUserById
 }

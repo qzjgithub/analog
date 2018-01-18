@@ -25,6 +25,16 @@ export class ConfigService{
   }
 
   /**
+   * 得到state中的login
+   * @returns {any}
+   */
+  getStateLogin = ()=>{
+    const state = this.store.getState();
+    let config = getConfigState(state);
+    return config['login'];
+  }
+
+  /**
    * 得到config信息
    */
   getConfig = ()=>{
@@ -79,6 +89,13 @@ export class ConfigService{
     let config = this.getStateConfig();
     config['openRemote'] = data;
     return this.setConfig(config);
+  }
+
+  /**
+   * 清空登录用户信息
+   */
+  clearLogin = ()=>{
+    this.store.dispatch(ConfigActions.getLogin({}));
   }
 }
 

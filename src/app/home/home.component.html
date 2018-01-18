@@ -1,0 +1,37 @@
+<div *ngIf="!login['id']" class="box_center" style="height: 100%;"><nz-spin [nzTip]="'加载中,请稍后......'"></nz-spin></div>
+<nz-layout class="layout" style="height:100%" *ngIf="login['id']">
+  <nz-header style="background-color: #F9F9F9;">
+    <div></div>
+    <nz-breadcrumb style="margin:12px 0;display: inline;font-size: 14px;">
+      <nz-breadcrumb-item class="header-breadcrumb" *ngFor="let breadcrumb of breadcrumbs">{{breadcrumb}}</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-dropdown [nzTrigger]="'click'" style="float: right;">
+      <a href class="ant-dropdown-link" nz-dropdown>
+        <i class="anticon anticon-user"></i>{{login['account']}}<i class="anticon anticon-down"></i>
+      </a>
+      <ul nz-menu>
+        <li nz-menu-item (click)="gotoPerson($event)">个人信息</li>
+        <li nz-menu-item (click)="loginout($event)">退出</li>
+      </ul>
+    </nz-dropdown>
+  </nz-header>
+  <nz-layout>
+    <nz-sider [nzWidth]="200" style="background:#fff">
+      <ul nz-menu [nzMode]="'inline'" style="height:100%">
+        <li nz-menu-group>
+          <span title>{{config['openRemote'] ? '远程服务系统' : '本地系统'}}</span>
+          <ul>
+            <li nz-menu-item>项目管理</li>
+            <li nz-menu-item *ngIf="login.role=='admin'">用户管理</li>
+            <li nz-menu-item *ngIf="login.role=='admin'">配置管理</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout style="padding:16px">
+      <nz-content style="background:#fff; min-height: 280px;">
+        <router-outlet name="content"></router-outlet>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>
