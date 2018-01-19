@@ -48,7 +48,7 @@ export const ConfigReducer =
           arr.push(breadcrumbs[i]);
           i++;
         }
-        arr.push(item);
+        arr = [...arr, ...item];
         state = {
           config : state.config,
           login : state.login,

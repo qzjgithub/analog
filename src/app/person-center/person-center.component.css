@@ -10,9 +10,6 @@
   margin-bottom: 24px;
 
 }
-form{
-  width: 60%;
-  margin-top: 50px;
-  max-width: 600px;
-  display: inline-block;
+.ant-select-selection-selected-value{
+  width: auto;
 }

@@ -122,6 +122,7 @@ const addAdminUser = (db)=>{
     $email , 
     $comment , 
     $active ,
+    $available ,
     $createdTime 
   );
   `;
@@ -130,11 +131,12 @@ const addAdminUser = (db)=>{
     password : passEncrypt("000000"),
     role : "admin",
     name : "管理员",
-    position: "manager",
-    phone : "1234567890",
+    position: "projectManager",
+    phone : "+86-1234567890",
     email : "111@qq.com",
     comment : "aaaaa",
     active : false,
+    available : true,
     createdTime : new Date()
   };
   let obj_data = {};
@@ -201,6 +203,7 @@ const createUser = (db) => {
   email TEXT, 
   comment TEXT, 
   active BOOLEAN ,
+  available BOOLEAN ,
   createdTime DATE 
   );
   `;
@@ -300,6 +303,7 @@ const initSelectSelect = () => {
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
     { name: 'position', value: 'pythonEngineer', text: 'Python工程师'},
     { name: 'position', value: 'javaEngineer', text: 'Java工程师'},
+    { name: 'position', value: 'projectManager', text: '项目经理'}
   ];
   for(let i = 0;i<datas.length;i++){
     addSelect(datas[i]);

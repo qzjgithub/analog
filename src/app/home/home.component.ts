@@ -58,7 +58,9 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['loginManage']);
     }else if(this.login.active===undefined){
       this.userService.getUserById({ id: this.userId})
-        .then((data)=>{ })
+        .then((data)=>{
+          this.store.dispatch(ConfigActions.getLogin(data));
+        })
         .catch((err)=>{
           this.router.navigate(['loginManage']);
           sessionStorage.removeItem('userId');
@@ -91,7 +93,6 @@ export class HomeComponent implements OnInit {
    * @returns {boolean}
    */
   loginout(e){
-    sessionStorage.removeItem('userId');
     this.configService.clearLogin();
     this.router.navigate(['loginManage']);
     return false;
@@ -102,6 +103,13 @@ export class HomeComponent implements OnInit {
    */
   gotoPerson(){
     this.router.navigate([{outlets: {'content': 'person'}}],{relativeTo: this.route})
+  }
+
+  /**
+   * 进入用户管理
+   */
+  gotoUser(){
+    this.router.navigate([{outlets: {'content': 'user'}}],{relativeTo: this.route})
   }
 
 }

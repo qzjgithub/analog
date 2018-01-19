@@ -84,6 +84,56 @@ const getUserById = (data) => {
       })
   })
 }
+
+/**
+ * 修改用户
+ * @param data
+ */
+const modifyUser = (data) => {
+  return dbuser.modifyUser(data);
+}
+
+/**
+ * 通过旧密码修改密码
+ * @param data
+ */
+const modifyPwdWithOld = (data) => {
+  return new Promise((resolve, reject) => {
+    dbuser.validOldPwd({ id: data.id, password: data.oldPassword})
+      .then((datas) => {
+        if(datas.length){
+          dbuser.modifyPwd({ id: data.id, password: data.password, active: true})
+            .then(()=>{
+              resolve();
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        }else{
+          reject({ message: '旧密码不正确'});
+        }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  })
+}
+
+/**
+ * 得到用户列表
+ * @returns {any}
+ */
+const getUserList = () => {
+  return dbuser.getUserList();
+}
+
 module.exports = {
-  validLoginUser,addUser,validExistUser,modifyPwdUser,getUserById
+  validLoginUser,
+  addUser,
+  validExistUser,
+  modifyPwdUser,
+  getUserById,
+  modifyUser,
+  modifyPwdWithOld,
+  getUserList
 }

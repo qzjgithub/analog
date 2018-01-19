@@ -9,5 +9,8 @@ h2{
   text-align: center;
 }
 .check_user_panel{
-  width:25%;display:block;max-width:400px;min-width:300px;
+  width:25%;
+  display:block;
+  max-width: 600px;
+  min-width: 460px;
 }

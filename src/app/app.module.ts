@@ -19,6 +19,10 @@ import {RegisterComponent} from "./login-manager/register/register.component";
 import { HomeComponent } from './home/home.component';
 import { CheckUserComponent } from './check-user/check-user.component';
 import { PersonCenterComponent } from './person-center/person-center.component';
+import { PersonPasswordComponent } from './person-password/person-password.component';
+import { UserManageComponent } from './user-manage/user-manage.component';
+import { UserAddComponent } from './user-add/user-add.component';
+import { UserModifyComponent } from './user-modify/user-modify.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -28,8 +32,12 @@ const routes: Routes = [
   ]},
   { path: 'checkUser',component: CheckUserComponent },
   { path: 'home',component: HomeComponent ,children:[
-    {path:'',component: PersonCenterComponent , outlet: 'content' },
+    {path:'',component: UserManageComponent , outlet: 'content' },
     {path:'person',component: PersonCenterComponent , outlet: 'content' },
+    {path:'personPwd',component: PersonPasswordComponent , outlet: 'content' },
+    {path:'user',component: UserManageComponent , outlet: 'content' },
+    {path:'addUser',component: UserAddComponent , outlet: 'content' },
+    {path:'user/:id',component: UserModifyComponent , outlet: 'content' },
   ]}
 ]
 
@@ -44,7 +52,11 @@ const routes: Routes = [
     RegisterComponent,
     HomeComponent,
     CheckUserComponent,
-    PersonCenterComponent
+    PersonCenterComponent,
+    PersonPasswordComponent,
+    UserManageComponent,
+    UserAddComponent,
+    UserModifyComponent
   ],
   imports: [
     BrowserModule,

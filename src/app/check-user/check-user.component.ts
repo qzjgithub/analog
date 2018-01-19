@@ -101,7 +101,6 @@ export class CheckUserComponent implements OnInit {
   }
 
   loginout(e){
-    sessionStorage.removeItem('userId');
     this.configService.clearLogin();
     this.router.navigate(['loginManage']);
     return false;

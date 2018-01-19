@@ -95,6 +95,7 @@ export class ConfigService{
    * 清空登录用户信息
    */
   clearLogin = ()=>{
+    sessionStorage.removeItem('userId');
     this.store.dispatch(ConfigActions.getLogin({}));
   }
 }

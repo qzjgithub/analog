@@ -9,7 +9,7 @@ import {NzMessageService} from "ng-zorro-antd";
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.css'],
   host: {
-    'style' : 'width:35%;display:block;min-width:300px;'
+    'style' : 'width:35%;display:block;min-width:435px;'
   }
 })
 export class RegisterComponent implements OnInit {
@@ -24,7 +24,6 @@ export class RegisterComponent implements OnInit {
       this.validateForm.controls[ i ].markAsDirty();
     }
     if(!this.validateForm.valid) return;
-    console.log(this.validateForm.value);
     let value = this.validateForm.value;
     value = {
       account: value.account,

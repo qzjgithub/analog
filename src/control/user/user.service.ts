@@ -72,16 +72,29 @@ export class UserService{
    * @returns {any}
    */
   getUserById = (data) => {
-    return new Promise((resolve, reject) => {
-      userService.getUserById(data)
-        .then((data) => {
-          this.store.dispatch(ConfigActions.getLogin(data));
-          resolve(data);
-        })
-        .catch((err)=>{
-          reject(err);
-        })
-    });
+    return userService.getUserById(data);
+  }
+
+  /**
+   * 修改用户
+   * @param data
+   * @returns {Promise<T>}
+   */
+  modifyUser = (data) => {
+    return userService.modifyUser(data);
+  }
+
+  /**
+   * 根据旧密码修改密码
+   * @param data
+   * @returns {any}
+   */
+  modifyPwdWithOld = (data) => {
+    return userService.modifyPwdWithOld(data);
+  }
+
+  getUserList = () => {
+    return userService.getUserList();
   }
 
 }

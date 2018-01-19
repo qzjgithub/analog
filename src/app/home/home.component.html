@@ -5,7 +5,7 @@
     <nz-breadcrumb style="margin:12px 0;display: inline;font-size: 14px;">
       <nz-breadcrumb-item class="header-breadcrumb" *ngFor="let breadcrumb of breadcrumbs">{{breadcrumb}}</nz-breadcrumb-item>
     </nz-breadcrumb>
-    <nz-dropdown [nzTrigger]="'click'" style="float: right;">
+    <nz-dropdown [nzTrigger]="'click'" style="float: right;" class="header-login">
       <a href class="ant-dropdown-link" nz-dropdown>
         <i class="anticon anticon-user"></i>{{login['account']}}<i class="anticon anticon-down"></i>
       </a>
@@ -22,14 +22,14 @@
           <span title>{{config['openRemote'] ? '远程服务系统' : '本地系统'}}</span>
           <ul>
             <li nz-menu-item>项目管理</li>
-            <li nz-menu-item *ngIf="login.role=='admin'">用户管理</li>
+            <li nz-menu-item *ngIf="login.role=='admin'" (click)="gotoUser()">用户管理</li>
             <li nz-menu-item *ngIf="login.role=='admin'">配置管理</li>
           </ul>
         </li>
       </ul>
     </nz-sider>
-    <nz-layout style="padding:16px">
-      <nz-content style="background:#fff; min-height: 280px;">
+    <nz-layout>
+      <nz-content style="background:#fff; min-height: 280px; padding: 8px;">
         <router-outlet name="content"></router-outlet>
       </nz-content>
     </nz-layout>
