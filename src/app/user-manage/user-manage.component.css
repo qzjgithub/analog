@@ -1,0 +1,17 @@
+.user-state{
+  display: inline-block;
+  height:8px;
+  width:8px;
+  border-radius: 4px;
+  background-color: #dddddd;
+  margin-right:6px;
+}
+.user-state.user-state-active{
+  background-color: #10f321;
+}
+.user-state.user-state-inactive{
+  background-color: #dddddd;
+}
+.table-operations{
+  margin-bottom:8px;
+}

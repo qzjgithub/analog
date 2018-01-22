@@ -1,0 +1,15 @@
+.person-button{
+  margin-right: 16px;
+  margin-top: 50px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.person-button>button{
+  display: block;
+  margin-bottom: 24px;
+
+}
+.ant-select-selection-selected-value{
+  width: auto;
+}

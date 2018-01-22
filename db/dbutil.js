@@ -95,7 +95,7 @@ const initSystem = () => {
       .then((db) => createSelect(db))
       .then((db) => addAdminUser(db))
       .then((db) => {
-        initPositionSelect();
+        initSelectSelect();
         db.close();
         resolve();
       })
@@ -117,10 +117,13 @@ const addAdminUser = (db)=>{
     $password , 
     $role , 
     $name , 
+    $position , 
     $phone , 
     $email , 
     $comment , 
-    $active 
+    $active ,
+    $available ,
+    $createdTime 
   );
   `;
   let data = {
@@ -128,10 +131,13 @@ const addAdminUser = (db)=>{
     password : passEncrypt("000000"),
     role : "admin",
     name : "管理员",
-    phone : "1234567890",
+    position: "projectManager",
+    phone : "+86-1234567890",
     email : "111@qq.com",
     comment : "aaaaa",
-    active : true
+    active : false,
+    available : true,
+    createdTime : new Date()
   };
   let obj_data = {};
   for(let key in data){
@@ -166,6 +172,7 @@ const createProject = (db) =>{
    createTime TEXT,
    creator TEXT, 
    valid BOOLEAN,
+   createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
    );
   `;
@@ -191,10 +198,13 @@ const createUser = (db) => {
   password TEXT, 
   role TEXT, 
   name TEXT, 
+  position TEXT, 
   phone TEXT, 
   email TEXT, 
   comment TEXT, 
-  active BOOLEAN 
+  active BOOLEAN ,
+  available BOOLEAN ,
+  createdTime DATE 
   );
   `;
   return new Promise((resolve , reject) => {
@@ -286,15 +296,48 @@ const addSelect = (data) => {
  * 初始化职位信息
  * @param db
  */
-const initPositionSelect = () => {
+const initSelectSelect = () => {
   let datas = [
+    { name: 'phonePrefix', value: '+86', text: '+86'},
+    { name: 'phonePrefix', value: '+87', text: '+87'},
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
     { name: 'position', value: 'pythonEngineer', text: 'Python工程师'},
-    { name: 'position', value: 'javaEngineer', text: 'Java工程师'}
+    { name: 'position', value: 'javaEngineer', text: 'Java工程师'},
+    { name: 'position', value: 'projectManager', text: '项目经理'}
   ];
   for(let i = 0;i<datas.length;i++){
     addSelect(datas[i]);
   }
+}
+
+/**
+ * 通过名称选择可选项
+ * @param name
+ */
+const getSelectByName = (name,object)=>{
+  let query = `
+  SELECT * FROM select_list 
+  WHERE name=$name
+  ;
+  `;
+  return new Promise((resolve , reject) => {
+    sql(getRootDB())
+      .then((db)=>{
+        let stm = db.prepare(query);
+        stm.all({ $name: name},function(err,data){
+          if(err){
+            reject(err);
+          }else{
+            object[name] = data;
+            resolve(object);
+          }
+        });
+        stm.finalize();
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  })
 }
 
 const passEncrypt = (data) => {
@@ -307,5 +350,7 @@ module.exports = {
   getRootDB, getProjectDB,
   sql, passEncrypt,
   createDir, removeDir,
-  initSystem
+  initSystem,
+  getSelectByName,
+  initSelectSelect
 }

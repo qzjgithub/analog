@@ -6,6 +6,7 @@ import {AppStore} from "../control/app.store";
 
 import * as ConfigActions from '../control/config/config.action';
 import {getConfigState} from "../control/config/config.reducer";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,10 @@ export class AppComponent {
    */
   tip = '正在进入系统';
 
-  constructor(@Inject(AppStore) private store: Store<AppState>,private configService: ConfigService){
+  constructor(
+              @Inject(AppStore) private store: Store<AppState>,
+              private router: Router,
+              private configService: ConfigService){
     store.subscribe(()=>this.updateInitFlag());
     configService.getConfig();
   }
@@ -38,5 +42,9 @@ export class AppComponent {
     let config = getConfigState(state);
     this.initFlag = config.config['activeState'];
     this.tip = this.initFlag ? "":"第一次进入系统正在初始化，请稍后...";
+    if(!this.initFlag) {
+      this.router.navigate(['/'],{ replaceUrl: false });
+      sessionStorage.removeItem('userId');
+    }
   }
 }

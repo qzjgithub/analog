@@ -78,3 +78,22 @@
 .form-header>h2{
   line-height: 50px;
 }
+
+form.person-display *{
+  border:0;
+  resize:none;
+}
+form.person-display .ant-select-arrow{
+  display: none;
+}
+.content-form{
+  width: 60%;
+  margin-top: 50px;
+  max-width: 600px;
+  min-width: 500px;
+  display: inline-block;
+}
+
+.ant-btn{
+  margin-right:8px;
+}
