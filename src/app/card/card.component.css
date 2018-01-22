@@ -1,0 +1,53 @@
+section{
+  width: 240px;
+  border: 1px solid #dddddd;
+  height: 240px;
+  display: inline-block;
+  border-radius: 4px;
+  vertical-align: top;
+}
+header{
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 16px;
+}
+aside{
+  padding: 0 16px;
+  height: 22px;
+  margin: 4px 0;
+}
+ul{
+  padding: 8px 16px;
+  height: 122px;
+}
+ul>li{
+  line-height: 24px;
+}
+footer{
+  height: 48px;
+  line-height: 48px;
+  width: 100%;
+  border-top: 1px solid #dddddd;
+}
+.vitrual-btn{
+  width: 45%;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+.vitrual-btn>i{
+  padding-right: 8px;
+}
+footer .ant-divider{
+  height: 16px;
+  vertical-align: middle;
+}
+.empty-panel{
+  text-align: center;
+  line-height: 252px;
+  cursor: pointer;
+}
+.empty-panel>.anticon-plus{
+  font-size: 40px;
+  color: #999999;
+}

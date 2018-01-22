@@ -68,8 +68,8 @@ export class PersonCenterComponent implements OnInit {
   getSelect(){
     this.userService.getSelect()
       .then((data)=>{
-        this.position = data.position;
-        this.phonePrefix = data.phonePrefix;
+        this.position = data['position'];
+        this.phonePrefix = data['phonePrefix'];
       })
   }
 

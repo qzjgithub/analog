@@ -27,6 +27,7 @@ import { BaseInfoComponent } from './set-config/base-info/base-info.component';
 import { OutboxComponent } from './set-config/outbox/outbox.component';
 import { LocalServerComponent } from './set-config/local-server/local-server.component';
 import { ProjectManageComponent } from './project-manage/project-manage.component';
+import { CardComponent } from './card/card.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -67,6 +68,7 @@ const routes: Routes = [
     OutboxComponent,
     LocalServerComponent,
     ProjectManageComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

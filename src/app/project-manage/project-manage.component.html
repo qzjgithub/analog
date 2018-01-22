@@ -1,4 +1,4 @@
-<nz-radio-group [(ngModel)]="scope">
+<nz-radio-group [(ngModel)]="scope" class="content-nav">
   <label nz-radio-button [nzValue]="'all'">
     <span>公开项目</span>
   </label>
@@ -9,3 +9,6 @@
     <span>相关项目</span>
   </label>
 </nz-radio-group>
+<div>
+  <card [empty]="true"></card><card [title]="'资产管理'" [tags]="tags" [content]="content"></card>
+</div>

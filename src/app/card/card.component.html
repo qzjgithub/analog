@@ -1,0 +1,24 @@
+<section *ngIf="empty" class="empty-panel">
+  <i class="anticon anticon-plus"></i>
+</section>
+<section *ngIf="!empty">
+  <header>{{ title }}</header>
+  <aside>
+    <nz-tag *ngIf="tags.length>0" [nzColor]="tags[0]['active']?'orange':'#999999'">{{tags[0]['text']}}</nz-tag>
+    <nz-tag *ngIf="tags.length>1" [nzColor]="tags[1]['active']?'blue':'#999999'">{{tags[1]['text']}}</nz-tag>
+    <nz-tag *ngIf="tags.length>2" [nzColor]="tags[2]['active']?'green':'#999999'">{{tags[2]['text']}}</nz-tag>
+    <i *ngIf="tags.length>3">...</i>
+  </aside>
+  <ul>
+    <li nz-row *ngFor="let item of content">
+      <div nz-col [nzSm]="6" [nzXs]="24">{{item.label}}</div>
+      <div nz-col [nzSm]="1" [nzXs]="24">:</div>
+      <div nz-col [nzSm]="14" [nzXs]="24">{{item.value}}</div>
+    </li>
+  </ul>
+  <footer>
+   <span class="vitrual-btn"><i [class]="'anticon anticon-'+(leftIcon||'edit')"></i>{{leftText || '编辑'}}</span>
+    <span nz-table-divider></span>
+    <span class="vitrual-btn"><i [class]="'anticon anticon-'+(rightIcon||'file-text')"></i>{{rightText || '详情'}}</span>
+  </footer>
+</section>
