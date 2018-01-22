@@ -1,6 +1,6 @@
 <section class="box_center">
   <a class="link-service" (click)="changePattern($event)">{{ pattern === 'remote' ? '使用本地系统':'连接远程服务' }}</a>
-  <remote-server *ngIf="pattern==='remote'"></remote-server>
+  <remote-server *ngIf="pattern==='remote'" [pattern]="'login'" style="display: block;width: 30%;"></remote-server>
   <div *ngIf="pattern==='remote'" class="division"></div>
   <router-outlet name="userEnter"></router-outlet>
 </section>

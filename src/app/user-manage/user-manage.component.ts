@@ -7,7 +7,7 @@ import * as ConfigActions from '../../control/config/config.action';
 import {Router, ActivatedRoute} from "@angular/router";
 import {UserService} from "../../control/user/user.service";
 import {ConfigService} from "../../control/config/config.service";
-import {NzMessageService} from "ng-zorro-antd";
+import {NzMessageService, NzModalService} from "ng-zorro-antd";
 
 @Component({
   selector: 'app-user-manage',
@@ -20,12 +20,12 @@ export class UserManageComponent implements OnInit {
   _indeterminate = false;
   _displayData = [];
 
-  data = [
-  ];
+  data = [];
 
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private _message: NzMessageService,
+    private modalService: NzModalService,
     private configService: ConfigService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -46,7 +46,7 @@ export class UserManageComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction('用户列表',1));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction('用户管理',1));
   }
 
   ngOnInit() {
@@ -63,6 +63,7 @@ export class UserManageComponent implements OnInit {
     const allUnChecked = this._displayData.every(value => !value.checked);
     this._allChecked = allChecked;
     this._indeterminate = (!allChecked) && (!allUnChecked);
+    console.log(this._allChecked, this._indeterminate);
   }
 
   _checkAll(value) {
@@ -85,5 +86,22 @@ export class UserManageComponent implements OnInit {
 
   addUser(){
     this.router.navigate([{outlets: {'content': 'addUser'}}],{relativeTo: this.route.parent})
+  }
+
+  resetPwd(data){
+    const modal = this.modalService.open({
+      title   : '重置密码',
+      content : '确认重置'+data.name+'的密码吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      wrapClassName:'vertical-center-modal',
+      onOk: () => {
+        return this.userService.resetPwd(data.id);
+      },
+      onCancel() {
+      }
+    });
   }
 }

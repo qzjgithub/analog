@@ -112,4 +112,18 @@ export class HomeComponent implements OnInit {
     this.router.navigate([{outlets: {'content': 'user'}}],{relativeTo: this.route})
   }
 
+  /**
+   * 进入配置管理
+   */
+  gotoConfig(){
+    this.router.navigate([{outlets: {'content': 'config'}}],{relativeTo: this.route})
+  }
+
+  /**
+   * 进入项目管理
+   */
+  gotoProject(){
+    this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route})
+  }
+
 }

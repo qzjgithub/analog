@@ -74,7 +74,7 @@ export class UserAddComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['用户列表','添加用户'],1));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['用户管理','添加用户'],1));
   }
 
   ngOnInit() {

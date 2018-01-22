@@ -77,7 +77,10 @@ export class ConfigService{
    */
   setRemoteService = (data)=>{
     let config = this.getStateConfig();
-    config['remoteService'] = data;
+    let { address, port, prefix } = data;
+
+    config['remoteService'] = { address, port, prefix } ;
+    config['openRemote'] = data['remoteServer'];
     return this.setConfig(config);
   }
 
@@ -97,6 +100,38 @@ export class ConfigService{
   clearLogin = ()=>{
     sessionStorage.removeItem('userId');
     this.store.dispatch(ConfigActions.getLogin({}));
+  }
+
+  /**
+   * 设置基本信息
+   * @param data
+   * @returns {Promise<T>}
+   */
+  setBaseInfo = (data) => {
+    let config = this.getStateConfig();
+    config = Object.assign(config, data);
+    return this.setConfig(config);
+  }
+
+  /**
+   * 设置基本信息
+   * @param data
+   * @returns {Promise<T>}
+   */
+  setOutBox = (data) => {
+    let config = this.getStateConfig();
+    config['outbox'] = data;
+    return this.setConfig(config);
+  }
+
+  /**
+   * 设置本地服务配置信息
+   * @param data
+   */
+  setLocalService = (data) => {
+    let config = this.getStateConfig();
+    config['localService'] = data;
+    return this.setConfig(config);
   }
 }
 
