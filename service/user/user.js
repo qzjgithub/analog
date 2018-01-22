@@ -1,6 +1,7 @@
 /**
  * Created by admin on 2018/1/12.
  */
+const config = require('../config/config');
 /**
  * 验证登录是否成功
  */

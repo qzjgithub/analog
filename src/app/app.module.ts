@@ -23,6 +23,10 @@ import { PersonPasswordComponent } from './person-password/person-password.compo
 import { UserManageComponent } from './user-manage/user-manage.component';
 import { UserAddComponent } from './user-add/user-add.component';
 import { UserModifyComponent } from './user-modify/user-modify.component';
+import { BaseInfoComponent } from './set-config/base-info/base-info.component';
+import { OutboxComponent } from './set-config/outbox/outbox.component';
+import { LocalServerComponent } from './set-config/local-server/local-server.component';
+import { ProjectManageComponent } from './project-manage/project-manage.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -32,12 +36,14 @@ const routes: Routes = [
   ]},
   { path: 'checkUser',component: CheckUserComponent },
   { path: 'home',component: HomeComponent ,children:[
-    {path:'',component: UserManageComponent , outlet: 'content' },
+    {path:'',component: ProjectManageComponent , outlet: 'content' },
     {path:'person',component: PersonCenterComponent , outlet: 'content' },
     {path:'personPwd',component: PersonPasswordComponent , outlet: 'content' },
     {path:'user',component: UserManageComponent , outlet: 'content' },
     {path:'addUser',component: UserAddComponent , outlet: 'content' },
     {path:'user/:id',component: UserModifyComponent , outlet: 'content' },
+    {path:'config',component: SetConfigComponent , outlet: 'content' },
+    {path:'project',component: ProjectManageComponent , outlet: 'content' },
   ]}
 ]
 
@@ -56,7 +62,11 @@ const routes: Routes = [
     PersonPasswordComponent,
     UserManageComponent,
     UserAddComponent,
-    UserModifyComponent
+    UserModifyComponent,
+    BaseInfoComponent,
+    OutboxComponent,
+    LocalServerComponent,
+    ProjectManageComponent,
   ],
   imports: [
     BrowserModule,

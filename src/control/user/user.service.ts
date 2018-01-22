@@ -93,8 +93,22 @@ export class UserService{
     return userService.modifyPwdWithOld(data);
   }
 
+  /**
+   * 获取所有非管理员的用户列表
+   * @returns {any|undefined}
+   */
   getUserList = () => {
     return userService.getUserList();
+  }
+
+  /**
+   * 批量重置密码
+   * @param data
+   */
+  resetPwd = (data) => {
+    const state = this.store.getState();
+    let pwd = state['config']['config']['defaultPwd'];
+    return userService.modifyPwdUser({id: data, active: false, password: pwd})
   }
 
 }

@@ -78,7 +78,7 @@ export class UserModifyComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['用户列表','修改用户'],1));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['用户管理','修改用户'],1));
   }
 
   ngOnInit() {

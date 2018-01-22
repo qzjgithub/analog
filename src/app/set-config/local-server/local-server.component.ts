@@ -11,31 +11,23 @@ import {AppStore} from "../../../control/app.store";
 import {getConfigState} from "../../../control/config/config.reducer";
 import {ConfigService} from "../../../control/config/config.service";
 import {NzMessageService} from "ng-zorro-antd";
-import {enableProdMode} from '@angular/core';
-enableProdMode();
 
 @Component({
-  selector: 'remote-server',
-  templateUrl: 'remote-server.component.html',
-  styleUrls: ['remote-server.component.css'],
+  selector: 'local-server',
+  templateUrl: 'local-server.component.html',
+  styleUrls: ['local-server.component.css']
 })
-export class RemoteServerComponent implements OnInit {
+export class LocalServerComponent implements OnInit {
   validateForm: FormGroup;
 
-  /**
-   * 当前设置来源于哪里
-   * @type {string}
-   */
-  @Input()
-  pattern = 'config';
   _submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
-    }if(!this.validateForm.valid) return;
-
-    this.configService.setRemoteService(this.validateForm.value)
+    }
+    if(!this.validateForm.valid) return;
+    this.configService.setLocalService(this.validateForm.value)
       .then((data)=>{
-        this._message.create('success','远程服务设置成功');
+        this._message.create('success','本地服务设置成功');
         this.validateForm.reset(this.validateForm.value);
       })
       .catch((err)=>{
@@ -43,26 +35,26 @@ export class RemoteServerComponent implements OnInit {
       })
   }
 
-  constructor(@Inject(AppStore) private store: Store<AppState>,
-              private fb: FormBuilder,
-              private configService: ConfigService,
-              private _message: NzMessageService) {
-  }
+  constructor(
+    @Inject(AppStore) private store: Store<AppState>,
+    private fb: FormBuilder,
+    private configService: ConfigService,
+    private _message: NzMessageService
+  ) { }
 
   ngOnInit() {
-    let remote = this.getRemoteServer();
+    let remote = this.getLocalServer();
     this.validateForm = this.fb.group({
-      remoteServer : [ remote['openRemote'] ],
-      address : [ remote['address'], [ Validators.required ] ],
+      localServer : [ false ],
       port : [ remote['port'], [ Validators.required ] ],
       prefix : [ remote['prefix'] ]
     });
   }
 
-  getRemoteServer(){
+  getLocalServer(){
     const state = this.store.getState();
     let config = getConfigState(state);
-    return Object.assign({},config['config']['remoteService'],{openRemote: config['config']['openRemote']});
+    return config['config']['localService'];
   }
 
   getFormControl(name) {
@@ -70,10 +62,9 @@ export class RemoteServerComponent implements OnInit {
   }
 
   reset(){
-    let remote = this.getRemoteServer();
+    let remote = this.getLocalServer();
     this.validateForm.reset({
-      remoteServer: remote['openRemote'],
-      address : remote['address'],
+      localServer: false,
       port : remote['port'],
       prefix : remote['prefix']
     })

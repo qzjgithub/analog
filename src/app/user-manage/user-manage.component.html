@@ -1,14 +1,13 @@
 <div class="table-operations">
   <button nz-button  [nzType]="'primary'" (click)="addUser($event)">添加</button>
-  <button nz-button >重置密码</button>
 </div>
 <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
   <thead nz-thead>
   <tr>
-    <th nz-th nzCheckbox>
+    <!--<th nz-th nzCheckbox>
       <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
       </label>
-    </th>
+    </th>-->
     <th nz-th><span>名字</span></th>
     <th nz-th><span>职位</span></th>
     <th nz-th><span>电话号码</span></th>
@@ -21,10 +20,10 @@
   </thead>
   <tbody nz-tbody>
   <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-    <td nz-td nzCheckbox>
-      <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+    <!--<td nz-td nzCheckbox>
+      <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus(data)">
       </label>
-    </td>
+    </td>-->
     <td nz-td>
       <a>{{data.name}}</a>
     </td>
@@ -40,7 +39,7 @@
               <span nz-table-divider></span>
               <a [routerLink]="['/home',{outlets:{content:'user/'+data.id}}]" [queryParams]="data">编辑</a>
               <span nz-table-divider></span>
-              <a href="#">重置密码</a>
+              <a (click)="resetPwd(data)">重置密码</a>
             </span>
     </td>
   </tr>

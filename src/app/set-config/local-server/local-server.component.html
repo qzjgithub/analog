@@ -1,11 +1,11 @@
-<header class="form-header"><h2>配置远程服务</h2></header>
+<header class="form-header"><h2>配置本地服务</h2></header>
 <form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
   <div nz-form-item nz-row>
     <div nz-form-label nz-col [nzSpan]="6">
-      <label>远程服务状态</label>
+      <label>本地服务状态</label>
     </div>
     <div nz-form-control nz-col [nzSpan]="14">
-      <nz-switch formControlName="remoteServer" [nzDisabled]="pattern==='login'">
+      <nz-switch formControlName="localServer">
         <span checked>开</span>
         <span unchecked>关</span>
       </nz-switch>
@@ -13,25 +13,16 @@
   </div>
   <div nz-form-item nz-row>
     <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
-      <label for="address" nz-form-item-required>远程服务地址</label>
-    </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
-      <nz-input [nzSize]="'large'" formControlName="address" [nzId]="'address'"></nz-input>
-      <div nz-form-explain *ngIf="getFormControl('address').dirty&&getFormControl('address').hasError('address')">请输入服务器地址！</div>
-    </div>
-  </div>
-  <div nz-form-item nz-row>
-    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
-      <label for="port" nz-form-item-required>远程服务端口</label>
+      <label for="port" nz-form-item-required>本地服务端口</label>
     </div>
     <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
       <nz-input [nzSize]="'large'" formControlName="port" [nzId]="'port'"></nz-input>
-      <div nz-form-explain *ngIf="getFormControl('port').dirty&&getFormControl('port').hasError('required')">请输入连接端口！</div>
+      <div nz-form-explain *ngIf="getFormControl('port').dirty&&getFormControl('port').hasError('required')">请输入您想设置的服务端口！</div>
     </div>
   </div>
   <div nz-form-item nz-row>
     <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
-      <label for="prefix" nz-form-item-required>远程服务前缀</label>
+      <label for="prefix">本地服务前缀</label>
     </div>
     <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
       <nz-input [nzSize]="'large'" formControlName="prefix" [nzId]="'prefix'"></nz-input>
