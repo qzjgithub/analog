@@ -31,7 +31,7 @@
         </nz-select>
         <input formControlName="phone" id="'phone'" nz-input style="width: 75%;">
       </nz-input-group>
-      <div nz-form-explain *ngIf="getFormControl('phone').dirty">请输入您的电话号码</div>
+      <div nz-form-explain *ngIf="getFormControl('phone').dirty&&getFormControl('phone').hasError('required')">请输入您的电话号码</div>
     </div>
   </div>
   <div nz-form-item nz-row>
@@ -50,7 +50,6 @@
     <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
       <nz-input formControlName="comment" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="'请随意输入您想补充的信息'" [nzSize]="'large'">
       </nz-input>
-      <div nz-form-explain *ngIf="getFormControl('comment').dirty">输入了非法字符</div>
     </div>
   </div>
   <div *ngIf="pattern==='edit'" nz-form-item nz-row style="margin-bottom:8px;">

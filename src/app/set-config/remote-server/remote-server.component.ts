@@ -31,8 +31,8 @@ export class RemoteServerComponent implements OnInit {
   _submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
-    }if(!this.validateForm.valid) return;
-
+    }
+    if (!this.validateForm.dirty || !this.validateForm.valid) return;
     this.configService.setRemoteService(this.validateForm.value)
       .then((data)=>{
         this._message.create('success','远程服务设置成功');

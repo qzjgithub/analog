@@ -46,7 +46,7 @@ export class UserManageComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction('用户管理',1));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['用户管理'],1));
   }
 
   ngOnInit() {
@@ -98,7 +98,17 @@ export class UserManageComponent implements OnInit {
       cancelText: '取消',
       wrapClassName:'vertical-center-modal',
       onOk: () => {
-        return this.userService.resetPwd(data.id);
+        return new Promise((resovle, reject)=>{
+          this.userService.resetPwd(data.id)
+            .then(()=>{
+              this.getUserList();
+              resovle();
+            })
+            .catch((err)=>{
+              this._message.create('error',err.mesage);
+              reject();
+            })
+        })
       },
       onCancel() {
       }

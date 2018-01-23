@@ -32,3 +32,5 @@ fs.writeFile('test.txt',JSON.stringify({test:'aaa'}),(err,data)=>{
 });*/
 
 /*const sqlite3 = require('sqlite3').verbose();*/
+/*const fs = require('fs');
+fs.mkdirSync('data/MMS001');*/

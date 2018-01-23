@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     for (const i in this.loginForm.controls) {
       this.loginForm.controls[ i ].markAsDirty();
     }
-    if(!this.loginForm.valid) return;
+    if (!this.loginForm.dirty || !this.loginForm.valid) return;
     this.userService.validLogin(this.loginForm.value)
       .then((data)=>{
         sessionStorage.setItem('userId',data['id']);

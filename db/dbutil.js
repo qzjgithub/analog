@@ -51,6 +51,35 @@ const sql = (db) => {
 }
 
 /**
+ * 执行带参数的数据库语句统一方法
+ * @param sql
+ * @param data
+ */
+const excuteParam = (sqlStr, data, method) => {
+  let obj_data = {};
+  for(let key in data){
+    obj_data['$'+key] = data[key];
+  }
+
+  return new Promise((resolve , reject) => {
+    sql(getRootDB())
+      .then((db) => {
+        let stm = db.prepare(sqlStr);
+        stm[method](obj_data,function(err,data){
+          if(err){
+            console.log(err);
+            reject(err);
+          }else{
+            console.log(data);
+            resolve(data);
+          }
+        });
+        stm.finalize();
+      });
+  });
+}
+
+/**
  * 创建目录
  * @param name
  */
@@ -169,7 +198,6 @@ const createProject = (db) =>{
    url TEXT, 
    authority TEXT, 
    comment TEXT, 
-   createTime TEXT,
    creator TEXT, 
    valid BOOLEAN,
    createdTime DATE ,
@@ -226,7 +254,7 @@ const createProjectUser = (db) => {
   const sql = `
   CREATE TABLE IF NOT EXISTS project_user(
   userAccount TEXT,
-  ProjectAccount TEXT,
+  projectAccount TEXT,
   relation TEXT,
   FOREIGN KEY(userAccount) REFERENCES user(account),
   FOREIGN KEY(ProjectAccount) REFERENCES project(account)
@@ -293,13 +321,15 @@ const addSelect = (data) => {
 }
 
 /**
- * 初始化职位信息
+ * 初始化选项信息
  * @param db
  */
 const initSelectSelect = () => {
   let datas = [
     { name: 'phonePrefix', value: '+86', text: '+86'},
     { name: 'phonePrefix', value: '+87', text: '+87'},
+    { name: 'authority', value: 'public', text: '公开'},
+    { name: 'authority', value: 'private', text: '私密'},
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
     { name: 'position', value: 'pythonEngineer', text: 'Python工程师'},
     { name: 'position', value: 'javaEngineer', text: 'Java工程师'},
@@ -346,11 +376,177 @@ const passEncrypt = (data) => {
   return encrypted + ciper.final('hex');
 };
 
+/**
+ * 初始化项目
+ * @param data
+ */
+const initProject = (data) => {
+  return new Promise((resolve, reject)=>{
+    createDir('data/'+data.account);
+    sql(getProjectDB(data.account))
+      .then((db) => createModular(db))
+      .then((db) => createInterfaces(db))
+      .then((db) => createAnalog(db))
+      .then((db) => createUserRelation(db))
+      .then((db) => {
+        addLeaderRelation(data);
+        db.close();
+        resolve();
+      })
+      .catch((err)=>{
+        reject(err);
+      });
+  })
+}
+
+/**
+ * 创建模块表
+ */
+const createModular = (db) => {
+  const sql = `
+   CREATE TABLE IF NOT EXISTS modular(
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   name TEXT, 
+   url TEXT,
+   parent INTEGER, 
+   comment TEXT, 
+   creator TEXT, 
+   createdTime DATE ,
+   FOREIGN KEY(creator) REFERENCES user(account)
+   );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db)
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 创建接口表
+ */
+const createInterfaces = (db) => {
+  const sql = `
+   CREATE TABLE IF NOT EXISTS interfaces(
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   url TEXT,
+   reg TEXT, 
+   method TEXT, 
+   parent INTEGER, 
+   comment TEXT, 
+   creator TEXT, 
+   createdTime DATE ,
+   FOREIGN KEY(creator) REFERENCES user(account)
+   );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db)
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 创建数据表
+ */
+const createAnalog = (db) => {
+  const sql = `
+   CREATE TABLE IF NOT EXISTS analog(
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   saveType TEXT,
+   data TEXT, 
+   dataType TEXT, 
+   parent INTEGER, 
+   comment TEXT, 
+   creator TEXT, 
+   createdTime DATE ,
+   FOREIGN KEY(creator) REFERENCES user(account)
+   );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db)
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 创建内容用户关联表
+ * @param db
+ */
+const createUserRelation = (db) => {
+  const sql = `
+  CREATE TABLE IF NOT EXISTS user_relation(
+  userAccount TEXT,
+  type TEXT,
+  relatedId INTEGER, 
+  relation TEXT,
+  FOREIGN KEY(userAccount) REFERENCES user(account)
+  );
+  `;
+  return new Promise((resolve , reject) => {
+    db.run(sql,(err)=>{
+      if(!err){
+        resolve(db);
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
+/**
+ * 添加负责人的用户关系
+ * @param db
+ */
+const addLeaderRelation = (param) => {
+  let sqls = `
+  INSERT INTO user_relation VALUES(
+    $userAccount , 
+    $type , 
+    $relatedId ,
+    $relation
+  );
+  `;
+  data = {
+    userAccount: param['leader'],
+    type: 'project',
+    relatedId: '',
+    relateion: 'leader'
+  }
+  let obj_data = {};
+  for(let key in data){
+    obj_data['$'+key] = data[key];
+  }
+
+  sql(getProjectDB(param.account)).then((db)=>{
+    let stm = db.prepare(sqls);
+    stm.run(obj_data,function(err,data){
+      db.close();
+    });
+    stm.finalize();
+  });
+}
+
 module.exports = {
   getRootDB, getProjectDB,
-  sql, passEncrypt,
+  sql, excuteParam,
+  passEncrypt,
   createDir, removeDir,
   initSystem,
   getSelectByName,
-  initSelectSelect
+  initSelectSelect,
+  initProject
 }

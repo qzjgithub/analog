@@ -28,6 +28,8 @@ import { OutboxComponent } from './set-config/outbox/outbox.component';
 import { LocalServerComponent } from './set-config/local-server/local-server.component';
 import { ProjectManageComponent } from './project-manage/project-manage.component';
 import { CardComponent } from './card/card.component';
+import { ProjectAddComponent } from './project-add/project-add.component';
+import {PROJECT_PROVIDERS} from "../control/project/project.service";
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -45,6 +47,7 @@ const routes: Routes = [
     {path:'user/:id',component: UserModifyComponent , outlet: 'content' },
     {path:'config',component: SetConfigComponent , outlet: 'content' },
     {path:'project',component: ProjectManageComponent , outlet: 'content' },
+    {path:'addProject',component: ProjectAddComponent , outlet: 'content' },
   ]}
 ]
 
@@ -69,6 +72,7 @@ const routes: Routes = [
     LocalServerComponent,
     ProjectManageComponent,
     CardComponent,
+    ProjectAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,8 @@ const routes: Routes = [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     appStoreProviders,
     USER_PROVIDERS,
-    CONFIG_PROVIDERS
+    CONFIG_PROVIDERS,
+    PROJECT_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

@@ -21,7 +21,7 @@ export class PersonPasswordComponent implements OnInit {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
     }
-    if(!this.validateForm.valid) return;
+    if (!this.validateForm.dirty || !this.validateForm.valid) return;
     let value = this.validateForm.value;
     value['id'] = this.configService.getStateLogin()['id'];
     this.userService.modifyPwdWithOld(value)

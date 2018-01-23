@@ -17,8 +17,8 @@
     </li>
   </ul>
   <footer>
-   <span class="vitrual-btn"><i [class]="'anticon anticon-'+(leftIcon||'edit')"></i>{{leftText || '编辑'}}</span>
+   <span class="vitrual-btn"><i [class]="'anticon anticon-'+(leftIcon||'edit')" (click)="leftAction($event)"></i>{{leftText || '编辑'}}</span>
     <span nz-table-divider></span>
-    <span class="vitrual-btn"><i [class]="'anticon anticon-'+(rightIcon||'file-text')"></i>{{rightText || '详情'}}</span>
+    <span class="vitrual-btn"><i [class]="'anticon anticon-'+(rightIcon||'file-text')" (click)="rightAction($event)"></i>{{rightText || '详情'}}</span>
   </footer>
 </section>

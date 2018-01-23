@@ -24,7 +24,7 @@ export class LocalServerComponent implements OnInit {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
     }
-    if(!this.validateForm.valid) return;
+    if (!this.validateForm.dirty || !this.validateForm.valid) return;
     this.configService.setLocalService(this.validateForm.value)
       .then((data)=>{
         this._message.create('success','本地服务设置成功');

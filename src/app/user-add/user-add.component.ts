@@ -25,7 +25,7 @@ export class UserAddComponent implements OnInit {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
     }
-    if (!this.validateForm.valid) return;
+    if (!this.validateForm.dirty || !this.validateForm.valid) return;
     let value = this.validateForm.value;
     value = {
       account: value.account,

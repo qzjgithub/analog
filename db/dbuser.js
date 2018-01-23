@@ -5,35 +5,6 @@ const sqlite3 = require('sqlite3').verbose();
 const dbutil = require('./dbutil');
 
 /**
- * 执行带参数的数据库语句统一方法
- * @param sql
- * @param data
- */
-const excuteParam = (sql, data, method) => {
-  let obj_data = {};
-  for(let key in data){
-    obj_data['$'+key] = data[key];
-  }
-
-  return new Promise((resolve , reject) => {
-    dbutil.sql(dbutil.getRootDB())
-      .then((db) => {
-        let stm = db.prepare(sql);
-        stm[method](obj_data,function(err,data){
-          if(err){
-            console.log(err);
-            reject(err);
-          }else{
-            console.log(data);
-            resolve(data);
-          }
-        });
-        stm.finalize();
-      });
-  });
-}
-
-/**
  * 验证是否登录成功
  * @param data
  */
@@ -43,7 +14,7 @@ const getLoginUser = (data) => {
   `;
   data.password = dbutil.passEncrypt(data.password);
   console.log(data);
-  return excuteParam(sql, data, 'all');
+  return dbutil.excuteParam(sql, data, 'all');
 }
 /**
  * 添加一个用户
@@ -69,7 +40,7 @@ const addUser = (data) => {
   data.available = true;
   data.createdTime = new Date();
   data.password = dbutil.passEncrypt(data.password);
-  return excuteParam(sql, data, 'run');
+  return dbutil.excuteParam(sql, data, 'run');
 }
 
 /**
@@ -81,7 +52,7 @@ const getValidUser = (data) => {
   SELECT * FROM user WHERE account=$account;
   `;
   console.log(data);
-  return excuteParam(sql, data, 'all');
+  return dbutil.excuteParam(sql, data, 'all');
 }
 
 /**
@@ -96,7 +67,7 @@ const modifyPwd = (data) => {
   ;
   `;
   data.password = dbutil.passEncrypt(data.password);
-  return excuteParam(sql, data, 'run');
+  return dbutil.excuteParam(sql, data, 'run');
 }
 
 /**
@@ -109,7 +80,7 @@ const getUserById = (data) => {
   WHERE id=$id
   ;
   `;
-  return excuteParam(sql, data, 'all');
+  return dbutil.excuteParam(sql, data, 'all');
 }
 
 /**
@@ -127,7 +98,7 @@ const modifyUser = (data) => {
   WHERE id=$id
   ;
   `;
-  return excuteParam(sql, data, 'run');
+  return dbutil.excuteParam(sql, data, 'run');
 }
 
 /**
@@ -141,7 +112,7 @@ const validOldPwd = (data) => {
   ;
   `;
   data['password'] = dbutil.passEncrypt(data['password']);
-  return excuteParam(sql, data, 'all');
+  return dbutil.excuteParam(sql, data, 'all');
 }
 
 /**
@@ -167,7 +138,7 @@ const getUserList = () => {
   AND user.role!='admin'
   ;
   `;
-  return excuteParam(sql, {}, 'all');
+  return dbutil.excuteParam(sql, {}, 'all');
 }
 
 module.exports = {

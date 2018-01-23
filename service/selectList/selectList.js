@@ -17,6 +17,21 @@ const getUserSelect = ()=>{
   });
 }
 
+/**
+ * 得到项目需要选项
+ */
+const getProjectSelect = ()=>{
+  return new Promise((resolve , reject) => {
+    dbutil.getSelectByName('authority',{})
+      .then((data) =>{
+        resolve(data);
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  });
+}
+
 module.exports = {
-  getUserSelect
+  getUserSelect,getProjectSelect
 }

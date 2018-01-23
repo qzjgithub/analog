@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'card',
@@ -9,6 +9,9 @@ export class CardComponent implements OnInit {
 
   @Input()
   empty = false;
+
+  @Input()
+  data : any;
 
   @Input()
   title = '';
@@ -32,14 +35,21 @@ export class CardComponent implements OnInit {
   rightText = '';
 
   @Output()
-  leftClick = '';
+  leftClick : EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  rightClick = '';
+  rightClick : EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  leftAction(e){
+    this.leftClick.emit(this.data['id']);
+  }
+
+  rightAction(e){
+    this.rightClick.emit(this.data['id']);
+  }
 }
