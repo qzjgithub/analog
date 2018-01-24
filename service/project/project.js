@@ -43,6 +43,49 @@ const addProject = (data) => {
   })
 }
 
+/**
+ * 得到公共项目
+ * @param data
+ */
+const getPublicProject = (data)=>{
+  return new Promise((resolve, reject)=> {
+    dbproject.getPublicProject()
+      .then((project) => {
+        dbproject.getLoginProject({ userAccount: data['login']})
+          .then((relpro)=>{
+            let relobj = {}
+            relpro.forEach((item)=>{
+              relobj[item['projectAccount']] = item;
+            })
+            resolve({ project : project, related : relobj})
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      })
+      .catch((err) => {
+        reject(err);
+      })
+  })
+}
+
+/**
+ * 得到负责的项目
+ * @param data
+ */
+const getLeaderProject = (data) =>{
+  return dbproject.getLeaderProject({ userAccount: data.login})
+}
+
+/**
+ * 得到相关的项目
+ * @param data
+ */
+const getRelatedProject = (data) =>{
+  return dbproject.getRelatedProject({ userAccount: data.login})
+}
+
 module.exports = {
-  validExistProject,addProject
+  validExistProject,addProject,
+  getPublicProject,getLeaderProject,getRelatedProject
 }

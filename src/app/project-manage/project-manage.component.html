@@ -1,8 +1,8 @@
 <nz-radio-group [(ngModel)]="scope" class="content-nav">
-  <label nz-radio-button [nzValue]="'all'">
+  <label nz-radio-button [nzValue]="'pulbic'">
     <span>公开项目</span>
   </label>
-  <label nz-radio-button [nzValue]="'charged'">
+  <label nz-radio-button [nzValue]="'leader'">
     <span>负责项目</span>
   </label>
   <label nz-radio-button [nzValue]="'related'">
@@ -10,6 +10,15 @@
   </label>
 </nz-radio-group>
 <div>
-  <card [empty]="true" (click)="addProject($event)"></card>
-  <card [title]="'资产管理'" [tags]="tags" [content]="content"></card>
+  <card class="project-card" [empty]="true" (click)="addProject($event)"></card>
+  <card
+    class="project-card"
+    *ngFor="let p of project"
+    [title]="p['name']"
+    [tags]="p['tags']"
+    [content]="p['content']"
+    [leftDisabled]="p['leaderAccount']!==login['account']"
+    [data]="p"
+    (leftClick)="modifyProject($event)"
+  ></card>
 </div>

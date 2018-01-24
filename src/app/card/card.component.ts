@@ -32,6 +32,9 @@ export class CardComponent implements OnInit {
   leftText = '';
 
   @Input()
+  leftDisabled = false;
+
+  @Input()
   rightText = '';
 
   @Output()
@@ -46,10 +49,11 @@ export class CardComponent implements OnInit {
   }
 
   leftAction(e){
-    this.leftClick.emit(this.data['id']);
+    if(this.leftDisabled) return;
+    this.leftClick.emit(this.data);
   }
 
   rightAction(e){
-    this.rightClick.emit(this.data['id']);
+    this.rightClick.emit(this.data);
   }
 }

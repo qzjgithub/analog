@@ -48,6 +48,20 @@ export class ProjectService{
   add  = (data) => {
     return projectService.addProject(data);
   }
+
+  /**
+   * 得到项目信息
+   * @param data
+   */
+  getProject = (data) => {
+    if(data['relation']==='leader'){
+      return projectService.getLeaderProject(data);
+    }else if(data['relation']==='related'){
+      return projectService.getRelatedProject(data);
+    }else {
+      return projectService.getPublicProject(data);
+    }
+  }
 }
 
 export const PROJECT_PROVIDERS: Array<any> = [
