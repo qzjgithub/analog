@@ -85,7 +85,16 @@ const getRelatedProject = (data) =>{
   return dbproject.getRelatedProject({ userAccount: data.login})
 }
 
+/**
+ * 修改项目基本信息
+ * @param data
+ */
+const modifyProject = (data) => {
+  return dbproject.modifyProject(data);
+}
+
 module.exports = {
   validExistProject,addProject,
-  getPublicProject,getLeaderProject,getRelatedProject
+  getPublicProject,getLeaderProject,getRelatedProject,
+  modifyProject
 }

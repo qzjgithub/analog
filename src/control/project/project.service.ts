@@ -62,6 +62,15 @@ export class ProjectService{
       return projectService.getPublicProject(data);
     }
   }
+
+  /**
+   * 修改项目信息
+   * @param data
+   * @returns {any|undefined}
+   */
+  modifyProject = (data) => {
+    return projectService.modifyProject(data);
+  }
 }
 
 export const PROJECT_PROVIDERS: Array<any> = [

@@ -30,6 +30,7 @@ import { ProjectManageComponent } from './project-manage/project-manage.componen
 import { CardComponent } from './card/card.component';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import {PROJECT_PROVIDERS} from "../control/project/project.service";
+import { ProjectModifyComponent } from './project-modify/project-modify.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -48,6 +49,7 @@ const routes: Routes = [
     {path:'config',component: SetConfigComponent , outlet: 'content' },
     {path:'project',component: ProjectManageComponent , outlet: 'content' },
     {path:'addProject',component: ProjectAddComponent , outlet: 'content' },
+    {path:'modifyProject',component: ProjectModifyComponent , outlet: 'content' },
   ]}
 ]
 
@@ -73,6 +75,7 @@ const routes: Routes = [
     ProjectManageComponent,
     CardComponent,
     ProjectAddComponent,
+    ProjectModifyComponent,
   ],
   imports: [
     BrowserModule,

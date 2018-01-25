@@ -101,8 +101,9 @@ const getLeaderProject = (data)=>{
   u.id AS userId 
   FROM project p,project_user pu,user u 
   WHERE p.account=pu.projectAccount 
-  AND pu.userAccount=`+data['userAccount']+` 
+  AND pu.userAccount=u.account 
   AND pu.relation='leader' 
+  AND pu.userAccount='`+data['userAccount']+`' 
   ;
   `;
   return dbutil.excuteParam(sql, {}, 'all');
@@ -118,8 +119,7 @@ const getRelatedProject = (data) =>  {
   u.account AS leaderAccount,
   u.id AS userId 
   FROM project p,project_user pu,user u 
-  WHERE p.account in (SELECT prur.projectAccount FROM project_user prur WHERE prur.userAccount=`+data['userAccount']+`) 
-  AND p.authority='public' 
+  WHERE p.account in (SELECT prur.projectAccount FROM project_user prur WHERE prur.userAccount='`+data['userAccount']+`') 
   AND p.account=pu.projectAccount 
   AND pu.userAccount=u.account 
   AND pu.relation='leader'
@@ -128,8 +128,26 @@ const getRelatedProject = (data) =>  {
   return dbutil.excuteParam(sql, {}, 'all');
 }
 
+/**
+ * 修改项目
+ * @param data
+ */
+const modifyProject = (data) => {
+  let sql = `
+  UPDATE project SET
+    name=$name , 
+    port=$port ,
+    url=$url , 
+    authority=$authority , 
+    comment=$comment 
+   WHERE id=$id
+  ;
+  `;
+  return dbutil.excuteParam(sql, data, 'run');
+}
 module.exports = {
   addProject, getValidProject, addProjectUserRelated,
   getPublicProject,getLoginProject,
-  getLeaderProject,getRelatedProject
+  getLeaderProject,getRelatedProject,
+  modifyProject
 }

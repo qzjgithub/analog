@@ -24,9 +24,7 @@
       <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus(data)">
       </label>
     </td>-->
-    <td nz-td>
-      <a>{{data.name}}</a>
-    </td>
+    <td nz-td>{{data.name}}</td>
     <td nz-td>{{data.positionName}}</td>
     <td nz-td>{{data.phone || '-'}}</td>
     <td nz-td>{{data.email || '-'}}</td>

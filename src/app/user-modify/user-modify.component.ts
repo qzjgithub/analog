@@ -52,7 +52,7 @@ export class UserModifyComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    route.queryParams.subscribe(queryParams => {
+    route.queryParams.subscribe(queryParams  => {
       this.data = Object.assign({},queryParams);
       this.dealData();
     });

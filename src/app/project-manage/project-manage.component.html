@@ -1,11 +1,11 @@
 <nz-radio-group [(ngModel)]="scope" class="content-nav">
-  <label nz-radio-button [nzValue]="'pulbic'">
+  <label nz-radio-button [nzValue]="'public'" (click)="changeScope('public')">
     <span>公开项目</span>
   </label>
-  <label nz-radio-button [nzValue]="'leader'">
+  <label nz-radio-button [nzValue]="'leader'" (click)="changeScope('leader')">
     <span>负责项目</span>
   </label>
-  <label nz-radio-button [nzValue]="'related'">
+  <label nz-radio-button [nzValue]="'related'" (click)="changeScope('related')">
     <span>相关项目</span>
   </label>
 </nz-radio-group>
@@ -17,8 +17,9 @@
     [title]="p['name']"
     [tags]="p['tags']"
     [content]="p['content']"
-    [leftDisabled]="p['leaderAccount']!==login['account']"
+    [leftDisabled]="login['role']!=='admin'&&p['leaderAccount']!==login['account']"
     [data]="p"
     (leftClick)="modifyProject($event)"
+    (rightClick)="detailProject($event)"
   ></card>
 </div>

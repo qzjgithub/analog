@@ -32,6 +32,7 @@ export class ProjectManageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.scope = sessionStorage.getItem('projectScope')||'public';
     this.login = this.configService.getStateLogin();
     this.project = [];
     this.related = {};
@@ -47,7 +48,7 @@ export class ProjectManageComponent implements OnInit {
   }
 
   addProject(e){
-    this.router.navigate([{outlets: {'content': 'addProject'}}],{relativeTo: this.route.parent})
+    this.router.navigate([{outlets: {'content': 'addProject'}}],{relativeTo: this.route.parent});
   }
 
   getProejct(){
@@ -95,8 +96,16 @@ export class ProjectManageComponent implements OnInit {
     return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
   }
 
+  changeScope(value){
+    sessionStorage.setItem('projectScope',this.scope);
+    this.getProejct();
+  }
+
   modifyProject(data){
     console.log(data);
+    this.router.navigate([{outlets: {'content': 'modifyProject'}}],{relativeTo: this.route.parent,queryParams: data});
   }
+
+
 
 }
