@@ -93,8 +93,17 @@ const modifyProject = (data) => {
   return dbproject.modifyProject(data);
 }
 
+/**
+ * 得到登录者和项目的关系
+ * @param account
+ * @param data
+ */
+const getLoginRelation = (account,data)=>{
+  return dbproject.getLoginRelation(account,data);
+}
+
 module.exports = {
   validExistProject,addProject,
   getPublicProject,getLeaderProject,getRelatedProject,
-  modifyProject
+  modifyProject,getLoginRelation
 }

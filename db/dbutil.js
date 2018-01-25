@@ -80,6 +80,38 @@ const excuteParam = (sqlStr, data, method) => {
 }
 
 /**
+ * 执行项目下的数据库语句
+ * @param sqlStr
+ * @param account
+ * @param data
+ * @param method
+ * @returns {Promise}
+ */
+const excuteProjectParam = (sqlStr,account, data, method) => {
+  let obj_data = {};
+  for(let key in data){
+    obj_data['$'+key] = data[key];
+  }
+
+  return new Promise((resolve , reject) => {
+    sql(getProjectDB(account))
+      .then((db) => {
+        let stm = db.prepare(sqlStr);
+        stm[method](obj_data,function(err,data){
+          if(err){
+            console.log(err);
+            reject(err);
+          }else{
+            console.log(data);
+            resolve(data);
+          }
+        });
+        stm.finalize();
+      });
+  });
+}
+
+/**
  * 创建目录
  * @param name
  */
@@ -142,17 +174,17 @@ const addAdminUser = (db)=>{
   let sql = `
   INSERT INTO user VALUES(
     NULL,
-    $account , 
-    $password , 
-    $role , 
-    $name , 
-    $position , 
-    $phone , 
-    $email , 
-    $comment , 
+    $account ,
+    $password ,
+    $role ,
+    $name ,
+    $position ,
+    $phone ,
+    $email ,
+    $comment ,
     $active ,
     $available ,
-    $createdTime 
+    $createdTime
   );
   `;
   let data = {
@@ -193,12 +225,12 @@ const createProject = (db) =>{
    CREATE TABLE IF NOT EXISTS project(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    account TEXT NOT NULL UNIQUE,
-   name TEXT, 
-   port TEXT, 
-   url TEXT, 
-   authority TEXT, 
-   comment TEXT, 
-   creator TEXT, 
+   name TEXT,
+   port TEXT,
+   url TEXT,
+   authority TEXT,
+   comment TEXT,
+   creator TEXT,
    valid BOOLEAN,
    createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
@@ -222,17 +254,17 @@ const createUser = (db) => {
   const sql = `
   CREATE TABLE IF NOT EXISTS user(
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  account TEXT NOT NULL UNIQUE, 
-  password TEXT, 
-  role TEXT, 
-  name TEXT, 
-  position TEXT, 
-  phone TEXT, 
-  email TEXT, 
-  comment TEXT, 
+  account TEXT NOT NULL UNIQUE,
+  password TEXT,
+  role TEXT,
+  name TEXT,
+  position TEXT,
+  phone TEXT,
+  email TEXT,
+  comment TEXT,
   active BOOLEAN ,
   available BOOLEAN ,
-  createdTime DATE 
+  createdTime DATE
   );
   `;
   return new Promise((resolve , reject) => {
@@ -279,7 +311,7 @@ const createSelect = (db) => {
   const sql = `
   CREATE TABLE IF NOT EXISTS select_list(
   name TEXT NOT NULL,
-  value TEXT NOT NULL, 
+  value TEXT NOT NULL,
   text TEXT
   );
   `;
@@ -301,9 +333,9 @@ const createSelect = (db) => {
 const addSelect = (data) => {
   let sqls = `
   INSERT INTO select_list VALUES(
-    $name , 
-    $value , 
-    $text 
+    $name ,
+    $value ,
+    $text
   );
   `;
   let obj_data = {};
@@ -346,7 +378,7 @@ const initSelectSelect = () => {
  */
 const getSelectByName = (name,object)=>{
   let query = `
-  SELECT * FROM select_list 
+  SELECT * FROM select_list
   WHERE name=$name
   ;
   `;
@@ -406,11 +438,11 @@ const createModular = (db) => {
   const sql = `
    CREATE TABLE IF NOT EXISTS modular(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   name TEXT, 
+   name TEXT,
    url TEXT,
-   parent INTEGER, 
-   comment TEXT, 
-   creator TEXT, 
+   parent INTEGER,
+   comment TEXT,
+   creator TEXT,
    createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
    );
@@ -434,11 +466,11 @@ const createInterfaces = (db) => {
    CREATE TABLE IF NOT EXISTS interfaces(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    url TEXT,
-   reg TEXT, 
-   method TEXT, 
-   parent INTEGER, 
-   comment TEXT, 
-   creator TEXT, 
+   reg TEXT,
+   method TEXT,
+   parent INTEGER,
+   comment TEXT,
+   creator TEXT,
    createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
    );
@@ -462,11 +494,11 @@ const createAnalog = (db) => {
    CREATE TABLE IF NOT EXISTS analog(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    saveType TEXT,
-   data TEXT, 
-   dataType TEXT, 
-   parent INTEGER, 
-   comment TEXT, 
-   creator TEXT, 
+   data TEXT,
+   dataType TEXT,
+   parent INTEGER,
+   comment TEXT,
+   creator TEXT,
    createdTime DATE ,
    FOREIGN KEY(creator) REFERENCES user(account)
    );
@@ -491,7 +523,7 @@ const createUserRelation = (db) => {
   CREATE TABLE IF NOT EXISTS user_relation(
   userAccount TEXT,
   type TEXT,
-  relatedId INTEGER, 
+  relatedId INTEGER,
   relation TEXT,
   FOREIGN KEY(userAccount) REFERENCES user(account)
   );
@@ -514,8 +546,8 @@ const createUserRelation = (db) => {
 const addLeaderRelation = (param) => {
   let sqls = `
   INSERT INTO user_relation VALUES(
-    $userAccount , 
-    $type , 
+    $userAccount ,
+    $type ,
     $relatedId ,
     $relation
   );
@@ -542,7 +574,7 @@ const addLeaderRelation = (param) => {
 
 module.exports = {
   getRootDB, getProjectDB,
-  sql, excuteParam,
+  sql, excuteParam,excuteProjectParam,
   passEncrypt,
   createDir, removeDir,
   initSystem,

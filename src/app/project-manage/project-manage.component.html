@@ -10,9 +10,8 @@
   </label>
 </nz-radio-group>
 <div>
-  <card class="project-card" [empty]="true" (click)="addProject($event)"></card>
+  <card [empty]="true" (click)="addProject($event)"></card>
   <card
-    class="project-card"
     *ngFor="let p of project"
     [title]="p['name']"
     [tags]="p['tags']"

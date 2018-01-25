@@ -3,7 +3,10 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 @Component({
   selector: 'card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
+  host: {
+    style: 'display:inline-block;margin-right: 8px;margin-bottom: 9px;'
+  }
 })
 export class CardComponent implements OnInit {
 

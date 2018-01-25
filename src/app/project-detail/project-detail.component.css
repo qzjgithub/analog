@@ -10,3 +10,7 @@
   margin-left: 8px;
   font-size: 14px;
 }
+.baseinfo-body>li{
+  line-height: 30px;
+}
+

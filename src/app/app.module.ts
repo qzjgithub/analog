@@ -32,6 +32,7 @@ import { ProjectAddComponent } from './project-add/project-add.component';
 import {PROJECT_PROVIDERS} from "../control/project/project.service";
 import { ProjectModifyComponent } from './project-modify/project-modify.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { ModularManageComponent } from './modular-manage/modular-manage.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -50,7 +51,10 @@ const routes: Routes = [
     {path:'config',component: SetConfigComponent , outlet: 'content' },
     {path:'project',component: ProjectManageComponent , outlet: 'content' },
     {path:'addProject',component: ProjectAddComponent , outlet: 'content' },
-    {path:'project/:id',component: ProjectDetailComponent , outlet: 'content' },
+    {path:'project/:id',component: ProjectDetailComponent , outlet: 'content' ,children: [
+      {path:'',component: ModularManageComponent , outlet: 'modular' },
+      {path:'modular',component: ModularManageComponent , outlet: 'modular' },
+    ]},
   ]}
 ]
 
@@ -78,6 +82,7 @@ const routes: Routes = [
     ProjectAddComponent,
     ProjectModifyComponent,
     ProjectDetailComponent,
+    ModularManageComponent,
   ],
   imports: [
     BrowserModule,

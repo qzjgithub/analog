@@ -126,8 +126,26 @@ export class ProjectManageComponent implements OnInit {
   }
 
   detailProject(data){
-    this.store.dispatch(ProjectActions.getCurProject(data));
-    this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent,queryParams: data});
+    this.projectService.getLoginRelation(data['account'],{userAccount: this.login['account']})
+    .then((relations)=>{
+      data['relations'] = relations;
+      let write = this.login['role']==='admin' ? true : false;
+      if(this.login['role']!=='admin' && relations){
+        relations.forEach((item)=>{
+          switch(item['relation']){
+            case 'leader':
+            case 'write':
+              write = true;
+              break;
+          }
+        })
+      }
+      data['write'] = write;
+      this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent,queryParams: data});
+    })
+    .catch((err)=>{
+      this._message.create('error',err.message);
+    })
   }
 
 }

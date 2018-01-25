@@ -71,6 +71,12 @@ export class ProjectService{
   modifyProject = (data) => {
     return projectService.modifyProject(data);
   }
+  /**
+   * 得到登录者和项目的关系
+   */
+  getLoginRelation = (account,data)=>{
+    return projectService.getLoginRelation(account,data);
+  }
 }
 
 export const PROJECT_PROVIDERS: Array<any> = [

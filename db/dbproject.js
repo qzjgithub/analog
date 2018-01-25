@@ -12,15 +12,15 @@ const addProject = (data) => {
   let sql = `
   INSERT INTO project VALUES(
     NULL,
-    $account , 
-    $name , 
+    $account ,
+    $name ,
     $port ,
-    $url , 
-    $authority , 
-    $comment , 
-    $creator, 
-    $valid, 
-    $createdTime 
+    $url ,
+    $authority ,
+    $comment ,
+    $creator,
+    $valid,
+    $createdTime
   );
   `;
   data.valid = true;
@@ -46,9 +46,9 @@ const getValidProject = (data) => {
 const addProjectUserRelated = (data)=>{
   let sql = `
   INSERT INTO project_user VALUES(
-    $userAccount , 
-    $projectAccount , 
-    $relation 
+    $userAccount ,
+    $projectAccount ,
+    $relation
   );
   `;
   return dbutil.excuteParam(sql, data, 'run');
@@ -60,8 +60,8 @@ const addProjectUserRelated = (data)=>{
  */
 const getLoginProject = (data)=>{
   let sql = `
-  SELECT * FROM 
-  project_user 
+  SELECT * FROM
+  project_user
   WHERE userAccount=$userAccount
   ;
   `;
@@ -73,16 +73,16 @@ const getLoginProject = (data)=>{
  */
 const getPublicProject = ()=>{
   let sql = `
-  SELECT 
-  p.* , 
-  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
-  u.name AS leader, 
+  SELECT
+  p.* ,
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName,
+  u.name AS leader,
   u.account AS leaderAccount,
-  u.id AS userId 
-  FROM project p,project_user pu,user u 
-  WHERE p.authority='public' 
-  AND p.account=pu.projectAccount 
-  AND pu.userAccount=u.account 
+  u.id AS userId
+  FROM project p,project_user pu,user u
+  WHERE p.authority='public'
+  AND p.account=pu.projectAccount
+  AND pu.userAccount=u.account
   AND pu.relation='leader'
   ;
   `;
@@ -95,17 +95,17 @@ const getPublicProject = ()=>{
  */
 const getLeaderProject = (data)=>{
   let sql = `
-  SELECT 
-  p.* , 
-  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
-  u.name AS leader, 
+  SELECT
+  p.* ,
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName,
+  u.name AS leader,
   u.account AS leaderAccount,
-  u.id AS userId 
-  FROM project p,project_user pu,user u 
-  WHERE p.account=pu.projectAccount 
-  AND pu.userAccount=u.account 
-  AND pu.relation='leader' 
-  AND pu.userAccount='`+data['userAccount']+`' 
+  u.id AS userId
+  FROM project p,project_user pu,user u
+  WHERE p.account=pu.projectAccount
+  AND pu.userAccount=u.account
+  AND pu.relation='leader'
+  AND pu.userAccount='`+data['userAccount']+`'
   ;
   `;
   return dbutil.excuteParam(sql, {}, 'all');
@@ -115,16 +115,16 @@ const getLeaderProject = (data)=>{
  */
 const getRelatedProject = (data) =>  {
   let sql = `
-  SELECT 
-  p.* , 
-  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
-  u.name AS leader, 
+  SELECT
+  p.* ,
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName,
+  u.name AS leader,
   u.account AS leaderAccount,
-  u.id AS userId 
-  FROM project p,project_user pu,user u 
-  WHERE p.account in (SELECT prur.projectAccount FROM project_user prur WHERE prur.userAccount='`+data['userAccount']+`') 
-  AND p.account=pu.projectAccount 
-  AND pu.userAccount=u.account 
+  u.id AS userId
+  FROM project p,project_user pu,user u
+  WHERE p.account in (SELECT prur.projectAccount FROM project_user prur WHERE prur.userAccount='`+data['userAccount']+`')
+  AND p.account=pu.projectAccount
+  AND pu.userAccount=u.account
   AND pu.relation='leader'
   ;
   `;
@@ -138,19 +138,31 @@ const getRelatedProject = (data) =>  {
 const modifyProject = (data) => {
   let sql = `
   UPDATE project SET
-    name=$name , 
+    name=$name ,
     port=$port ,
-    url=$url , 
-    authority=$authority , 
-    comment=$comment 
+    url=$url ,
+    authority=$authority ,
+    comment=$comment
    WHERE id=$id
   ;
   `;
   return dbutil.excuteParam(sql, data, 'run');
 }
+
+/**
+ * 得到登录者和此项目的所有关系
+ */
+const getLoginRelation = (account, data)=>{
+  let sql = `
+  SELECT * FROM user_relation ur
+  WHERE ur.type='project' AND
+  ur.userAccount='`+data['userAccount']+`'
+  ;`;
+  return dbutil.excuteProjectParam(sql,account,{},'all');
+}
 module.exports = {
   addProject, getValidProject, addProjectUserRelated,
   getPublicProject,getLoginProject,
   getLeaderProject,getRelatedProject,
-  modifyProject
+  modifyProject,getLoginRelation
 }
