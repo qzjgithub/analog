@@ -50,9 +50,7 @@ export class ProjectModifyComponent implements OnInit {
     private router: Router
   ) {
     route.queryParams.subscribe(queryParams => {
-      this.scope = queryParams['scope'];
       this.data = Object.assign({},queryParams);
-      delete this.data['scope'];
 
     });
     this.setBreadcrumb();

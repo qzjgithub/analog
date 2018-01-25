@@ -17,9 +17,10 @@
     [title]="p['name']"
     [tags]="p['tags']"
     [content]="p['content']"
-    [leftDisabled]="login['role']!=='admin'&&p['leaderAccount']!==login['account']"
     [data]="p"
-    (leftClick)="modifyProject($event)"
+    [leftIcon]="'caret-right'"
+    [leftText]="'启动'"
+    (leftClick)="changeProjectState($event)"
     (rightClick)="detailProject($event)"
   ></card>
 </div>

@@ -1,0 +1,64 @@
+<nz-layout>
+  <nz-sider [nzWidth]="300" style="background:#fff">
+    <nz-collapseset [nzBordered]="false">
+      <nz-collapse>
+        <header collapse-title class="baseinfo-header">
+          <span>{{project['name']}}</span>
+          <span class="baseinfo-operate">
+            <i nz-tooltip="启动" class="anticon anticon-caret-right"></i>
+            <i nz-tooltip="修改" class="anticon anticon-edit"></i>
+            <i nz-tooltip="修改路径" class="anticon anticon-link"></i>
+            <i nz-tooltip="删除" class="anticon anticon-delete"></i>
+          </span>
+        </header>
+        <ul>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">代号</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['account']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">负责人</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['leader']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">端口</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['port']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">代号</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['account']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">权限</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['authority']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建者</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['creatorName']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建时间</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['createdTime']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">备注信息</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{project['comment']}}</span>
+          </li>
+        </ul>
+      </nz-collapse>
+    </nz-collapseset>
+  </nz-sider>
+  <nz-layout style="background-color: #ffffff;">
+    <nz-content>
+      <router-outlet name="modular"></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

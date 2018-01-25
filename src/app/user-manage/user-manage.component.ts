@@ -89,14 +89,13 @@ export class UserManageComponent implements OnInit {
   }
 
   resetPwd(data){
-    const modal = this.modalService.open({
-      title   : '重置密码',
-      content : '确认重置'+data.name+'的密码吗？',
+    const modal = this.modalService.confirm({
+      title   : '确认重置'+data.name+'的密码吗？',
+      content : '重置密码后用户将变为“未激活”状态，需用户重新登录修改密码后激活。',
       closable: false,
       showConfirmLoading: true,
       okText: '确定',
       cancelText: '取消',
-      wrapClassName:'vertical-center-modal',
       onOk: () => {
         return new Promise((resovle, reject)=>{
           this.userService.resetPwd(data.id)
@@ -109,8 +108,6 @@ export class UserManageComponent implements OnInit {
               reject();
             })
         })
-      },
-      onCancel() {
       }
     });
   }

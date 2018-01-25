@@ -75,6 +75,7 @@ const getPublicProject = ()=>{
   let sql = `
   SELECT 
   p.* , 
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
   u.name AS leader, 
   u.account AS leaderAccount,
   u.id AS userId 
@@ -96,6 +97,7 @@ const getLeaderProject = (data)=>{
   let sql = `
   SELECT 
   p.* , 
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
   u.name AS leader, 
   u.account AS leaderAccount,
   u.id AS userId 
@@ -115,6 +117,7 @@ const getRelatedProject = (data) =>  {
   let sql = `
   SELECT 
   p.* , 
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName, 
   u.name AS leader, 
   u.account AS leaderAccount,
   u.id AS userId 

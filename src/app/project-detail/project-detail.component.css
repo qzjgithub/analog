@@ -1,0 +1,12 @@
+.baseinfo-header{
+  font-size: 14px;
+}
+.baseinfo-operate{
+  float: right;
+}
+.baseinfo-operate>i{
+  color: #666666;
+  margin-right: 8px;
+  margin-left: 8px;
+  font-size: 14px;
+}

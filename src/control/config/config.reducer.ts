@@ -3,7 +3,6 @@
  */
 import {Action} from "redux";
 import * as ConfigActions from './config.action';
-import {createSelector} from "reselect";
 /**
  * 点击事件store数据模型
  */

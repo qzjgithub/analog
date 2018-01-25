@@ -1,11 +1,13 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import * as ConfigActions from '../../control/config/config.action';
+import * as ProjectActions from '../../control/project/project.action';
 import {AppState} from "../../control/app.reducer";
 import {Store} from "redux";
 import {AppStore} from "../../control/app.store";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfigService} from "../../control/config/config.service";
 import {ProjectService} from "../../control/project/project.service";
+import {NzModalService, NzMessageService} from "ng-zorro-antd";
 @Component({
   selector: 'app-project-manage',
   templateUrl: './project-manage.component.html',
@@ -21,14 +23,12 @@ export class ProjectManageComponent implements OnInit {
 
   related : Object;
 
-  /*tags = [{active:true,text:'公开'},{active:false,text:'无关'},{active:true,text:'已启动'},{}]
-
-  content = [{label:'代号',value:'MM001'},{label:'负责人',value:'王小二'},{label:'端口',value:'8085'},{label:'创建时间',value:'2017-10-31'}]*/
-
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private configService: ConfigService,
     private projectService: ProjectService,
+    private modalService: NzModalService,
+    private _message: NzMessageService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -101,11 +101,33 @@ export class ProjectManageComponent implements OnInit {
     this.getProejct();
   }
 
-  modifyProject(data){
-    console.log(data);
-    this.router.navigate([{outlets: {'content': 'modifyProject'}}],{relativeTo: this.route.parent,queryParams: data});
+  changeProjectState(data){
+    let m = false;
+    this.modalService.confirm({
+      title   : '确认'+(m?'启动':'停止')+data.name+'项目吗？',
+      content : '请确定项目的端口和路径设置正确。',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resovle, reject)=>{
+          this.projectService[m?'startProject':'stopProject'](data.account)
+            .then(()=>{
+              resovle();
+            })
+            .catch((err)=>{
+              this._message.create('error',err.mesage);
+              reject();
+            })
+        })
+      }
+    });
   }
 
-
+  detailProject(data){
+    this.store.dispatch(ProjectActions.getCurProject(data));
+    this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent,queryParams: data});
+  }
 
 }

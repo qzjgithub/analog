@@ -8,13 +8,16 @@ import {
   combineReducers
 } from 'redux';
 import {ConfigState, ConfigReducer} from "./config/config.reducer";
+import {ProjectState, ProjectReducer} from "./project/project.reducer";
 
 export interface AppState {
   config: ConfigState;
+  project: ProjectState;
 }
 
 const rootReducer: Reducer<AppState> = combineReducers<AppState>({
-  config: ConfigReducer
+  config: ConfigReducer,
+  project: ProjectReducer
 });
 
 export default rootReducer;
