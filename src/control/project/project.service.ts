@@ -77,6 +77,13 @@ export class ProjectService{
   getLoginRelation = (account,data)=>{
     return projectService.getLoginRelation(account,data);
   }
+
+  /**
+   * 删除项目
+   */
+  deleteProject(account,del){
+    return projectService.deleteProject(account,del);
+  }
 }
 
 export const PROJECT_PROVIDERS: Array<any> = [

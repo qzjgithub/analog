@@ -129,13 +129,13 @@ export class ProjectManageComponent implements OnInit {
     this.projectService.getLoginRelation(data['account'],{userAccount: this.login['account']})
     .then((relations)=>{
       data['relations'] = relations;
-      let write = this.login['role']==='admin' ? true : false;
+      let write = this.login['role']==='admin' ? 'write' : 'nowrite';
       if(this.login['role']!=='admin' && relations){
         relations.forEach((item)=>{
           switch(item['relation']){
             case 'leader':
             case 'write':
-              write = true;
+              write = 'write';
               break;
           }
         })

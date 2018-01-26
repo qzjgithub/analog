@@ -12,8 +12,9 @@
     <span>相关用户</span>
   </label>
 </nz-radio-group>
+<i class="anticon anticon-rollback modular-back" style="float: right" (click)="backParent()"></i>
 <div>
-  <card *ngIf="project['write']" [empty]="true" (click)="addModular($event)"></card>
+  <card *ngIf="project['write']==='write'" [empty]="true" (click)="addModular($event)"></card>
   <!--<card
     *ngFor="let p of project"
     [title]="p['name']"

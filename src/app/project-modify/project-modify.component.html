@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" class="content-form">
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" class="content-form" style="margin-top: 0;">
   <div nz-form-item nz-row>
     <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
       <label for="name" nz-form-item-required>
@@ -21,14 +21,6 @@
   </div>
   <div nz-form-item nz-row>
     <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
-      <label for="url">路径</label>
-    </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
-      <nz-input [nzSize]="'large'" formControlName="url" [nzId]="'url'"></nz-input>
-    </div>
-  </div>
-  <div nz-form-item nz-row>
-    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
       <label>权限</label>
     </div>
     <div nz-form-control nz-col [nzSpan]="14">
@@ -44,12 +36,6 @@
     <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
       <nz-input formControlName="comment" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="''" [nzSize]="'large'">
       </nz-input>
-    </div>
-  </div>
-  <div nz-form-item nz-row style="margin-bottom:8px;">
-    <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
-      <button nz-button [nzSize]="'large'" [nzType]="'primary'">确定</button>
-      <button nz-button [nzSize]="'large'" (click)="backProject($event)">取消</button>
     </div>
   </div>
 </form>

@@ -102,8 +102,34 @@ const getLoginRelation = (account,data)=>{
   return dbproject.getLoginRelation(account,data);
 }
 
+const deleteProject = (account,del)=>{
+  return new Promise((resolve,reject)=>{
+    if(del){
+      dbutil.removeProjectDir(account)
+        .then(()=>dbproject.deleteProjectUser(account))
+        .then(()=>dbproject.deleteProject(account))
+        .then(()=>{
+          resolve();
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    }else{
+      dbproject.deleteProjectUser(account)
+        .then(()=>dbproject.deleteProject(account))
+        .then(()=>{
+          resolve();
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    }
+  })
+};
+
 module.exports = {
   validExistProject,addProject,
   getPublicProject,getLeaderProject,getRelatedProject,
-  modifyProject,getLoginRelation
+  modifyProject,getLoginRelation,
+  deleteProject
 }

@@ -6,9 +6,9 @@
           <span>{{project['name']}}</span>
           <span class="baseinfo-operate">
             <i nz-tooltip="启动" class="anticon anticon-caret-right"></i>
-            <i *ngIf="project.write" nz-tooltip="修改" class="anticon anticon-edit"></i>
-            <i *ngIf="project.write" nz-tooltip="修改路径" class="anticon anticon-link"></i>
-            <i *ngIf="project.write" nz-tooltip="删除" class="anticon anticon-delete"></i>
+            <i *ngIf="project.write==='write'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyProject($event)"></i>
+            <i *ngIf="project.write==='write'" nz-tooltip="修改路径" class="anticon anticon-link" (click)="modifyProUrl($event)"></i>
+            <i *ngIf="project.write==='write'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteProject($event,deleteProjectContent,deleteProjectContentFooter)"></i>
           </span>
         </header>
         <ul class="baseinfo-body">
@@ -62,3 +62,19 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+<ng-template #deleteProjectContent>
+  <div>
+    <p>确认删除{{project.name}}项目吗？</p>
+    <p>完全删除项目的相关接口文件信息也会被一起删除，普通删除则会保留文件信息。不想删除请点右上角关闭窗口。</p>
+  </div>
+</ng-template>
+<ng-template #deleteProjectContentFooter>
+  <div>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="confirmDeleteProject($event,false)" [nzLoading]="isConfirmLoading">
+      完全删除
+    </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmDeleteProject($event,true)" [nzLoading]="isConfirmLoading">
+      完全删除
+    </button>
+  </div>
+</ng-template>

@@ -84,6 +84,9 @@ const routes: Routes = [
     ProjectDetailComponent,
     ModularManageComponent,
   ],
+  entryComponents :[
+    ProjectModifyComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

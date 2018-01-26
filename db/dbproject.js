@@ -160,9 +160,38 @@ const getLoginRelation = (account, data)=>{
   ;`;
   return dbutil.excuteProjectParam(sql,account,{},'all');
 }
+
+/**
+ * 删除项目
+ * @param account
+ */
+const deleteProject = (account) => {
+  let sql = `
+  DELETE FROM 
+  project  
+  WHERE account='`+account+`'
+  ;
+  `;
+  return dbutil.excuteParam(sql, {}, 'run');
+}
+
+/**
+ * 删除用户与项目的关联关系
+ * @param account
+ */
+const deleteProjectUser = (account) => {
+  let sql = `
+  DELETE FROM 
+  project_user 
+  WHERE projectAccount='`+account+`'
+  ;
+  `;
+  return dbutil.excuteParam(sql, {}, 'run');
+}
 module.exports = {
   addProject, getValidProject, addProjectUserRelated,
   getPublicProject,getLoginProject,
   getLeaderProject,getRelatedProject,
-  modifyProject,getLoginRelation
+  modifyProject,getLoginRelation,
+  deleteProject,deleteProjectUser
 }

@@ -3,6 +3,7 @@ import * as ConfigActions from '../../control/config/config.action';
 import {AppStore} from "../../control/app.store";
 import {Store} from "redux";
 import {AppState} from "../../control/app.reducer";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-modular-manage',
@@ -13,8 +14,12 @@ export class ModularManageComponent implements OnInit {
   scope = 'modular';
 
   project : any;
+
+  parent: any;
   constructor(
-    @Inject(AppStore) private store: Store<AppState>
+    @Inject(AppStore) private store: Store<AppState>,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.store.subscribe(()=>this.dealProject());
     this.setBreadcrumb();
@@ -40,5 +45,11 @@ export class ModularManageComponent implements OnInit {
   }
 
   addModular(){}
+
+  backParent(){
+    if(!this.parent){
+      this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent.parent});
+    }
+  }
 
 }

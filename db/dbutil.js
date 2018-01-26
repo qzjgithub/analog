@@ -125,22 +125,51 @@ const createDir = (name) => {
  * 删除某个目录
  * @param name
  */
-const removeDir = (name) => {
-  let path = dbroot + name;
-  fs.existsSync(path) && fs.readdir(path,(err,files)=>{
-    let rmfile = function(i){
-      if(i<files.length){
-        fs.unlink(path+'/'+files[i],(err)=>{
-          if(!err){
-            rmfile(++i);
+const removeDir = (prefix,name) => {
+  let path = prefix + name;
+  return new Promise((resolve,reject)=> {
+    fs.existsSync(path) && fs.readdir(path, (err, files) => {
+      let rmfile = function (i) {
+        if (i < files.length) {
+          let stat = fs.lstatSync(path + '/' + files[i]);
+          if (stat.isDirectory()) {
+            removeDir(path + '/', files[i])
+              .then(() => {
+                rmfile(++i);
+              })
+              .catch((err) => {
+                reject(err);
+              })
+          } else {
+            fs.unlink(path + '/' + files[i], (err) => {
+              if (!err) {
+                rmfile(++i);
+              }else{
+                reject(err);
+              }
+            })
           }
-        })
-      }else{
-        fs.rmdir(path);
+        } else {
+          fs.rmdir(path, (err) => {
+            if (err) {
+              reject();
+            } else {
+              resolve();
+            }
+          });
+        }
       }
-    }
-    rmfile(0);
+      rmfile(0);
+    })
   })
+}
+
+/**
+ * 删除某个项目的目录
+ * @param account
+ */
+const removeProjectDir = (account) => {
+  return removeDir(dbroot,account);
 }
 
 /**
@@ -421,8 +450,8 @@ const initProject = (data) => {
       .then((db) => createAnalog(db))
       .then((db) => createUserRelation(db))
       .then((db) => {
-        addLeaderRelation(data);
         db.close();
+        addLeaderRelation(data);
         resolve();
       })
       .catch((err)=>{
@@ -556,7 +585,7 @@ const addLeaderRelation = (param) => {
     userAccount: param['leader'],
     type: 'project',
     relatedId: '',
-    relateion: 'leader'
+    relation: 'leader'
   }
   let obj_data = {};
   for(let key in data){
@@ -576,7 +605,7 @@ module.exports = {
   getRootDB, getProjectDB,
   sql, excuteParam,excuteProjectParam,
   passEncrypt,
-  createDir, removeDir,
+  createDir, removeProjectDir,
   initSystem,
   getSelectByName,
   initSelectSelect,
