@@ -581,7 +581,7 @@ const addLeaderRelation = (param) => {
     $relation
   );
   `;
-  data = {
+  let data = {
     userAccount: param['leader'],
     type: 'project',
     relatedId: '',

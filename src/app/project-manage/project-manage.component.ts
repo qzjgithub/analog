@@ -141,7 +141,9 @@ export class ProjectManageComponent implements OnInit {
         })
       }
       data['write'] = write;
-      this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent,queryParams: data});
+      this.store.dispatch(ProjectActions.getCurProject(data));
+      sessionStorage.setItem('project',data);
+      this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent});
     })
     .catch((err)=>{
       this._message.create('error',err.message);

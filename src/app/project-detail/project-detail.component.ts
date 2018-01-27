@@ -33,11 +33,8 @@ export class ProjectDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.route.queryParams.subscribe((queryParams)=>{
-      //this.project = queryParams;
-      this.store.dispatch(ProjectActions.getCurProject(queryParams));
-    });
     this.isConfirmLoading = false;
+    this.project = sessionStorage.getItem('project');
     this.store.subscribe(()=> this.dealProject())
     this.setBreadcrumb();
   }

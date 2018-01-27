@@ -23,6 +23,7 @@ export class ModularManageComponent implements OnInit {
   ) {
     this.store.subscribe(()=>this.dealProject());
     this.setBreadcrumb();
+    this.dealProject();
   }
 
   ngOnInit() {
@@ -36,7 +37,9 @@ export class ModularManageComponent implements OnInit {
   changeScope(){}
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['模块管理'],3));
+    if(this.parent){
+      this.store.dispatch(ConfigActions.setBreadcrumbsAction(['模块管理'],3));
+    }
   }
 
   getDate(data){
@@ -44,7 +47,9 @@ export class ModularManageComponent implements OnInit {
     return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
   }
 
-  addModular(){}
+  addModular(e){
+    this.router.navigate([{outlets: {'modular': 'addModular'}}],{relativeTo: this.route.parent});
+  }
 
   backParent(){
     if(!this.parent){

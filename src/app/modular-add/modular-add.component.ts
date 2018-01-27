@@ -10,37 +10,36 @@ import {ConfigService} from "../../control/config/config.service";
 import {UserService} from "../../control/user/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectService} from "../../control/project/project.service";
+import {ModularService} from "../../control/modular/modular.service";
 
 @Component({
-  selector: 'app-project-add',
-  templateUrl: './project-add.component.html',
-  styleUrls: ['./project-add.component.css']
+  selector: 'app-modular-add',
+  templateUrl: './modular-add.component.html',
+  styleUrls: ['./modular-add.component.css']
 })
-export class ProjectAddComponent implements OnInit {
+export class ModularAddComponent implements OnInit {
   validateForm: FormGroup;
-
-  authority : Array<any>;
 
   users : Array<any>;
 
   login: any;
+
+  project: any;
+
+  modular: any;
 
   _submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
     }
     if (!this.validateForm.dirty || !this.validateForm.valid) return;
-    let creator =this.login['account'];
-    let value = Object.assign({},this.validateForm.value,{ creator: creator});
-    this.projectService.add(value)
-      .then((data)=>{
-        this._message.create('success','添加成功');
-        this.backProject();
-      })
-      .catch((err)=>{
-        console.log(err);
-        this._message.create('error',err.message);
-      })
+    let value = this.validateForm.value;
+    value['parent'] = "";
+    if(this.modular['id']){
+      value['parent'] = this.modular['id'];
+    }
+    value['creator'] = this.login['account'];
+    this.modularService.addModular(this.project['account'],value);
   }
 
   constructor(
@@ -48,53 +47,53 @@ export class ProjectAddComponent implements OnInit {
     private fb: FormBuilder,
     private _message: NzMessageService,
     private configService: ConfigService,
-    private projectService: ProjectService,
+    private modularService: ModularService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.setBreadcrumb();
-    this.authority = [];
+    this.getCurProject();
     this.users = [];
+    this.modular = {};
     this.login = this.configService.getStateLogin();
     this.getSelect();
   }
 
+  getCurProject(){
+    const state = this.store.getState();
+    this.project = state['project']['project'];
+  }
+
+  setBreadcrumb(){
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['添加模块'],3));
+  }
+
   getSelect(){
-    this.users.push(this.login);
-    this.projectService.getSelect({ role: this.login.role})
+    this.modularService.getSelect(this.project['account'])
       .then((data)=>{
-        this.authority = data['authority'];
-        if(data['users']){
-          this.users = [...this.users, ...data['users']];
-        }
+        this.users = data;
       })
       .catch((err)=>{
         console.log(err);
       })
   }
 
+
   ngOnInit() {
     this.validateForm = this.fb.group({
-      account            : [ null, [ Validators.required ] ],
       name         : [ null, [ Validators.required ] ],
-      leader  : [ this.login['account'], [ Validators.required ] ],
-      port    : [ null, [ Validators.required ] ],
       url : [ null ],
-      authority      : [ 'public' ],
+      writer : [null],
       comment          : [ null ],
     });
-  }
-
-  setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['项目管理','添加项目'],1));
   }
 
   getFormControl(name) {
     return this.validateForm.controls[ name ];
   }
 
-  backProject(){
-    this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent})
+  backModular(){
+    this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent})
     return false;
   }
 

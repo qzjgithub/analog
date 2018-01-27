@@ -167,8 +167,8 @@ const getLoginRelation = (account, data)=>{
  */
 const deleteProject = (account) => {
   let sql = `
-  DELETE FROM 
-  project  
+  DELETE FROM
+  project
   WHERE account='`+account+`'
   ;
   `;
@@ -181,17 +181,36 @@ const deleteProject = (account) => {
  */
 const deleteProjectUser = (account) => {
   let sql = `
-  DELETE FROM 
-  project_user 
+  DELETE FROM
+  project_user
   WHERE projectAccount='`+account+`'
   ;
   `;
   return dbutil.excuteParam(sql, {}, 'run');
+}
+
+/**
+ * 添加用户和项目的关系
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const addUserRelation = (account,data)=>{
+  let sqls = `
+  INSERT INTO user_relation VALUES(
+    $userAccount ,
+    $type ,
+    $relatedId ,
+    $relation
+  );
+  `;
+  return dbutil.excuteProjectParam(sql,account,{},'run');
 }
 module.exports = {
   addProject, getValidProject, addProjectUserRelated,
   getPublicProject,getLoginProject,
   getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
-  deleteProject,deleteProjectUser
+  deleteProject,deleteProjectUser,
+  addUserRelation
 }
