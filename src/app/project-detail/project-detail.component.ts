@@ -22,6 +22,8 @@ export class ProjectDetailComponent implements OnInit {
 
   isConfirmLoading: boolean;
 
+  modal: any;
+
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private configService: ConfigService,
@@ -81,7 +83,7 @@ export class ProjectDetailComponent implements OnInit {
 
   deleteProject(e,contentTp,footerTp){
     e.stopPropagation();
-    const modal = this.modalService.open({
+    this.modal = this.modalService.open({
       title   : '删除项目',
       content : contentTp,
       closable: true,
@@ -97,6 +99,9 @@ export class ProjectDetailComponent implements OnInit {
         this.projectService.deleteProject(this.project['account'],true)
           .then(()=>{
             resovle();
+            this.modal.destroy('onOk');
+            this.isConfirmLoading = false;
+            this.modal = null;
             this.store.dispatch(ProjectActions.getCurProject(null));
             this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent})
           })
@@ -110,7 +115,10 @@ export class ProjectDetailComponent implements OnInit {
         this.projectService.deleteProject(this.project['account'],false)
           .then(()=>{
             resovle();
-            this.store.dispatch(ProjectActions.getCurProject(null));
+            this.modal.destroy('onOk');
+            this.isConfirmLoading = false;
+            this.modal = null;
+            this.store.dispatch(ProjectActions.getCurProject({}));
             this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent})
           })
           .catch((err)=>{
