@@ -31,7 +31,7 @@ const addModular = (account, data)=>{
         let d = Object.assign({},data);
         delete d['writer'];
         dbmodular.addModular(account,d)
-        .then(()=>this.getModularByName(account,{name:data['name']}))
+        .then(()=>dbmodular.getModularByName(account,{name:data['name']}))
         .then((m)=>{
           if(!m.length) {
             reject({message: '不可能'});

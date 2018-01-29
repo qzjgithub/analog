@@ -51,6 +51,7 @@ export class ModularAddComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.store.subscribe(()=>this.getCurProject());
     this.setBreadcrumb();
     this.getCurProject();
     this.users = [];
@@ -69,6 +70,7 @@ export class ModularAddComponent implements OnInit {
   }
 
   getSelect(){
+    if(!this.project['account']) return;
     this.modularService.getSelect(this.project['account'])
       .then((data)=>{
         this.users = data;
