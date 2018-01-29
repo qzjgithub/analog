@@ -64,6 +64,14 @@ export class ProjectService{
   }
 
   /**
+   * 通过id得到项目信息
+   * @param data
+   */
+  getProjectById = (data) =>{
+    return projectService.getProjectById(data);
+  }
+
+  /**
    * 修改项目信息
    * @param data
    * @returns {any|undefined}

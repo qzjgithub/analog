@@ -24,6 +24,8 @@ export class ProjectDetailComponent implements OnInit {
 
   modal: any;
 
+  login: any;
+
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private configService: ConfigService,
@@ -34,8 +36,9 @@ export class ProjectDetailComponent implements OnInit {
     private router: Router
   ) {
     this.isConfirmLoading = false;
-    this.project = sessionStorage.getItem('project');
-    this.store.subscribe(()=> this.dealProject())
+    this.login = this.configService.getStateLogin();
+    this.store.subscribe(()=> this.dealProject());
+    this.dealProject();
     this.setBreadcrumb();
   }
 
@@ -43,6 +46,40 @@ export class ProjectDetailComponent implements OnInit {
   dealProject(){
     const state = this.store.getState();
     this.project = state['project']['project'];
+    if(!this.project||!this.project['account']){
+      let id = sessionStorage.getItem('projectId');
+      this.projectService.getProjectById({ id: id})
+        .then((data)=> {
+          if(!data.length){
+            this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent});
+            return;
+          }
+          data = data[0];
+          this.projectService.getLoginRelation(data['account'], {userAccount: this.login['account']})
+            .then((relations) => {
+              data['relations'] = relations;
+              let write = this.login['role'] === 'admin' ? 'write' : 'nowrite';
+              if (this.login['role'] !== 'admin' && relations) {
+                relations.forEach((item) => {
+                  switch (item['relation']) {
+                    case 'leader':
+                    case 'write':
+                      write = 'write';
+                      break;
+                  }
+                })
+              }
+              data['write'] = write;
+              this.store.dispatch(ProjectActions.getCurProject(data));
+            })
+            .catch((err)=>{
+              this._message.create('err',err.messge);
+            })
+        })
+        .catch((err)=>{
+          this._message.create('err',err.messge);
+        })
+    }
   }
 
   ngOnInit() {

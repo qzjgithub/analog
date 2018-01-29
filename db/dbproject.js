@@ -90,6 +90,28 @@ const getPublicProject = ()=>{
 }
 
 /**
+ * 根据id得到项目信息
+ * @param data
+ */
+const getProjectById = (data) => {
+  let sql = `
+  SELECT 
+  p.* ,
+  (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName,
+  u.name AS leader,
+  u.account AS leaderAccount,
+  u.id AS userId 
+  FROM project p,project_user pu,user u 
+  WHERE p.id=$id 
+  AND p.account=pu.projectAccount
+  AND pu.userAccount=u.account
+  AND pu.relation='leader'
+  ;
+  `;
+  return dbutil.excuteParam(sql, data, 'all');
+}
+
+/**
  * 得到当前用户负责的项目
  * @param data
  */
@@ -212,5 +234,5 @@ module.exports = {
   getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
   deleteProject,deleteProjectUser,
-  addUserRelation
+  addUserRelation,getProjectById
 }

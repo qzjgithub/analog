@@ -70,6 +70,13 @@ const getPublicProject = (data)=>{
 }
 
 /**
+ * 根据ID获取项目信息
+ * @param data
+ */
+const getProjectById = (data) =>{
+  return dbproject.getProjectById(data);
+}
+/**
  * 得到负责的项目
  * @param data
  */
@@ -102,6 +109,11 @@ const getLoginRelation = (account,data)=>{
   return dbproject.getLoginRelation(account,data);
 }
 
+/**
+ * 删除项目
+ * @param account
+ * @param del
+ */
 const deleteProject = (account,del)=>{
   return new Promise((resolve,reject)=>{
     if(del){
@@ -131,5 +143,5 @@ module.exports = {
   validExistProject,addProject,
   getPublicProject,getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
-  deleteProject
+  deleteProject,getProjectById
 }

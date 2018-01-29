@@ -142,7 +142,7 @@ export class ProjectManageComponent implements OnInit {
       }
       data['write'] = write;
       this.store.dispatch(ProjectActions.getCurProject(data));
-      sessionStorage.setItem('project',data);
+      sessionStorage.setItem('projectId',data['id']);
       this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent});
     })
     .catch((err)=>{
