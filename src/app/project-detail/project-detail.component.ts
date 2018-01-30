@@ -48,6 +48,7 @@ export class ProjectDetailComponent implements OnInit {
     this.project = state['project']['project'];
     if(!this.project||!this.project['account']){
       let id = sessionStorage.getItem('projectId');
+      if(!id) return;
       this.projectService.getProjectById({ id: id})
         .then((data)=> {
           if(!data.length){
@@ -138,7 +139,7 @@ export class ProjectDetailComponent implements OnInit {
             this.modal = null;
             sessionStorage.removeItem('projectId');
             this.store.dispatch(ProjectActions.getCurProject({}));
-            this.router.navigate(['home'])
+            this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent});
           })
           .catch((err)=>{
             this._message.create('error',err.mesage);
@@ -155,7 +156,7 @@ export class ProjectDetailComponent implements OnInit {
             this.modal = null;
             sessionStorage.removeItem('projectId');
             this.store.dispatch(ProjectActions.getCurProject({}));
-            this.router.navigate(['home',{outlets: {'content': 'project'}}]);
+            this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent});
           })
           .catch((err)=>{
             this._message.create('error',err.mesage);

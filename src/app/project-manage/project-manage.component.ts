@@ -1,6 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import * as ConfigActions from '../../control/config/config.action';
 import * as ProjectActions from '../../control/project/project.action';
+import * as ModularActions from '../../control/modular/modular.action';
 import {AppState} from "../../control/app.reducer";
 import {Store} from "redux";
 import {AppStore} from "../../control/app.store";
@@ -144,6 +145,8 @@ export class ProjectManageComponent implements OnInit {
       data['writable'] = writer;
       this.store.dispatch(ProjectActions.getCurProject(data));
       sessionStorage.setItem('projectId',data['id']);
+      this.store.dispatch(ModularActions.getCurModular({}));
+      sessionStorage.removeItem('modularId');
       this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent});
     })
     .catch((err)=>{

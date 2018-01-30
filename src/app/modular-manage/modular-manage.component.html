@@ -21,6 +21,7 @@
     [tags]="p['tags']"
     [content]="p['content']"
     [data]="p"
+    [leftDisabled]="p['writable']!=='writer'"
     (leftClick)="modifyModular(p)"
     (rightClick)="childModular(p)"
   ></card>

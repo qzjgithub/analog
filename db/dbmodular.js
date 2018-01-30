@@ -67,11 +67,11 @@ const addModular = (account,data)=>{
  */
 const getModularInProject = (account,data)=>{
   let sql = `
-  SELECT 
+  SELECT
   m.*,
   (SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
-  (SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern 
-  FROM modular m   
+  (SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern
+  FROM modular m
   WHERE parent IS NULL OR parent='';
   `;
   return dbutil.excuteProjectParam(sql,account,{},'all');
@@ -85,11 +85,11 @@ const getModularInProject = (account,data)=>{
  */
 const getModularByParent = (account,data)=>{
   let sql = `
-  SELECT 
+  SELECT
   m.*,
-  (SELECT ur.relation FROM user_relations ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
-  (SELECT ur.relation FROM user_relations ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern  
-  FROM modular m 
+  (SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
+  (SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern
+  FROM modular m
   WHERE parent=$parent;
   `;
   return dbutil.excuteProjectParam(sql,account,{ parent: data['parent'] },'all');

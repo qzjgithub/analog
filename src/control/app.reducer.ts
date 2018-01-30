@@ -9,15 +9,18 @@ import {
 } from 'redux';
 import {ConfigState, ConfigReducer} from "./config/config.reducer";
 import {ProjectState, ProjectReducer} from "./project/project.reducer";
+import {ModularState, ModularReducer} from "./modular/modular.reducer";
 
 export interface AppState {
   config: ConfigState;
   project: ProjectState;
+  modular: ModularState;
 }
 
 const rootReducer: Reducer<AppState> = combineReducers<AppState>({
   config: ConfigReducer,
-  project: ProjectReducer
+  project: ProjectReducer,
+  modular: ModularReducer
 });
 
 export default rootReducer;

@@ -8,6 +8,8 @@ import {ModularService} from "../../control/modular/modular.service";
 import {ConfigService} from "../../control/config/config.service";
 import {NzMessageService} from "ng-zorro-antd";
 
+import * as ModularActions from '../../control/modular/modular.action';
+
 @Component({
   selector: 'app-modular-manage',
   templateUrl: './modular-manage.component.html',
@@ -21,6 +23,8 @@ export class ModularManageComponent implements OnInit {
   project : any;
 
   parent: any;
+
+  modular: any;
 
   data: Array<any>;
   constructor(
@@ -55,12 +59,12 @@ export class ModularManageComponent implements OnInit {
     this.modularService.getModular(this.project['account'],{ parent: this.parent, login : this.login['account']})
       .then((data)=>{
         data.map((item)=>{
-          item['writable'] = (this.login['role']==='admin' || this.project['writable']==='writer' || item['writable'] === 'writer') ? 'writer':'notwriter';
+          item['writable'] = (this.project['writable']==='writer' ||(this.modular && this.modular['writable']==='writer')|| item['writable'] === 'writer') ? 'writer':'notwriter';
           let tags = [];
           if(item['writable']==='writer'){
             tags.push( { active : true, text: '可编写'});
           }else{
-            tags.push( { active : false, text: '不编写'});
+            tags.push( { active : false, text: '不可写'});
           }
           if(item['concern']==='concern'){
             tags.push( { active : true, text: '已关注'});
@@ -84,6 +88,8 @@ export class ModularManageComponent implements OnInit {
   dealProject(){
     const state = this.store.getState();
     this.project = state['project']['project'];
+    this.modular = state['modular']['modular'];
+    this.parent = this.modular['id'];
     this.getList();
   }
 
@@ -114,6 +120,9 @@ export class ModularManageComponent implements OnInit {
 
   modifyModular(data){}
 
-  childModular(data){}
+  childModular(data){
+    sessionStorage.setItem('modularId',data['id']);
+    this.store.dispatch(ModularActions.getCurModular(data));
+  }
 
 }
