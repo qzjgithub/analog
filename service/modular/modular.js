@@ -38,7 +38,7 @@ const addModular = (account, data)=>{
           }else{
             let id = m[0]['id'];
             let addRelation = (i) => {
-              if(i>=writers.length){
+              if(!writers || i>=writers.length){
                 resolve();
                 return;
               }
@@ -68,6 +68,20 @@ const addModular = (account, data)=>{
   })
 }
 
+/**
+ * 得到当前要展示的模块
+ * @param account
+ * @param data
+ */
+const getModular = (account, data)=>{
+  if(!data['parent']){
+    return dbmodular.getModularInProject(account, data);
+  }else{
+    return dbmodular.getModularByParent(account,data);
+  }
+}
+
 module.exports = {
-  getSelect,addModular
+  getSelect,addModular,
+  getModular
 }

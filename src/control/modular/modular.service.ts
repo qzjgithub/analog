@@ -21,6 +21,16 @@ export class ModularService{
   addModular = (account,data) => {
       return modularService.addModular(account,data);
   }
+
+  /**
+   * 得到模块列表信息
+   * @param account
+   * @param data
+   * @returns {any}
+   */
+  getModular = (account,data) =>{
+    return modularService.getModular(account,data);
+  }
 }
 
 export const MODULAR_PROVIDERS: Array<any> = [

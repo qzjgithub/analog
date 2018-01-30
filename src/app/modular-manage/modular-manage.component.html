@@ -5,7 +5,7 @@
   <label nz-radio-button [nzValue]="'interfaces'" (click)="changeScope()">
     <span>接口</span>
   </label>
-  <label nz-radio-button [nzValue]="'allInterfaces'" (click)="changeScope()">
+  <label *ngIf="!parent" nz-radio-button [nzValue]="'allInterfaces'" (click)="changeScope()">
     <span>所有接口</span>
   </label>
   <label nz-radio-button [nzValue]="'user'" (click)="changeScope()">
@@ -13,17 +13,15 @@
   </label>
 </nz-radio-group>
 <i class="anticon anticon-rollback modular-back" style="float: right" (click)="backParent()"></i>
-<div>
-  <card *ngIf="project['write']==='write'" [empty]="true" (click)="addModular($event)"></card>
-  <!--<card
-    *ngFor="let p of project"
+<div *ngIf="scope==='modular'">
+  <card *ngIf="project['writable']==='writer'" [empty]="true" (click)="addModular($event)"></card>
+  <card
+    *ngFor="let p of data"
     [title]="p['name']"
     [tags]="p['tags']"
     [content]="p['content']"
     [data]="p"
-    [leftIcon]="'caret-right'"
-    [leftText]="'启动'"
-    (leftClick)="changeProjectState($event)"
-    (rightClick)="detailProject($event)"
-  ></card>-->
+    (leftClick)="modifyModular(p)"
+    (rightClick)="childModular(p)"
+  ></card>
 </div>

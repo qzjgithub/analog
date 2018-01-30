@@ -39,7 +39,14 @@ export class ModularAddComponent implements OnInit {
       value['parent'] = this.modular['id'];
     }
     value['creator'] = this.login['account'];
-    this.modularService.addModular(this.project['account'],value);
+    this.modularService.addModular(this.project['account'],value)
+      .then(()=>{
+        this._message.create('success','添加模块成功');
+        this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent});
+      })
+      .catch((err)=>{
+        this._message.create('error',err.message);
+      })
   }
 
   constructor(

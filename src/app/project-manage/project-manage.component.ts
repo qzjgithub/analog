@@ -38,6 +38,7 @@ export class ProjectManageComponent implements OnInit {
     this.related = {};
     this.setBreadcrumb();
     this.getProejct();
+    console.log('project manage');
   }
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class ProjectManageComponent implements OnInit {
   }
 
   addProject(e){
-    this.router.navigate([{outlets: {'content': 'addProject'}}],{relativeTo: this.route.parent});
+    this.router.navigate(['home',{outlets: {'content': 'addProject'}}]);
   }
 
   getProejct(){
@@ -129,18 +130,18 @@ export class ProjectManageComponent implements OnInit {
     this.projectService.getLoginRelation(data['account'],{userAccount: this.login['account']})
     .then((relations)=>{
       data['relations'] = relations;
-      let write = this.login['role']==='admin' ? 'write' : 'nowrite';
+      let writer = this.login['role']==='admin' ? 'writer' : 'notwriter';
       if(this.login['role']!=='admin' && relations){
         relations.forEach((item)=>{
           switch(item['relation']){
             case 'leader':
-            case 'write':
-              write = 'write';
+            case 'writer':
+              writer = 'writer';
               break;
           }
         })
       }
-      data['write'] = write;
+      data['writable'] = writer;
       this.store.dispatch(ProjectActions.getCurProject(data));
       sessionStorage.setItem('projectId',data['id']);
       this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent});

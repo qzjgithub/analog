@@ -212,6 +212,19 @@ const deleteProjectUser = (account) => {
 }
 
 /**
+ * 删除项目下具体用户关系
+ * @param account
+ */
+const deleteUserRelation = (account) => {
+  let sql = `
+  DELETE FROM
+  user_relation
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql, account, {}, 'run');
+}
+
+/**
  * 添加用户和项目的关系
  * @param account
  * @param data
@@ -233,6 +246,6 @@ module.exports = {
   getPublicProject,getLoginProject,
   getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
-  deleteProject,deleteProjectUser,
+  deleteProject,deleteProjectUser,deleteUserRelation,
   addUserRelation,getProjectById
 }

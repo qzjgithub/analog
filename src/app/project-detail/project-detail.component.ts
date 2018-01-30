@@ -58,18 +58,18 @@ export class ProjectDetailComponent implements OnInit {
           this.projectService.getLoginRelation(data['account'], {userAccount: this.login['account']})
             .then((relations) => {
               data['relations'] = relations;
-              let write = this.login['role'] === 'admin' ? 'write' : 'nowrite';
+              let writer = this.login['role'] === 'admin' ? 'writer' : 'notwriter';
               if (this.login['role'] !== 'admin' && relations) {
                 relations.forEach((item) => {
                   switch (item['relation']) {
                     case 'leader':
-                    case 'write':
-                      write = 'write';
+                    case 'writer':
+                      writer = 'writer';
                       break;
                   }
                 })
               }
-              data['write'] = write;
+              data['writable'] = writer;
               this.store.dispatch(ProjectActions.getCurProject(data));
             })
             .catch((err)=>{
@@ -136,8 +136,9 @@ export class ProjectDetailComponent implements OnInit {
             this.modal.destroy('onOk');
             this.isConfirmLoading = false;
             this.modal = null;
-            this.store.dispatch(ProjectActions.getCurProject(null));
-            this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent})
+            sessionStorage.removeItem('projectId');
+            this.store.dispatch(ProjectActions.getCurProject({}));
+            this.router.navigate(['home'])
           })
           .catch((err)=>{
             this._message.create('error',err.mesage);
@@ -152,8 +153,9 @@ export class ProjectDetailComponent implements OnInit {
             this.modal.destroy('onOk');
             this.isConfirmLoading = false;
             this.modal = null;
+            sessionStorage.removeItem('projectId');
             this.store.dispatch(ProjectActions.getCurProject({}));
-            this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent})
+            this.router.navigate(['home',{outlets: {'content': 'project'}}]);
           })
           .catch((err)=>{
             this._message.create('error',err.mesage);

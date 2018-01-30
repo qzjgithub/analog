@@ -66,6 +66,7 @@ const excuteParam = (sqlStr, data, method) => {
       .then((db) => {
         let stm = db.prepare(sqlStr);
         stm[method](obj_data,function(err,data){
+          db.close();
           if(err){
             console.log(err);
             reject(err);
@@ -98,6 +99,7 @@ const excuteProjectParam = (sqlStr,account, data, method) => {
       .then((db) => {
         let stm = db.prepare(sqlStr);
         stm[method](obj_data,function(err,data){
+          db.close();
           if(err){
             console.log(err);
             reject(err);
@@ -566,6 +568,22 @@ const createUserRelation = (db) => {
       }
     });
   });
+}
+
+/**
+ * 查找
+ * @param param
+ * @returns {Promise}
+ */
+const selectProjectLeader = (param)=>{
+  let sql = `
+  SELECT * FROM user_relation 
+  WHERE 
+  userAccount='`+param['leader']+`' 
+  AND type='project' 
+  AND relation='leader'
+  `;
+  return excuteProjectParam(sql,param['account'],{},'all');
 }
 
 /**
