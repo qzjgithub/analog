@@ -8,6 +8,7 @@ import {ModularService} from "../../control/modular/modular.service";
 import {ConfigService} from "../../control/config/config.service";
 import {NzMessageService} from "ng-zorro-antd";
 
+import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
 
 @Component({
@@ -114,6 +115,8 @@ export class ModularManageComponent implements OnInit {
 
   backParent(){
     if(!this.parent){
+      sessionStorage.removeItem('projectId');
+      this.store.dispatch(ProjectActions.getCurProject({}));
       this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent.parent});
     }
   }
