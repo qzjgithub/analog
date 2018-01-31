@@ -111,6 +111,13 @@ export class UserService{
     return userService.modifyPwdUser({id: data, active: false, password: pwd})
   }
 
+  /**
+   * 根据用户account得到用户的名字
+   */
+  getUserByAccount = (data) => {
+    return userService.getUserByAccount(data);
+  }
+
 }
 
 export const USER_PROVIDERS: Array<any> = [

@@ -94,8 +94,26 @@ const getModularByParent = (account,data)=>{
   `;
   return dbutil.excuteProjectParam(sql,account,{ parent: data['parent'] },'all');
 }
+/**
+ * 根据ID获取当前模块
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const getModularById = (account,data)=>{
+  let sql = `
+SELECT
+m.*,
+(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
+(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern
+FROM modular m
+WHERE id=$id;
+`;
+  return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'all');
+}
 module.exports = {
   getModularWrite,getModularWriteUser,
   getModularByName,addModular,
-  getModularInProject,getModularByParent
+  getModularInProject,getModularByParent,
+  getModularById
 }

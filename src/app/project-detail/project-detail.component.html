@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-sider [nzWidth]="300" style="background:#fff">
     <nz-collapseset [nzBordered]="false" class="baseinfo-content">
-      <nz-collapse [nzActive]="true">
+      <nz-collapse [nzActive]="!parent">
         <header collapse-title class="baseinfo-header">
           <span>{{project['name']}}</span>
           <span class="baseinfo-operate">
@@ -51,6 +51,38 @@
             <span nz-col [nzSm]="6" [nzXs]="24">备注信息</span>
             <span nz-col [nzSm]="2" [nzXs]="24">:</span>
             <span nz-col [nzSm]="16" [nzXs]="24">{{project['comment']}}</span>
+          </li>
+        </ul>
+      </nz-collapse>
+      <nz-collapse *ngFor="let m of modulars"  [nzActive]="parent===m['id']">
+        <header collapse-title class="baseinfo-header">
+          <span>{{m['name']}}</span>
+          <span class="baseinfo-operate">
+            <i *ngIf="m.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyProject($event)"></i>
+            <i *ngIf="m.writable==='writer'" nz-tooltip="修改路径" class="anticon anticon-link" (click)="modifyProUrl($event)"></i>
+            <i *ngIf="m.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteProject($event,deleteProjectContent,deleteProjectContentFooter)"></i>
+          </span>
+        </header>
+        <ul class="baseinfo-body">
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">路径</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{m['url']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建者</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{m['creatorName']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建时间</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{getDate(m['createdTime'])}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">备注信息</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{m['comment']}}</span>
           </li>
         </ul>
       </nz-collapse>

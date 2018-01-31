@@ -14,7 +14,7 @@
 </nz-radio-group>
 <i class="anticon anticon-rollback modular-back" style="float: right" (click)="backParent()"></i>
 <div *ngIf="scope==='modular'">
-  <card *ngIf="project['writable']==='writer'" [empty]="true" (click)="addModular($event)"></card>
+  <card *ngIf="parent ? modular['writable']==='writer':project['writable']==='writer'" [empty]="true" (click)="addModular($event)"></card>
   <card
     *ngFor="let p of data"
     [title]="p['name']"

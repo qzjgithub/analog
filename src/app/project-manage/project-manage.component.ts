@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject } from '@angular/core';
 import * as ConfigActions from '../../control/config/config.action';
 import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
@@ -145,7 +145,7 @@ export class ProjectManageComponent implements OnInit {
       data['writable'] = writer;
       this.store.dispatch(ProjectActions.getCurProject(data));
       sessionStorage.setItem('projectId',data['id']);
-      this.store.dispatch(ModularActions.getCurModular({}));
+      this.store.dispatch(ModularActions.clearModular());
       sessionStorage.removeItem('modularId');
       this.router.navigate([{outlets: {'content': 'project/'+data.id}}],{relativeTo: this.route.parent});
     })

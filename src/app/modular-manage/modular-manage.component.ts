@@ -10,6 +10,7 @@ import {NzMessageService} from "ng-zorro-antd";
 
 import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
+import {UserService} from "../../control/user/user.service";
 
 @Component({
   selector: 'app-modular-manage',
@@ -32,6 +33,7 @@ export class ModularManageComponent implements OnInit {
     @Inject(AppStore) private store: Store<AppState>,
     private _message: NzMessageService,
     private configService: ConfigService,
+    private userService:UserService,
     private modularService: ModularService,
     private route: ActivatedRoute,
     private router: Router
@@ -124,8 +126,19 @@ export class ModularManageComponent implements OnInit {
   modifyModular(data){}
 
   childModular(data){
-    sessionStorage.setItem('modularId',data['id']);
-    this.store.dispatch(ModularActions.getCurModular(data));
+    this.userService.getUserByAccount({ account: data['creator']})
+    .then((user)=>{
+      if(user.length){
+        data['creatorName'] = user[0]['name'];
+      }else{
+        data['creatorName'] = '未知';
+      }
+      sessionStorage.setItem('modularId',data['id']);
+      this.store.dispatch(ModularActions.getCurModular(data));
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   }
 
 }

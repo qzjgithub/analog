@@ -127,6 +127,14 @@ const getUserList = () => {
   return dbuser.getUserList();
 }
 
+/**
+ * 根据用户account得到用户的名字
+ * @returns {any}
+ */
+const getUserByAccount = (data) => {
+  return dbuser.getUserByAccount(data);
+}
+
 module.exports = {
   validLoginUser,
   addUser,
@@ -135,5 +143,6 @@ module.exports = {
   getUserById,
   modifyUser,
   modifyPwdWithOld,
-  getUserList
+  getUserList,
+  getUserByAccount
 }

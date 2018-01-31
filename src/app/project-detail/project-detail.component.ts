@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject,OnDestroy } from '@angular/core';
 import * as ConfigActions from '../../control/config/config.action';
 import * as ProjectActions from '../../control/project/project.action';
 import {AppState} from "../../control/app.reducer";
@@ -10,13 +10,16 @@ import {ConfigService} from "../../control/config/config.service";
 import {NzModalService, NzMessageService} from "ng-zorro-antd";
 
 import {ProjectModifyComponent} from '../project-modify/project-modify.component';
+import {ModularService} from "../../control/modular/modular.service";
+
+import * as ModularActions from '../../control/modular/modular.action';
 
 @Component({
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.css']
 })
-export class ProjectDetailComponent implements OnInit {
+export class ProjectDetailComponent implements OnInit,OnDestroy  {
 
   project: any;
 
@@ -26,22 +29,31 @@ export class ProjectDetailComponent implements OnInit {
 
   login: any;
 
+  modulars: any;
+
+  parent:any;
+
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private configService: ConfigService,
     private _message: NzMessageService,
     private projectService: ProjectService,
+    private modularService: ModularService,
     private modalService: NzModalService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.isConfirmLoading = false;
     this.login = this.configService.getStateLogin();
-    this.store.subscribe(()=> this.dealProject());
-    this.dealProject();
+    this.store.subscribe(()=> this.dealData());
+    //this.dealData();
     this.setBreadcrumb();
   }
 
+  dealData(){
+    this.dealProject();
+    this.dealModulars();
+  }
 
   dealProject(){
     const state = this.store.getState();
@@ -83,7 +95,46 @@ export class ProjectDetailComponent implements OnInit {
     }
   }
 
+  dealModulars(){
+    if(!this.project||!this.project['account']){
+      return;
+    }
+    const state = this.store.getState();
+    this.modulars = state['modular']['modulars'];
+    if(this.modulars.length){
+      this.parent = this.modulars[this.modulars.length-1]['id'];
+    }else{
+      this.parent = sessionStorage.getItem('modularId');
+      if(this.parent){
+        this.getModular(this.parent);
+      }
+    }
+  }
+
+  getModular(parent){
+    this.modularService.getModularById(this.project['account'],{ id: parent, login: this.login['account']})
+    .then((modular)=>{
+      if(modular){
+        if(this.login['role']==='admin'||this.project['writable']==='writer'){
+          modular['writable'] = 'writer';
+        }
+        this.store.dispatch(ModularActions.getParentModular(modular));
+        if(modular['parent']){
+          this.getModular(modular['parent']);
+        }
+      }
+    })
+  }
+
   ngOnInit() {
+  }
+
+
+  ngOnDestroy() {
+    this.store.dispatch(ProjectActions.getCurProject({}));
+    sessionStorage.removeItem('projectId');
+    this.store.dispatch(ModularActions.clearModular());
+    sessionStorage.removeItem('modularId');
   }
 
   setBreadcrumb(){

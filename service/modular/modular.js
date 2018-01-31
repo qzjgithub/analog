@@ -81,7 +81,37 @@ const getModular = (account, data)=>{
   }
 }
 
+/**
+ * 根据ID获取模块信息
+ * @param account
+ * @param data
+ */
+const getModularById = (account, data)=>{
+  return new Promise((resolve,reject)=>{
+    dbmodular.getModularById(account,data)
+    .then((modular)=>{
+      if(modular.length){
+        dbuser.getUserByAccount({ account: modular[0]['creator']})
+        .then((user)=>{
+          if(user.length){
+            modular[0]['creatorName'] = user[0]['name'];
+          }else{
+            modular[0]['creatorName'] = '未知';
+          }
+          resolve(modular[0]);
+        })
+      }else{
+        resolve();
+      }
+    })
+    .catch((err)=>{
+      reject(err);
+    })
+  })
+}
+
 module.exports = {
   getSelect,addModular,
-  getModular
+  getModular,
+  getModularById
 }

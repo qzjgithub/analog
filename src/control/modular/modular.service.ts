@@ -31,6 +31,15 @@ export class ModularService{
   getModular = (account,data) =>{
     return modularService.getModular(account,data);
   }
+
+  /**
+   * 根据ID获取模块信息
+   * @param account
+   * @param data
+     */
+  getModularById = (account,data)=>{
+    return modularService.getModularById(account,data);
+  }
 }
 
 export const MODULAR_PROVIDERS: Array<any> = [

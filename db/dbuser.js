@@ -24,17 +24,17 @@ const addUser = (data) => {
   let sql = `
   INSERT INTO user VALUES(
     NULL,
-    $account , 
-    $password , 
-    $role , 
-    $name , 
+    $account ,
+    $password ,
+    $role ,
+    $name ,
     $position ,
-    $phone , 
-    $email , 
-    $comment , 
+    $phone ,
+    $email ,
+    $comment ,
     $active ,
     $available ,
-    $createdTime 
+    $createdTime
   );
   `;
   data.available = true;
@@ -61,8 +61,8 @@ const getValidUser = (data) => {
  */
 const modifyPwd = (data) => {
   let sql = `
-  UPDATE user 
-  SET password=$password ,active=$active 
+  UPDATE user
+  SET password=$password ,active=$active
   WHERE id=$id
   ;
   `;
@@ -76,7 +76,7 @@ const modifyPwd = (data) => {
  */
 const getUserById = (data) => {
   let sql = `
-  SELECT * FROM user 
+  SELECT * FROM user
   WHERE id=$id
   ;
   `;
@@ -89,12 +89,12 @@ const getUserById = (data) => {
  */
 const modifyUser = (data) => {
   let sql = `
-  UPDATE user SET 
-    name=$name , 
+  UPDATE user SET
+    name=$name ,
     position=$position ,
-    phone=$phone , 
-    email=$email , 
-    comment=$comment 
+    phone=$phone ,
+    email=$email ,
+    comment=$comment
   WHERE id=$id
   ;
   `;
@@ -107,7 +107,7 @@ const modifyUser = (data) => {
  */
 const validOldPwd = (data) => {
   let sql = `
-  SELECT * FROM user 
+  SELECT * FROM user
   WHERE id=$id AND password=$password
   ;
   `;
@@ -120,25 +120,39 @@ const validOldPwd = (data) => {
  */
 const getUserList = () => {
   let sql = `
-  SELECT 
+  SELECT
   id,
   user.account,
   user.name,
   user.position,
-  select_list.text AS positionName, 
+  select_list.text AS positionName,
   user.phone,
   user.email,
   user.comment,
   user.createdTime,
-  user.active 
-  FROM user , select_list 
-  WHERE user.position=select_list.value 
-  AND select_list.name='position' 
-  AND user.available=1  
+  user.active
+  FROM user , select_list
+  WHERE user.position=select_list.value
+  AND select_list.name='position'
+  AND user.available=1
   AND user.role!='admin'
   ;
   `;
   return dbutil.excuteParam(sql, {}, 'all');
+}
+
+/**
+ * 根据用户account得到用户的名字
+ */
+const getUserByAccount = (data)=>{
+  let sql = `
+  SELECT
+  *
+  FROM user
+  WHERE account=$account
+  ;
+  `;
+  return dbutil.excuteParam(sql, data, 'all');
 }
 
 module.exports = {
@@ -149,5 +163,6 @@ module.exports = {
   getUserById,
   modifyUser,
   validOldPwd,
-  getUserList
+  getUserList,
+  getUserByAccount
 }
