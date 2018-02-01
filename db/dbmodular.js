@@ -111,9 +111,23 @@ WHERE id=$id;
 `;
   return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'all');
 }
+/**
+ * 删除模块
+ * @param account
+ * @param data
+ */
+const deleteModular = (account,data)=>{
+  let sql = `
+  DELETE FROM modular
+  WHERE id=$id
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'run');
+}
 module.exports = {
   getModularWrite,getModularWriteUser,
   getModularByName,addModular,
   getModularInProject,getModularByParent,
-  getModularById
+  getModularById,
+  deleteModular
 }

@@ -30,3 +30,11 @@ export const getParentModular: ActionCreator<getParentModularAction> =
     type: GET_PARENT_MODULAR,
     modular: modular
   });
+
+export const BACK_LAST_MODULAR = '[back_last_modular] UPDATE';
+export interface backLastModularAction extends Action {
+}
+export const backLastModular: ActionCreator<backLastModularAction> =
+  () => ({
+    type: BACK_LAST_MODULAR
+  });

@@ -110,8 +110,46 @@ const getModularById = (account, data)=>{
   })
 }
 
+/**
+ * 删除模块
+ * @param account
+ * @param data
+ */
+const deleteModular = (account,data)=>{
+  return new Promise((resolve,reject)=>{
+    dbmodular.getModularByParent(account,{ parent: data['id']})
+    .then((modulars)=>{
+      if(modulars.length){
+        reject({ message: '该模块下存在子模块，不可删除'});
+      }else{
+        dbinterfaces.getInterfacesByParent(account,{ parent: data['id']})
+          .then((interfaces)=> {
+            if (interfaces.length) {
+              reject({message: '该模块下存在接口，不可删除'});
+            } else {
+              dbmodular.deleteModular(account,data)
+              .then(()=>{
+                resolve();
+              })
+              .catch((err)=>{
+                reject(err);
+              })
+            }
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      }
+    })
+    .catch((err)=>{
+      reject(err);
+    })
+  })
+}
+
 module.exports = {
   getSelect,addModular,
   getModular,
-  getModularById
+  getModularById,
+  deleteModular
 }

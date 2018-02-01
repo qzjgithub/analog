@@ -40,6 +40,16 @@ export class ModularService{
   getModularById = (account,data)=>{
     return modularService.getModularById(account,data);
   }
+
+  /**
+   * 删除模块
+   * @param account
+   * @param data
+   * @returns {any|undefined}
+     */
+  deleteModular = (account,data)=>{
+    return modularService.deleteModular(account,data);
+  }
 }
 
 export const MODULAR_PROVIDERS: Array<any> = [

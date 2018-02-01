@@ -217,4 +217,29 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     }
   }
 
+  deleteModular(e,data){
+    e.stopPropagation();
+    const modal = this.modalService.confirm({
+      title   : '删除模块',
+      content : '如果该模块下存在接口或子模块，将删除失败，确认继续删除吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.modularService.deleteModular(this.project['account'],data)
+          .then(()=>{
+            resolve();
+            this.store.dispatch(ModularActions.backLastModular());
+          })
+          .catch((err)=>{
+            this._message.create('error',err.message);
+            resolve();
+          })
+        })
+      }
+    })
+  }
+
 }

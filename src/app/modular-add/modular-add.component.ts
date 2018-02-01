@@ -58,12 +58,12 @@ export class ModularAddComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.store.subscribe(()=>this.dealData());
-    this.setBreadcrumb();
-    //this.getCurProject();
     this.users = [];
     this.modular = {};
     this.login = this.configService.getStateLogin();
+    this.store.subscribe(()=>this.dealData());
+    this.setBreadcrumb();
+    //this.getCurProject();
     this.getSelect();
   }
 

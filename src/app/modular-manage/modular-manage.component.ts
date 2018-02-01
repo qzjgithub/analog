@@ -120,6 +120,8 @@ export class ModularManageComponent implements OnInit {
       sessionStorage.removeItem('projectId');
       this.store.dispatch(ProjectActions.getCurProject({}));
       this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent.parent});
+    }else{
+      this.store.dispatch(ModularActions.backLastModular());
     }
   }
 

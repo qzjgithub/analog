@@ -41,11 +41,25 @@ export const ModularReducer =
         }
         if(modular['writable']==='writer'){
           modulars.forEach((item)=>{
-            item['writable'] = 'writable';
+            item['writable'] = 'writer';
           })
         }
         modulars.unshift(modular);
         state['modulars'] = modulars;
+        return state;
+      }
+      case ModularActions.BACK_LAST_MODULAR:{
+        let modulars = state['modulars'];
+        modulars.pop();
+
+        state['modulars'] = modulars;
+        if(modulars.length){
+          state['modular'] = modulars[modulars.length-1];
+          sessionStorage.setItem('modularId',state['modular']['id']);
+        }else{
+          state['modular'] = {};
+          sessionStorage.removeItem('modularId');
+        }
         return state;
       }
       default:
