@@ -1,19 +1,6 @@
 /**
  * Created by qiuzhujun on 2018/1/28.
  */
-/**
- * 得到模块添加是选项
- * @param account
- */
-const getSelect = (account)=>{
-  return new Promise((resolve,reject)=>{
-    dbmodular.getModularWrite(account)
-      .then((accounts)=>dbmodular.getModularWriteUser(accounts))
-      .catch((err)=>{
-        reject(err)
-      })
-  })
-}
 
 /**
  * 添加项目
@@ -65,6 +52,9 @@ const addModular = (account, data)=>{
           })
       }
     })
+      .catch((err)=>{
+      reject(err);
+      })
   })
 }
 
@@ -148,7 +138,7 @@ const deleteModular = (account,data)=>{
 }
 
 module.exports = {
-  getSelect,addModular,
+  addModular,
   getModular,
   getModularById,
   deleteModular

@@ -155,6 +155,38 @@ const getUserByAccount = (data)=>{
   return dbutil.excuteParam(sql, data, 'all');
 }
 
+/**
+ *  得到所有可加入可写的用户account
+ * @param account
+ * @returns {Promise}
+ */
+const getWritableAccount = (account)=>{
+  let sql = `
+  SELECT userAccount FROM user_relation ur
+  WHERE
+  (ur.type='project' AND ur.relation='participant')
+  OR
+  (ur.type!='project' AND ur.relation!='concern')
+  ;`;
+  return dbutil.excuteProjectParam(sql,account,{},'all');
+}
+
+/**
+ * 根据account组得到用户信息
+ * @param accounts
+ */
+const getUserInAccount = (accounts)=>{
+  accounts.map((item)=>{
+    return `'`+item+`'`;
+  })
+  let sql = `
+  SELECT * FROM user
+  WHERE account in(`+accounts.join(',')+`)
+  ;
+  `;
+  return dbutil.excuteParam(sql, {}, 'run');
+}
+
 module.exports = {
   getLoginUser,
   addUser,
@@ -164,5 +196,7 @@ module.exports = {
   modifyUser,
   validOldPwd,
   getUserList,
-  getUserByAccount
+  getUserByAccount,
+  getWritableAccount,
+  getUserInAccount
 }

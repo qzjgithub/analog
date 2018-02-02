@@ -396,7 +396,11 @@ const initSelectSelect = () => {
     { name: 'position', value: 'frontEndEngineer', text: '前端工程师'},
     { name: 'position', value: 'pythonEngineer', text: 'Python工程师'},
     { name: 'position', value: 'javaEngineer', text: 'Java工程师'},
-    { name: 'position', value: 'projectManager', text: '项目经理'}
+    { name: 'position', value: 'projectManager', text: '项目经理'},
+    { name: 'method', value: 'GET', text: 'GET'},
+    { name: 'method', value: 'POST', text: 'POST'},
+    { name: 'method', value: 'DELETE', text: 'DELETE'},
+    { name: 'method', value: 'PUT', text: 'PUT'}
   ];
   for(let i = 0;i<datas.length;i++){
     addSelect(datas[i]);

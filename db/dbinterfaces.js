@@ -13,9 +13,36 @@ const getInterfacesByParent = (account,data)=>{
   WHERE parent=$parent
   ;
   `;
-  return dbutil.excuteProjectParam(sql,account,{ parent: data['id'] },'all');
+  return dbutil.excuteProjectParam(sql,account,data,'all');
+}
+
+/**
+ * 获取在项目下的接口
+ */
+const getInterfacesInProject = (account)=>{
+  let sql = `
+  SELECT * FROM interfaces
+  WHERE parent='' OR parent IS NULL
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,{},'all');
+}
+
+/**
+ * 得到某项目下的所有接口
+ * @param account
+ * @returns {Promise}
+ */
+const getInterfacesAll = (account)=>{
+  let sql = `
+  SELECT * FROM interfaces
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,{},'all');
 }
 
 module.exports = {
-  getInterfacesByParent
+  getInterfacesByParent,
+  getInterfacesInProject,
+  getInterfacesAll
 }

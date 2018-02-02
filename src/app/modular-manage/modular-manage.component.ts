@@ -11,6 +11,7 @@ import {NzMessageService} from "ng-zorro-antd";
 import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
 import {UserService} from "../../control/user/user.service";
+import {InterfacesService} from "../../control/interfaces/interfaces.service";
 
 @Component({
   selector: 'app-modular-manage',
@@ -35,6 +36,7 @@ export class ModularManageComponent implements OnInit {
     private configService: ConfigService,
     private userService:UserService,
     private modularService: ModularService,
+    private interfacesService: InterfacesService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -54,6 +56,12 @@ export class ModularManageComponent implements OnInit {
     switch(this.scope){
       case 'modular':
         this.getModular();
+        break;
+      case 'interfaces':
+        this.getInterfaces();
+        break;
+      case 'allInterfaces':
+        this.getInterfacesAll();
         break;
     }
   }
@@ -88,6 +96,25 @@ export class ModularManageComponent implements OnInit {
       })
   }
 
+  getInterfaces(){
+    this.interfacesService.getInterfacesByParent(this.project['account'],{ parent: this.parent})
+      .then((data)=>{
+        this.data = data;
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  }
+
+  getInterfacesAll(){
+    this.interfacesService.getInterfacesAll(this.project['account'])
+      .then((data)=>{
+        this.data = data;
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  }
   dealProject(){
     const state = this.store.getState();
     this.project = state['project']['project'];
@@ -97,6 +124,7 @@ export class ModularManageComponent implements OnInit {
   }
 
   changeScope(){
+    this.data = [];
     this.getList();
   }
 

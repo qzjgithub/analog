@@ -135,6 +135,20 @@ const getUserByAccount = (data) => {
   return dbuser.getUserByAccount(data);
 }
 
+/**
+ * 得到可添加的可编写用户
+ * @param account
+ */
+const getWritableUser = (account) => {
+  return new Promise((resolve,reject)=>{
+    dbuser.getWritableAccount(account)
+      .then((accounts)=>dbuser.getUserInAccount(accounts))
+      .catch((err)=>{
+        reject(err)
+      })
+  })
+}
+
 module.exports = {
   validLoginUser,
   addUser,
@@ -144,5 +158,6 @@ module.exports = {
   modifyUser,
   modifyPwdWithOld,
   getUserList,
-  getUserByAccount
+  getUserByAccount,
+  getWritableUser
 }

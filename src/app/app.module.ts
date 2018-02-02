@@ -35,6 +35,8 @@ import { ProjectDetailComponent } from './project-detail/project-detail.componen
 import { ModularManageComponent } from './modular-manage/modular-manage.component';
 import { ModularAddComponent } from './modular-add/modular-add.component';
 import {MODULAR_PROVIDERS} from "../control/modular/modular.service";
+import {INTERFACES_PROVIDERS} from "../control/interfaces/interfaces.service";
+import { InterfacesAddComponent } from './interfaces-add/interfaces-add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -57,6 +59,7 @@ const routes: Routes = [
       {path:'',component: ModularManageComponent , outlet: 'modular' },
       {path:'modular',component: ModularManageComponent , outlet: 'modular' },
       {path:'addModular',component: ModularAddComponent , outlet: 'modular' },
+      {path:'addInterfaces',component: InterfacesAddComponent , outlet: 'modular' },
     ]},
   ]}
 ]
@@ -87,6 +90,7 @@ const routes: Routes = [
     ProjectDetailComponent,
     ModularManageComponent,
     ModularAddComponent,
+    InterfacesAddComponent,
   ],
   entryComponents :[
     ProjectModifyComponent
@@ -106,7 +110,8 @@ const routes: Routes = [
     USER_PROVIDERS,
     CONFIG_PROVIDERS,
     PROJECT_PROVIDERS,
-    MODULAR_PROVIDERS
+    MODULAR_PROVIDERS,
+    INTERFACES_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })
