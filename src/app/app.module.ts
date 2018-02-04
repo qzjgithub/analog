@@ -35,6 +35,7 @@ import { ProjectDetailComponent } from './project-detail/project-detail.componen
 import { ModularManageComponent } from './modular-manage/modular-manage.component';
 import { ModularAddComponent } from './modular-add/modular-add.component';
 import {MODULAR_PROVIDERS} from "../control/modular/modular.service";
+import { InterfasesAddComponent } from './interfases-add/interfases-add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -87,6 +88,7 @@ const routes: Routes = [
     ProjectDetailComponent,
     ModularManageComponent,
     ModularAddComponent,
+    InterfasesAddComponent,
   ],
   entryComponents :[
     ProjectModifyComponent
