@@ -26,3 +26,6 @@
     (rightClick)="childModular(p)"
   ></card>
 </div>
+<div *ngIf="scope==='interfaces'">
+  <span [routerLink]="[{outlets:{modular:'addInterfaces'}}]">添加</span>
+</div>

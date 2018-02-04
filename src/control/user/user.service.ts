@@ -118,6 +118,14 @@ export class UserService{
     return userService.getUserByAccount(data);
   }
 
+  /**
+   * 得到可添加的可写用户
+   * @param account
+   */
+  getWritableUser = (account)=>{
+    return userService.getWritableUser(account);
+  }
+
 }
 
 export const USER_PROVIDERS: Array<any> = [

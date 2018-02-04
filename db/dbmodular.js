@@ -1,32 +1,6 @@
-  /**
+/**
  * Created by qiuzhujun on 2018/1/28.
  */
-const getModularWrite = (account)=>{
-  let sql = `
-  SELECT userAccount FROM user_relation ur
-  WHERE
-  (ur.type='project' AND ur.relation='participant')
-  OR
-  (ur.type!='project' AND ur.relation!='concern')
-  ;`;
-  return dbutil.excuteProjectParam(sql,account,{},'all');
-}
-
-/**
- * 得到可添加为模块编写者的人的名字
- * @param accounts
- */
-const getModularWriteUser = (accounts)=>{
-accounts.map((item)=>{
-  return `'`+item+`'`;
-})
-let sql = `
-SELECT * FROM user
-WHERE account in(`+accounts.join(',')+`)
-;
-`;
-return dbutil.excuteParam(sql, {}, 'run');
-}
 
 /**
  * 根据名字得到模块
@@ -125,7 +99,6 @@ const deleteModular = (account,data)=>{
   return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'run');
 }
 module.exports = {
-  getModularWrite,getModularWriteUser,
   getModularByName,addModular,
   getModularInProject,getModularByParent,
   getModularById,

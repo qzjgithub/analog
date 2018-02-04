@@ -5,13 +5,6 @@ import {Injectable, Inject} from "@angular/core";
 import * as modularService from "../../../service/modular/modular";
 @Injectable()
 export class ModularService{
-  /**
-   * 得到模块选择项
-   * @param account
-     */
-  getSelect = (account) => {
-    return modularService.getSelect(account);
-  }
 
   /**
    * 添加模块

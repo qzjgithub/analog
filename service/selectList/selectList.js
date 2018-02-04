@@ -32,6 +32,13 @@ const getProjectSelect = ()=>{
   });
 }
 
+/**
+ * 得到接口需要的选项
+ */
+const getInterfacesSelect = ()=>{
+  return dbutil.getSelectByName('method',{})
+}
+
 module.exports = {
-  getUserSelect,getProjectSelect
+  getUserSelect,getProjectSelect,getInterfacesSelect
 }

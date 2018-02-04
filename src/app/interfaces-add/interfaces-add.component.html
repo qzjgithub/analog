@@ -1,0 +1,45 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" class="content-form" style="margin-top: 30px;">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="url" nz-form-item-required>路径</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input [nzSize]="'large'" formControlName="url" [nzId]="'url'"></nz-input>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label nz-form-item-required>请求方法类型</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-select formControlName="method" [nzSize]="'large'">
+        <nz-option *ngFor="let m of method" [nzLabel]="m['text']" [nzValue]="m['value']"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label>接口编写者</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-select formControlName="writer" [nzSize]="'large'" [nzMode]="'multiple'" [nzPlaceHolder]="users.length?'可选择添加编写者':'暂无可添加的参与者'">
+        <nz-option *ngFor="let user of users" [nzLabel]="user['name']" [nzValue]="user['account']"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label>备注</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input formControlName="comment" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="''" [nzSize]="'large'">
+      </nz-input>
+    </div>
+  </div>
+  <div nz-form-item nz-row style="margin-bottom:8px;">
+    <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+      <button nz-button [nzSize]="'large'" [nzType]="'primary'">确定</button>
+      <button nz-button [nzSize]="'large'" (click)="backModular($event)">取消</button>
+    </div>
+  </div>
+</form>
