@@ -107,4 +107,9 @@ export class InterfacesAddComponent implements OnInit {
     });
   }
 
+  backModular(){
+    this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent})
+    return false;
+  }
+
 }

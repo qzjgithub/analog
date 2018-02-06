@@ -37,6 +37,7 @@ import { ModularAddComponent } from './modular-add/modular-add.component';
 import {MODULAR_PROVIDERS} from "../control/modular/modular.service";
 import {INTERFACES_PROVIDERS} from "../control/interfaces/interfaces.service";
 import { InterfacesAddComponent } from './interfaces-add/interfaces-add.component';
+import { InterfacesItemComponent } from './interfaces-item/interfaces-item.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -91,6 +92,7 @@ const routes: Routes = [
     ModularManageComponent,
     ModularAddComponent,
     InterfacesAddComponent,
+    InterfacesItemComponent,
   ],
   entryComponents :[
     ProjectModifyComponent

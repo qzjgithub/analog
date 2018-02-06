@@ -1,0 +1,8 @@
+<section *ngIf="empty" class="empty-panel">
+  <i class="anticon anticon-plus"></i>
+</section>
+<section *ngIf="!empty">
+  <span class="head">{{ head }}</span>
+  <span>{{ body }}</span>
+  <span class="tail">{{ tail }}</span>
+</section>

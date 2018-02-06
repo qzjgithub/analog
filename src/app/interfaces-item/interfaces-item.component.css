@@ -1,0 +1,15 @@
+.empty-panel{
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+}
+.empty-panel>.anticon-plus{
+  font-size: 40px;
+  color: #999999;
+}
+.head{
+  font-size: 16px;
+}
+.tail{
+  float: right;
+}

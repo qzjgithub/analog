@@ -19,7 +19,7 @@ import {InterfacesService} from "../../control/interfaces/interfaces.service";
   styleUrls: ['./modular-manage.component.css']
 })
 export class ModularManageComponent implements OnInit {
-  scope = 'modular';
+  scope:string;
 
   login: any;
 
@@ -40,6 +40,7 @@ export class ModularManageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.scope = sessionStorage.getItem('modularScope')||'modular';
     this.data = [];
     this.login = this.configService.getStateLogin();
     this.store.subscribe(()=>this.dealProject());
@@ -124,6 +125,7 @@ export class ModularManageComponent implements OnInit {
   }
 
   changeScope(){
+    sessionStorage.setItem('modularScope',this.scope);
     this.data = [];
     this.getList();
   }

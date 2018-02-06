@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InterfasesAddComponent } from './interfases-add.component';
+import { InterfacesItemComponent } from './interfaces-item.component';
 
-describe('InterfasesAddComponent', () => {
-  let component: InterfasesAddComponent;
-  let fixture: ComponentFixture<InterfasesAddComponent>;
+describe('InterfacesItemComponent', () => {
+  let component: InterfacesItemComponent;
+  let fixture: ComponentFixture<InterfacesItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InterfasesAddComponent ]
+      declarations: [ InterfacesItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InterfasesAddComponent);
+    fixture = TestBed.createComponent(InterfacesItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
