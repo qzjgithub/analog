@@ -146,6 +146,8 @@ export class ModularManageComponent implements OnInit {
   }
 
   backParent(){
+    this.scope = 'modular';
+    sessionStorage.setItem('modularScope','modular');
     if(!this.parent){
       sessionStorage.removeItem('projectId');
       this.store.dispatch(ProjectActions.getCurProject({}));
@@ -171,6 +173,10 @@ export class ModularManageComponent implements OnInit {
     .catch((err)=>{
       console.log(err);
     })
+  }
+
+  addInterfaces(e){
+    this.router.navigate([{outlets: {'modular': 'addInterfaces'}}],{relativeTo: this.route.parent})
   }
 
 }

@@ -43,6 +43,10 @@ export class InterfacesService{
     return interfacesService.addInterfaces(account,data);
   }
 
+  getFullPathByModularId(account,id){
+    return interfacesService.getFullPathByModularId(account,id,null,null);
+  }
+
 }
 
 export const INTERFACES_PROVIDERS: Array<any> = [

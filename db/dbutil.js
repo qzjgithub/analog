@@ -501,6 +501,7 @@ const createInterfaces = (db) => {
    CREATE TABLE IF NOT EXISTS interfaces(
    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    url TEXT,
+   fullPath TEXT,
    reg TEXT,
    method TEXT,
    parent INTEGER,

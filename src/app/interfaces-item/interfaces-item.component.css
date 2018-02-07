@@ -1,14 +1,22 @@
+section{
+  height: 32px;
+  line-height: 32px;
+  border: 1px solid #dddddd;
+  padding: 0 16px;
+  border-radius: 4px;
+}
 .empty-panel{
   text-align: center;
-  line-height: 30px;
   cursor: pointer;
 }
 .empty-panel>.anticon-plus{
-  font-size: 40px;
+  font-size: 20px;
   color: #999999;
 }
 .head{
   font-size: 16px;
+  display: inline-block;
+  width: 50px;
 }
 .tail{
   float: right;

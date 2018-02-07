@@ -16,17 +16,21 @@
 <div *ngIf="scope==='modular'">
   <card *ngIf="parent ? modular['writable']==='writer':project['writable']==='writer'" [empty]="true" (click)="addModular($event)"></card>
   <card
-    *ngFor="let p of data"
-    [title]="p['name']"
-    [tags]="p['tags']"
-    [content]="p['content']"
-    [data]="p"
-    [leftDisabled]="p['writable']!=='writer'"
-    (leftClick)="modifyModular(p)"
-    (rightClick)="childModular(p)"
+    *ngFor="let d of data"
+    [title]="d['name']"
+    [tags]="d['tags']"
+    [content]="d['content']"
+    [data]="d"
+    [leftDisabled]="d['writable']!=='writer'"
+    (leftClick)="modifyModular(d)"
+    (rightClick)="childModular(d)"
   ></card>
 </div>
 <div *ngIf="scope==='interfaces'">
-  <interfaces-item [empty]="true" [routerLink]="[{outlets:{modular:'addInterfaces'}}]"></interfaces-item>
-  <interfaces-item [head]="'POST'" [body]="'/aa/bb/ccc/ddd'" [tail]="'2018-11-01'"></interfaces-item>
+  <interfaces-item style="margin-bottom:8px;" [empty]="true" (click)="addInterfaces($event)"></interfaces-item>
+  <interfaces-item style="margin-bottom:8px;"
+                   *ngFor="let d of data"
+                   [head]="d['method']"
+                   [body]="d['fullPath']"
+                   [tail]="getDate(d['createdTime'])"></interfaces-item>
 </div>

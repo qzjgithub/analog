@@ -68,6 +68,17 @@ export class InterfacesAddComponent implements OnInit {
     this.setBreadcrumb();
     //this.getCurProject();
     this.getSelect();
+    this.getFullPath();
+  }
+
+  getFullPath(){
+    this.interfacesService.getFullPathByModularId(this.project['account'],this.modular['id'])
+      .then((path)=>{
+        console.log(path)
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
   }
 
   dealData(){

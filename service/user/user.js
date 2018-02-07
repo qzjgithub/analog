@@ -10,6 +10,7 @@ const validLoginUser = (data) => {
       .then((data) => {
         if(data.length){
           delete data[0]['password'];
+          dbuser['login'] = data[0];
           resolve(data[0]);
         }else{
           reject({ message:'用户名或密码错误' });

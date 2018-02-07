@@ -79,6 +79,41 @@ const addInterfaces = (account,data)=>{
   })*/
 }
 
+/**
+ * 根据模块id得到此模块的全路径
+ * @param account
+ * @param id
+ * @param path
+ */
+const getFullPathByModularId = (account,id,path,theres)=>{
+  path = path || [];
+  return new Promise((resolve,reject)=>{
+    if(!id){
+      resolve([]);
+      return;
+    }
+    dbmodular.getModularById(account,{login: dbuser['login']['account'],id:id})
+      .then((data)=>{
+        if(data.length){
+          path.unshift(data[0]['url']);
+          if(data[0]['parent']){
+            getFullPathByModularId(account,data[0]['parent'],path,theres || resolve);
+          }else{
+            resolve(path)
+            theres && theres(path);
+          }
+        }else{
+          resolve(path);
+          theres && theres(path);
+        }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  });
+}
+
 module.exports = {
-  getInterfacesByParent,getInterfacesAll,addInterfaces
+  getInterfacesByParent,getInterfacesAll,addInterfaces,
+  getFullPathByModularId
 }
