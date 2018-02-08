@@ -77,3 +77,52 @@ const removeDir = (prefix,name) => {
 }
 
 removeDir('data/','test');*/
+const fs = require('fs');
+const removeDir = (prefix,name,level,theres) => {
+  let path = prefix.join('') + name;
+  console.log(path);
+  return new Promise((resolve,reject)=> {
+    fs.existsSync(path) && fs.readdir(path, (err, files) => {
+      if(files.length){
+        theres = theres || resolve;
+        let file = files.shift();
+        let stat = fs.lstatSync(path + '/' + file);
+        if(stat.isDirectory()){
+          prefix.push(name+'/')
+          removeDir(prefix,file,level+1,theres);
+        }else{
+          fs.unlink(path + '/' + file, (err) => {
+            if (!err) {
+              removeDir(prefix,name,level,theres);
+            }else{
+              reject(err);
+            }
+          })
+        }
+      }else{
+        fs.rmdir(path, (err) => {
+          if (err) {
+            reject();
+          } else {
+            resolve();
+          }
+          console.log(level, prefix);
+          if(level!=0){
+            let n = prefix.pop().replace('/','');
+            removeDir(prefix,n,level-1, theres);
+          }else{
+            theres && theres();
+          }
+        });
+      }
+    })
+  })
+}
+
+removeDir(['data/'],'a',0)
+  .then(()=>{
+    console.log('ok');
+  })
+  .catch((err)=>{
+    console.log(err.message);
+  })

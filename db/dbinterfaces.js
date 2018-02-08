@@ -41,8 +41,54 @@ const getInterfacesAll = (account)=>{
   return dbutil.excuteProjectParam(sql,account,{},'all');
 }
 
+/**
+ * 根据路径和方法类型获取接口
+ * @param account
+ * @param data
+ */
+const getInterfacesByUrlAndMethod = (account,data)=>{
+  let sql = `
+  SELECT * FROM interfaces 
+  WHERE url=$url AND method=$method 
+  `;
+  let param = { url : data['url'], method : data['method']}
+  if(data['parent']){
+    sql += `AND parent=$parent;`
+    param['parent'] = data['parent'];
+  }else{
+    sql += `AND (parent IS NULL OR parent='');`
+  }
+
+  return dbutil.excuteProjectParam(sql,account,param,'all');
+}
+
+/**
+ * 添加接口
+ * @param account
+ * @param data
+ */
+const addInterfaces = (account,data)=>{
+  let sql = `
+  INSERT INTO interfaces VALUES(
+    NULL,
+    $url ,
+    $fullPath ,
+    $reg ,
+    $method ,
+    $parent ,
+    $comment ,
+    $creator ,
+    $createdTime
+  );
+  `;
+  data['createdTime'] = new Date();
+  return dbutil.excuteProjectParam(sql,account,data,'run');
+}
+
 module.exports = {
   getInterfacesByParent,
   getInterfacesInProject,
-  getInterfacesAll
+  getInterfacesAll,
+  getInterfacesByUrlAndMethod,
+  addInterfaces
 }

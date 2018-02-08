@@ -27,10 +27,12 @@
   ></card>
 </div>
 <div *ngIf="scope==='interfaces'">
-  <interfaces-item style="margin-bottom:8px;" [empty]="true" (click)="addInterfaces($event)"></interfaces-item>
-  <interfaces-item style="margin-bottom:8px;"
+  <interfaces-item [empty]="true" (click)="addInterfaces($event)"></interfaces-item>
+  <interfaces-item
                    *ngFor="let d of data"
                    [head]="d['method']"
                    [body]="d['fullPath']"
-                   [tail]="getDate(d['createdTime'])"></interfaces-item>
+                   [tail]="getDate(d['createdTime'])"
+                   (click)="gotoAnalog(d)"
+  ></interfaces-item>
 </div>

@@ -117,11 +117,11 @@ const getLoginRelation = (account,data)=>{
 const deleteProject = (account,del)=>{
   return new Promise((resolve,reject)=>{
     if(del){
-      dbproject.deleteProjectUser(account)
+      dbutil.removeProjectDir(account)
+        .then(()=>dbproject.deleteProjectUser(account))
         .then(()=>dbproject.deleteProject(account))
         .then(()=>{
           resolve();
-          dbutil.removeProjectDir(account)
         })
         .catch((err)=>{
           reject(err);

@@ -24,27 +24,7 @@ const addModular = (account, data)=>{
             reject({message: '不可能'});
           }else{
             let id = m[0]['id'];
-            let addRelation = (i) => {
-              if(!writers || i>=writers.length){
-                resolve();
-                return;
-              }
-              let writer = writers[i];
-              let relation = {
-                userAccount : writer,
-                type : 'modular',
-                relatedId : id,
-                relation : 'writer'
-              }
-              dbproject.addUserRelation(account,relation)
-              .then(()=>{
-                addRelation(++i);
-              })
-              .catch((err)=>{
-                reject(err)
-              })
-            }
-            addRelation(0);
+            addModularRelation(account,id,writers,resolve)
           }
         })
           .catch((err)=>{
@@ -58,6 +38,31 @@ const addModular = (account, data)=>{
   })
 }
 
+const addModularRelation = (account,id,writers,theres)=>{
+  return new Promise((resolve,reject)=>{
+    if(writers && writers.length){
+      theres = theres || resolve;
+      let writer = writers.shift();
+      let relation = {
+        userAccount : writer,
+        type : 'modular',
+        relatedId : id,
+        relation : 'writer'
+      }
+      dbuser.addUserRelation(account,relation)
+        .then(()=>{
+          addModularRelation(account,id,writers,theres)
+        })
+        .catch((err)=>{
+          theres && theres();
+          reject(err)
+        })
+    }else{
+      resolve();
+      theres && theres();
+    }
+  })
+}
 /**
  * 得到当前要展示的模块
  * @param account

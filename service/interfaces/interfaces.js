@@ -29,43 +29,30 @@ const getInterfacesAll = (account)=>{
  * @param data
  */
 const addInterfaces = (account,data)=>{
-  /*return new Promise((resolve,reject)=>{
-    dbmodular.getModularByName(account,{name: data['name']})
+  return new Promise((resolve,reject)=>{
+    dbinterfaces.getInterfacesByUrlAndMethod(account,{url: data['url'],method:data['method'],parent: data['parent']})
       .then((item)=>{
         if(item.length){
-          reject({message:'已存在相同名字的模块'})
+          reject({message:'已存在相同路径和请求类型的接口'})
         }else{
           let writers = data['writer'];
           let d = Object.assign({},data);
           delete d['writer'];
-          dbmodular.addModular(account,d)
-            .then(()=>dbmodular.getModularByName(account,{name:data['name']}))
+          d['reg'] = '';
+          if(d['fullPath'].match(/{.+?}/g)){
+            let reg = d['fullPath'];
+            reg = reg.replace(/\//g,'\\/');
+            reg = reg.replace(/{.+?}/g,'.+?');
+            d['reg'] = reg;
+          }
+          dbinterfaces.addInterfaces(account,d)
+            .then(()=>dbinterfaces.getInterfacesByUrlAndMethod(account,{url: data['url'],method:data['method'],parent: data['parent']}))
             .then((m)=>{
               if(!m.length) {
                 reject({message: '不可能'});
               }else{
                 let id = m[0]['id'];
-                let addRelation = (i) => {
-                  if(!writers || i>=writers.length){
-                    resolve();
-                    return;
-                  }
-                  let writer = writers[i];
-                  let relation = {
-                    userAccount : writer,
-                    type : 'modular',
-                    relatedId : id,
-                    relation : 'writer'
-                  }
-                  dbproject.addUserRelation(account,relation)
-                    .then(()=>{
-                      addRelation(++i);
-                    })
-                    .catch((err)=>{
-                      reject(err)
-                    })
-                }
-                addRelation(0);
+                addInterfacesRelation(account,id,writers,resolve);
               }
             })
             .catch((err)=>{
@@ -76,7 +63,33 @@ const addInterfaces = (account,data)=>{
       .catch((err)=>{
         reject(err);
       })
-  })*/
+  })
+}
+
+const addInterfacesRelation = (account,id,writers,theres)=>{
+  return new Promise((resolve,reject)=>{
+    if(writers && writers.length){
+      theres = theres || resolve;
+      let writer = writers.shift();
+      let relation = {
+        userAccount : writer,
+        type : 'interfaces',
+        relatedId : id,
+        relation : 'writer'
+      }
+      dbuser.addUserRelation(account,relation)
+        .then(()=>{
+          addModularRelation(account,id,writers,theres)
+        })
+        .catch((err)=>{
+          theres && theres();
+          reject(err)
+        })
+    }else{
+      resolve();
+      theres && theres();
+    }
+  })
 }
 
 /**

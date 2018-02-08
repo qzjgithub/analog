@@ -10,6 +10,7 @@ import {NzMessageService} from "ng-zorro-antd";
 
 import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
+import * as InterfacesActions from '../../control/interfaces/interfaces.action';
 import {UserService} from "../../control/user/user.service";
 import {InterfacesService} from "../../control/interfaces/interfaces.service";
 
@@ -176,6 +177,12 @@ export class ModularManageComponent implements OnInit {
   }
 
   addInterfaces(e){
+    this.router.navigate([{outlets: {'modular': 'addInterfaces'}}],{relativeTo: this.route.parent})
+  }
+
+  gotoAnalog(d){
+    sessionStorage.setItem('interfacesId',d['id']);
+    this.store.dispatch(InterfacesActions.getCurInterfaces(d));
     this.router.navigate([{outlets: {'modular': 'addInterfaces'}}],{relativeTo: this.route.parent})
   }
 

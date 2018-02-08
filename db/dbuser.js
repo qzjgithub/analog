@@ -4,6 +4,8 @@
 const sqlite3 = require('sqlite3').verbose();
 const dbutil = require('./dbutil');
 
+let login = {};
+
 /**
  * 验证是否登录成功
  * @param data
@@ -187,7 +189,26 @@ const getUserInAccount = (accounts)=>{
   return dbutil.excuteParam(sql, {}, 'run');
 }
 
+/**
+ * 添加用户和项目的关系
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const addUserRelation = (account,data)=>{
+  let sqls = `
+  INSERT INTO user_relation VALUES(
+    $userAccount ,
+    $type ,
+    $relatedId ,
+    $relation
+  );
+  `;
+  return dbutil.excuteProjectParam(sql,account,{},'run');
+}
+
 module.exports = {
+  login,
   getLoginUser,
   addUser,
   getValidUser,
@@ -198,5 +219,6 @@ module.exports = {
   getUserList,
   getUserByAccount,
   getWritableAccount,
-  getUserInAccount
+  getUserInAccount,
+  addUserRelation
 }

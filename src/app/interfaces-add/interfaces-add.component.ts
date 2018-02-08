@@ -29,6 +29,8 @@ export class InterfacesAddComponent implements OnInit {
 
   modular: any;
 
+  fullPath: string;
+
   _submitForm() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
@@ -40,14 +42,15 @@ export class InterfacesAddComponent implements OnInit {
       value['parent'] = this.modular['id'];
     }
     value['creator'] = this.login['account'];
-    /*this.interfacesService.addModular(this.project['account'],value)
+    value['fullPath'] = this.fullPath + value['url'];
+    this.interfacesService.addInterfaces(this.project['account'],value)
       .then(()=>{
-        this._message.create('success','添加模块成功');
+        this._message.create('success','添加接口成功');
         this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent});
       })
       .catch((err)=>{
         this._message.create('error',err.message);
-      })*/
+      })
   }
 
   constructor(
@@ -63,6 +66,7 @@ export class InterfacesAddComponent implements OnInit {
     this.users = [];
     this.method = [];
     this.modular = {};
+    this.fullPath = '';
     this.login = this.configService.getStateLogin();
     this.store.subscribe(()=>this.dealData());
     this.setBreadcrumb();
@@ -74,7 +78,7 @@ export class InterfacesAddComponent implements OnInit {
   getFullPath(){
     this.interfacesService.getFullPathByModularId(this.project['account'],this.modular['id'])
       .then((path)=>{
-        console.log(path)
+        this.fullPath = (this.project['url']||'') + path.join('');
       })
       .catch((err)=>{
         console.log(err);

@@ -127,41 +127,43 @@ const createDir = (name) => {
  * 删除某个目录
  * @param name
  */
-const removeDir = (prefix,name) => {
-  let path = prefix + name;
+const removeDir = (prefix,name,level,theres) => {
+  let path = prefix.join('') + name;
+  console.log(path);
   return new Promise((resolve,reject)=> {
     fs.existsSync(path) && fs.readdir(path, (err, files) => {
-      let rmfile = function (i) {
-        if (i < files.length) {
-          let stat = fs.lstatSync(path + '/' + files[i]);
-          if (stat.isDirectory()) {
-            removeDir(path + '/', files[i])
-              .then(() => {
-                rmfile(++i);
-              })
-              .catch((err) => {
-                reject(err);
-              })
-          } else {
-            fs.unlink(path + '/' + files[i], (err) => {
-              if (!err) {
-                rmfile(++i);
-              }else{
-                reject(err);
-              }
-            })
-          }
-        } else {
-          fs.rmdir(path, (err) => {
-            if (err) {
-              reject();
-            } else {
-              resolve();
+      if(files.length){
+        theres = theres || resolve;
+        let file = files.shift();
+        let stat = fs.lstatSync(path + '/' + file);
+        if(stat.isDirectory()){
+          prefix.push(name+'/')
+          removeDir(prefix,file,level+1,theres);
+        }else{
+          fs.unlink(path + '/' + file, (err) => {
+            if (!err) {
+              removeDir(prefix,name,level,theres);
+            }else{
+              reject(err);
             }
-          });
+          })
         }
+      }else{
+        fs.rmdir(path, (err) => {
+          if (err) {
+            reject();
+          } else {
+            resolve();
+          }
+          console.log(level, prefix);
+          if(level!=0){
+            let n = prefix.pop().replace('/','');
+            removeDir(prefix,n,level-1, theres);
+          }else{
+            theres && theres();
+          }
+        });
       }
-      rmfile(0);
     })
   })
 }
@@ -171,7 +173,7 @@ const removeDir = (prefix,name) => {
  * @param account
  */
 const removeProjectDir = (account) => {
-  return removeDir(dbroot,account);
+  return removeDir([dbroot],account,0);
 }
 
 /**
