@@ -217,6 +217,7 @@ export class ModularManageComponent implements OnInit {
       sessionStorage.setItem('modularId',data['id']);
       this.store.dispatch(ModularActions.getCurModular(data));
       this.setBreadcrumb();
+      this.getList();
     })
     .catch((err)=>{
       console.log(err);
