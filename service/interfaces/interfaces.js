@@ -105,7 +105,7 @@ const getFullPathByModularId = (account,id,path,theres)=>{
       resolve([]);
       return;
     }
-    dbmodular.getModularById(account,{login: dbuser['login']['account'],id:id})
+    dbmodular.getModularById(account,{id:id})
       .then((data)=>{
         if(data.length){
           path.unshift(data[0]['url']);
@@ -126,7 +126,37 @@ const getFullPathByModularId = (account,id,path,theres)=>{
   });
 }
 
+/**
+ * 根据id得到接口
+ * @param account
+ * @param data
+ */
+const getInterfacesById = (account,data)=>{
+  return new Promise((resolve,reject)=>{
+    dbinterfaces.getInterfacesById(account,data)
+      .then((inerfaces)=>{
+        if(inerfaces.length){
+          dbuser.getUserByAccount({ account: inerfaces[0]['creator']})
+            .then((user)=>{
+              if(user.length){
+                inerfaces[0]['creatorName'] = user[0]['name'];
+              }else{
+                inerfaces[0]['creatorName'] = '未知';
+              }
+              resolve(inerfaces[0]);
+            })
+        }else{
+          resolve();
+        }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+  })
+}
+
 module.exports = {
   getInterfacesByParent,getInterfacesAll,addInterfaces,
-  getFullPathByModularId
+  getFullPathByModularId,
+  getInterfacesById
 }

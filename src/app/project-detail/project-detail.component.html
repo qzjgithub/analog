@@ -54,7 +54,7 @@
           </li>
         </ul>
       </nz-collapse>
-      <nz-collapse *ngFor="let m of modulars;let i = index"  [nzActive]="parent===m['id']">
+      <nz-collapse *ngFor="let m of modulars;let i = index"  [nzActive]="!interfaces['id'] && parent===m['id']">
         <header collapse-title class="baseinfo-header">
           <span>{{m['name']}}</span>
           <span class="baseinfo-operate">
@@ -83,6 +83,42 @@
             <span nz-col [nzSm]="6" [nzXs]="24">备注信息</span>
             <span nz-col [nzSm]="2" [nzXs]="24">:</span>
             <span nz-col [nzSm]="16" [nzXs]="24">{{m['comment']}}</span>
+          </li>
+        </ul>
+      </nz-collapse>
+      <nz-collapse [nzActive]="true" *ngIf="interfaces && interfaces['id']">
+        <header collapse-title class="baseinfo-header">
+          <span>{{interfaces['url']}}</span>
+          <span class="baseinfo-operate">
+            <i *ngIf="interfaces.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyInterfaces($event)"></i>
+            <i *ngIf="interfaces.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteInterfaces($event)"></i>
+          </span>
+        </header>
+        <ul class="baseinfo-body">
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">请球类型</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{interfaces['method']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">完整路径</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{interfaces['fullPath']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建者</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{interfaces['creatorName']}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">创建时间</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{getDate(interfaces['createdTime'])}}</span>
+          </li>
+          <li nz-row>
+            <span nz-col [nzSm]="6" [nzXs]="24">备注信息</span>
+            <span nz-col [nzSm]="2" [nzXs]="24">:</span>
+            <span nz-col [nzSm]="16" [nzXs]="24">{{interfaces['comment']}}</span>
           </li>
         </ul>
       </nz-collapse>

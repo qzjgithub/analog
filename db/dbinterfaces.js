@@ -63,6 +63,26 @@ const getInterfacesByUrlAndMethod = (account,data)=>{
 }
 
 /**
+ * 根据Id获取接口
+ * @param account
+ * @param data
+ */
+const getInterfacesById = (account,data)=>{
+  let sql = `
+SELECT
+int.* 
+`;
+  if(data['login']){
+    sql += `,
+(SELECT ur.relation FROM user_relation ur WHERE int.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
+(SELECT ur.relation FROM user_relation ur WHERE int.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern `
+  }
+  sql += `FROM interfaces int
+WHERE id=$id;`
+  return dbutil.excuteProjectParam(sql,account,{ id: data['id']},'all');
+}
+
+/**
  * 添加接口
  * @param account
  * @param data
@@ -90,5 +110,6 @@ module.exports = {
   getInterfacesInProject,
   getInterfacesAll,
   getInterfacesByUrlAndMethod,
+  getInterfacesById,
   addInterfaces
 }

@@ -1,6 +1,9 @@
-.modular-back{
+.modular-operate{
   float: right;
   font-size: 20px;
   margin-right: 8px;
+}
+.modular-operate .anticon{
+  margin-left: 8px;
   cursor: pointer;
 }

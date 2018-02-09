@@ -43,8 +43,23 @@ export class InterfacesService{
     return interfacesService.addInterfaces(account,data);
   }
 
+  /**
+   * 根据模块id得到其下接口的全路径
+   * @param account
+   * @param id
+   * @returns {any}
+   */
   getFullPathByModularId(account,id){
     return interfacesService.getFullPathByModularId(account,id,null,null);
+  }
+
+  /**
+   * 根据id获得接口
+   * @param account
+   * @param data
+   */
+  getInterfacesById(account,data){
+    return interfacesService.getInterfacesById(account,data);
   }
 
 }

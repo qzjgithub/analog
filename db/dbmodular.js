@@ -77,12 +77,15 @@ const getModularByParent = (account,data)=>{
 const getModularById = (account,data)=>{
   let sql = `
 SELECT
-m.*,
-(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
-(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern
-FROM modular m
-WHERE id=$id;
+m.* 
 `;
+  if(data['login']){
+    sql += `,
+(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='write' AND ur.userAccount='`+data['login']+`') AS writable ,
+(SELECT ur.relation FROM user_relation ur WHERE m.id=ur.relatedId AND ur.type='modular' AND ur.relation='concern' AND ur.userAccount='`+data['login']+`') AS concern `
+  }
+  sql += `FROM modular m
+WHERE id=$id;`
   return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'all');
 }
 /**

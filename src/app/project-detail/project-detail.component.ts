@@ -13,6 +13,8 @@ import {ProjectModifyComponent} from '../project-modify/project-modify.component
 import {ModularService} from "../../control/modular/modular.service";
 
 import * as ModularActions from '../../control/modular/modular.action';
+import * as InterfacesActions from '../../control/interfaces/interfaces.action';
+import {InterfacesService} from "../../control/interfaces/interfaces.service";
 
 @Component({
   selector: 'app-project-detail',
@@ -33,26 +35,33 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
 
   parent:any;
 
+  interfaces:any;
+
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private configService: ConfigService,
     private _message: NzMessageService,
     private projectService: ProjectService,
     private modularService: ModularService,
+    private interfacesService: InterfacesService,
     private modalService: NzModalService,
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.project = {};
+    this.modulars = [];
+    this.interfaces = {};
     this.isConfirmLoading = false;
     this.login = this.configService.getStateLogin();
     this.store.subscribe(()=> this.dealData());
-    //this.dealData();
-    this.setBreadcrumb();
+    // this.dealData();
+    // this.setBreadcrumb();
   }
 
   dealData(){
     this.dealProject();
     this.dealModulars();
+    this.dealInterfaces();
   }
 
   dealProject(){
@@ -126,6 +135,34 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     })
   }
 
+  dealInterfaces(){
+    if(!this.project||!this.project['account']){
+      return;
+    }
+    const state = this.store.getState();
+    this.interfaces = state['interfaces']['interfaces'];
+    if(!this.interfaces || !this.interfaces['id']){
+      let interfacesId = sessionStorage.getItem('interfacesId');
+      if(interfacesId){
+        this.interfacesService.getInterfacesById(this.project['account'],{ id: interfacesId, login: this.login['account']})
+          .then((data)=>{
+            if(data){
+              let interfaces = data;
+              if(this.login['role']==='admin'||this.project['writable']==='writer'){
+                interfaces['writable'] = 'writer';
+              }else if(this.modulars.length){
+                if(this.modulars[this.modulars.length-1]['writable']==='writer'){
+                  interfaces['writable'] = 'writer';
+                }
+              }
+              console.log(interfaces);
+              this.store.dispatch(InterfacesActions.getCurInterfaces(interfaces));
+            }
+          })
+      }
+    }
+  }
+
   ngOnInit() {
   }
 
@@ -135,6 +172,8 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     sessionStorage.removeItem('projectId');
     this.store.dispatch(ModularActions.clearModular());
     sessionStorage.removeItem('modularId');
+    this.store.dispatch(InterfacesActions.getCurInterfaces({}));
+    sessionStorage.removeItem('interfacesId');
   }
 
   setBreadcrumb(){
@@ -241,5 +280,9 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
       }
     })
   }
+
+  modifyInterfaces(e){}
+
+  deleteInterfaces(e){}
 
 }

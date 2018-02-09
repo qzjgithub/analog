@@ -75,7 +75,7 @@ export class ModularAddComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['添加模块'],3));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['项目管理','项目详情','添加模块'],1));
   }
 
   getSelect(){

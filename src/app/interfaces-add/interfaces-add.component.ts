@@ -92,7 +92,7 @@ export class InterfacesAddComponent implements OnInit {
   }
 
   setBreadcrumb(){
-    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['添加接口'],3));
+    this.store.dispatch(ConfigActions.setBreadcrumbsAction(['项目管理','项目详情','添加接口'],1));
   }
 
   getSelect(){

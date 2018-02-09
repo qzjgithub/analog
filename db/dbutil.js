@@ -71,6 +71,7 @@ const excuteParam = (sqlStr, data, method) => {
             console.log(err);
             reject(err);
           }else{
+            console.log(sqlStr);
             console.log(data);
             resolve(data);
           }
@@ -104,6 +105,7 @@ const excuteProjectParam = (sqlStr,account, data, method) => {
             console.log(err);
             reject(err);
           }else{
+            console.log(sqlStr);
             console.log(data);
             resolve(data);
           }

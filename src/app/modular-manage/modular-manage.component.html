@@ -12,7 +12,20 @@
     <span>相关用户</span>
   </label>
 </nz-radio-group>
-<i class="anticon anticon-rollback modular-back" style="float: right" (click)="backParent()"></i>
+<aside class="modular-operate">
+  <i *ngIf="manage"  nz-tooltip="删除" class="anticon anticon-delete"></i>
+  <i *ngIf="manage"  nz-tooltip="退出管理"
+     class="anticon anticon-logout"
+     (click)="changeManage($event)"
+  ></i>
+  <i *ngIf="!manage&&(scope==='interfaces'||scope==='allInterfaces')"
+     class="anticon anticon-setting"
+     nz-tooltip="管理"
+     (click)="changeManage($event)"
+  ></i>
+  <i class="anticon anticon-rollback" nz-tooltip="返回" (click)="backParent()"></i>
+</aside>
+
 <div *ngIf="scope==='modular'">
   <card *ngIf="parent ? modular['writable']==='writer':project['writable']==='writer'" [empty]="true" (click)="addModular($event)"></card>
   <card
@@ -26,13 +39,14 @@
     (rightClick)="childModular(d)"
   ></card>
 </div>
-<div *ngIf="scope==='interfaces'">
-  <interfaces-item [empty]="true" (click)="addInterfaces($event)"></interfaces-item>
+<div *ngIf="scope==='interfaces'|| scope==='allInterfaces'">
+  <interfaces-item [empty]="true" (click)="addInterfaces($event)" style="cursor: pointer;"></interfaces-item>
   <interfaces-item
                    *ngFor="let d of data"
                    [head]="d['method']"
                    [body]="d['fullPath']"
                    [tail]="getDate(d['createdTime'])"
                    (click)="gotoAnalog(d)"
+                   style="cursor: pointer;"
   ></interfaces-item>
 </div>

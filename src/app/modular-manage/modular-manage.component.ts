@@ -20,16 +20,39 @@ import {InterfacesService} from "../../control/interfaces/interfaces.service";
   styleUrls: ['./modular-manage.component.css']
 })
 export class ModularManageComponent implements OnInit {
+  /**
+   * 当前展示的内容类型
+   */
   scope:string;
 
+  /**
+   * 当前页面是否处于管理模式
+   */
+  manage:boolean;
+
+  /**
+   * 登录的用户信息
+   */
   login: any;
 
+  /**
+   * 当前项目信息
+   */
   project : any;
 
+  /**
+   * 当前负模块id
+   */
   parent: any;
 
+  /**
+   * 当前模块信息
+   */
   modular: any;
 
+  /**
+   * 当前展示的具体内容数据
+   */
   data: Array<any>;
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
@@ -42,12 +65,14 @@ export class ModularManageComponent implements OnInit {
     private router: Router
   ) {
     this.scope = sessionStorage.getItem('modularScope')||'modular';
+    this.manage = false;
     this.data = [];
+    this.parent = sessionStorage.getItem('modularId');
     this.login = this.configService.getStateLogin();
     this.store.subscribe(()=>this.dealProject());
-    this.setBreadcrumb();
     this.dealProject();
-
+    this.getList();
+    this.setBreadcrumb();
   }
 
   ngOnInit() {
@@ -122,18 +147,36 @@ export class ModularManageComponent implements OnInit {
     this.project = state['project']['project'];
     this.modular = state['modular']['modular'];
     this.parent = this.modular['id'];
-    this.getList();
+    // this.getList();
   }
 
   changeScope(){
     sessionStorage.setItem('modularScope',this.scope);
     this.data = [];
     this.getList();
+    this.setBreadcrumb();
   }
 
   setBreadcrumb(){
     if(this.parent){
-      this.store.dispatch(ConfigActions.setBreadcrumbsAction(['模块管理'],3));
+      let name = '';
+      switch(this.scope){
+        case 'modular':
+          name = '模块管理';
+          break;
+        case 'interfaces':
+          name = '接口管理';
+          break;
+        case 'allInterfaces':
+          name = '接口管理';
+          break;
+        case 'user':
+          name = '用户管理';
+          break;
+      }
+      this.store.dispatch(ConfigActions.setBreadcrumbsAction(['项目管理','项目详情',name],1));
+    }else{
+      this.store.dispatch(ConfigActions.setBreadcrumbsAction(['项目管理','项目详情'],1));
     }
   }
 
@@ -147,6 +190,7 @@ export class ModularManageComponent implements OnInit {
   }
 
   backParent(){
+    this.manage = false;
     this.scope = 'modular';
     sessionStorage.setItem('modularScope','modular');
     if(!this.parent){
@@ -154,7 +198,9 @@ export class ModularManageComponent implements OnInit {
       this.store.dispatch(ProjectActions.getCurProject({}));
       this.router.navigate([{outlets: {'content': 'project'}}],{relativeTo: this.route.parent.parent});
     }else{
+      this.data = [];
       this.store.dispatch(ModularActions.backLastModular());
+      this.setBreadcrumb();
     }
   }
 
@@ -170,6 +216,7 @@ export class ModularManageComponent implements OnInit {
       }
       sessionStorage.setItem('modularId',data['id']);
       this.store.dispatch(ModularActions.getCurModular(data));
+      this.setBreadcrumb();
     })
     .catch((err)=>{
       console.log(err);
@@ -181,9 +228,15 @@ export class ModularManageComponent implements OnInit {
   }
 
   gotoAnalog(d){
-    sessionStorage.setItem('interfacesId',d['id']);
-    this.store.dispatch(InterfacesActions.getCurInterfaces(d));
-    this.router.navigate([{outlets: {'modular': 'addInterfaces'}}],{relativeTo: this.route.parent})
+    if(!this.manage){
+      sessionStorage.setItem('interfacesId',d['id']);
+      // this.store.dispatch(InterfacesActions.getCurInterfaces(d));
+      this.router.navigate([{outlets: {'modular': 'analog'}}],{relativeTo: this.route.parent})
+    }
+  }
+
+  changeManage(e){
+    this.manage = !this.manage;
   }
 
 }
