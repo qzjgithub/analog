@@ -122,7 +122,8 @@ const deleteModular = (account,data)=>{
             if (interfaces.length) {
               reject({message: '该模块下存在接口，不可删除'});
             } else {
-              dbmodular.deleteModular(account,data)
+              dbmodular.deleteModularUserByModularId(account,data)
+              .then(()=>dbmodular.deleteModular(account,data))
               .then(()=>{
                 resolve();
               })

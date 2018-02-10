@@ -155,8 +155,20 @@ const getInterfacesById = (account,data)=>{
   })
 }
 
+/**
+ * 根据接口id删除接口
+ * @param account
+ * @param data
+ */
+const deleteInterfacesInIds = (account,data)=>{
+  return dbanalog.deleteAnalogInInterfacesIds(account,data)
+  .then(()=>dbinterfaces.deleteInterfacesUserByInterfacesId(account,data))
+  .then(()=>dbinterfaces.deleteInterfacesInIds(account,data));
+}
+
 module.exports = {
   getInterfacesByParent,getInterfacesAll,addInterfaces,
   getFullPathByModularId,
-  getInterfacesById
+  getInterfacesById,
+  deleteInterfacesInIds
 }

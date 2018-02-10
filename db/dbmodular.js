@@ -77,7 +77,7 @@ const getModularByParent = (account,data)=>{
 const getModularById = (account,data)=>{
   let sql = `
 SELECT
-m.* 
+m.*
 `;
   if(data['login']){
     sql += `,
@@ -101,9 +101,22 @@ const deleteModular = (account,data)=>{
   `;
   return dbutil.excuteProjectParam(sql,account,{ id: data['id'] },'run');
 }
+
+/**
+ * 根据modular的id删除用户关系
+ */
+const deleteModularUserByModularId = (account,data)=>{
+  let sql = `
+  DELETE FROM user_relation
+  WHERE relatedId=$relatedId AND type='modular'
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,{ relatedId: data['id'] },'run');
+}
 module.exports = {
   getModularByName,addModular,
   getModularInProject,getModularByParent,
   getModularById,
-  deleteModular
+  deleteModular,
+  deleteModularUserByModularId
 }

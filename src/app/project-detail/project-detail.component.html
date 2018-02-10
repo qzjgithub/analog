@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-sider [nzWidth]="300" style="background:#fff">
     <nz-collapseset [nzBordered]="false" class="baseinfo-content">
-      <nz-collapse [nzActive]="!parent">
+      <nz-collapse [nzActive]="!parent && !interfaces['id']">
         <header collapse-title class="baseinfo-header">
           <span>{{project['name']}}</span>
           <span class="baseinfo-operate">
@@ -91,7 +91,7 @@
           <span>{{interfaces['url']}}</span>
           <span class="baseinfo-operate">
             <i *ngIf="interfaces.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyInterfaces($event)"></i>
-            <i *ngIf="interfaces.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteInterfaces($event)"></i>
+            <i *ngIf="interfaces.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteInterfaces($event,interfaces['id'])"></i>
           </span>
         </header>
         <ul class="baseinfo-body">

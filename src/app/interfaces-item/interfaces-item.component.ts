@@ -3,7 +3,10 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'interfaces-item',
   templateUrl: './interfaces-item.component.html',
-  styleUrls: ['./interfaces-item.component.css']
+  styleUrls: ['./interfaces-item.component.css'],
+  host:{
+    style:'cusor:pointer;display:block;margin-bottom:8px;'
+  }
 })
 export class InterfacesItemComponent implements OnInit {
 

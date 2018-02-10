@@ -62,6 +62,16 @@ export class InterfacesService{
     return interfacesService.getInterfacesById(account,data);
   }
 
+  /**
+   * 删除接口
+   * @param account
+   * @param data
+   * @returns {any}
+     */
+  deleteInterfacesInIds(account,data){
+    return interfacesService.deleteInterfacesInIds(account,data);
+  }
+
 }
 
 export const INTERFACES_PROVIDERS: Array<any> = [

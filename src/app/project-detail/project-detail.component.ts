@@ -283,6 +283,29 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
 
   modifyInterfaces(e){}
 
-  deleteInterfaces(e){}
+  deleteInterfaces(e,id){
+    e.stopPropagation();
+    const modal = this.modalService.confirm({
+      title   : '删除接口',
+      content : '如果该接口下存在模拟数据，模拟数据将被一起删除，确认删除吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.interfacesService.deleteInterfacesInIds(this.project['account'],[id])
+            .then(()=>{
+              resolve();
+              this.store.dispatch(InterfacesActions.getCurInterfaces({}));
+            })
+            .catch((err)=>{
+              this._message.create('error',err.message);
+              resolve();
+            })
+        })
+      }
+    })
+  }
 
 }

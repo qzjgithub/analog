@@ -13,7 +13,7 @@
   </label>
 </nz-radio-group>
 <aside class="modular-operate">
-  <i *ngIf="manage"  nz-tooltip="删除" class="anticon anticon-delete"></i>
+  <i *ngIf="manage"  nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteInterfaces($event)"></i>
   <i *ngIf="manage"  nz-tooltip="退出管理"
      class="anticon anticon-logout"
      (click)="changeManage($event)"
@@ -40,13 +40,13 @@
   ></card>
 </div>
 <div *ngIf="scope==='interfaces'|| scope==='allInterfaces'">
-  <interfaces-item [empty]="true" (click)="addInterfaces($event)" style="cursor: pointer;"></interfaces-item>
+  <interfaces-item *ngIf="!manage" [empty]="true" (click)="addInterfaces($event)"></interfaces-item>
   <interfaces-item
                    *ngFor="let d of data"
                    [head]="d['method']"
                    [body]="d['fullPath']"
                    [tail]="getDate(d['createdTime'])"
                    (click)="gotoAnalog(d)"
-                   style="cursor: pointer;"
+                   [class]="selectedId.indexOf(d['id'])>-1?'interfaces-selected':''"
   ></interfaces-item>
 </div>

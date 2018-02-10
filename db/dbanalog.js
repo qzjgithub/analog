@@ -6,13 +6,13 @@
  * @param account
  * @param data
  */
-const deleteAnalogByInterfacesIds = (account,data)=>{
+const deleteAnalogInInterfacesIds = (account,data)=>{
   let sql = `
-  DELETE FROM anglog 
+  DELETE FROM analog
   WHERE parent IN (`+data.join(',')+`);
   ;`;
   return dbutil.excuteProjectParam(sql,account,{},'run');
 }
 module.exports = {
-  deleteAnalogByInterfacesIds
+  deleteAnalogInInterfacesIds
 }

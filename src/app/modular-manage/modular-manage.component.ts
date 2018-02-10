@@ -6,7 +6,7 @@ import {AppState} from "../../control/app.reducer";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ModularService} from "../../control/modular/modular.service";
 import {ConfigService} from "../../control/config/config.service";
-import {NzMessageService} from "ng-zorro-antd";
+import {NzModalService,NzMessageService} from "ng-zorro-antd";
 
 import * as ProjectActions from '../../control/project/project.action';
 import * as ModularActions from '../../control/modular/modular.action';
@@ -54,6 +54,11 @@ export class ModularManageComponent implements OnInit {
    * 当前展示的具体内容数据
    */
   data: Array<any>;
+
+  /**
+   * 被选中的数据的id
+   */
+  selectedId: Array<any>;
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private _message: NzMessageService,
@@ -61,12 +66,14 @@ export class ModularManageComponent implements OnInit {
     private userService:UserService,
     private modularService: ModularService,
     private interfacesService: InterfacesService,
+    private modalService: NzModalService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.scope = sessionStorage.getItem('modularScope')||'modular';
     this.manage = false;
     this.data = [];
+    this.selectedId = [];
     this.parent = sessionStorage.getItem('modularId');
     this.login = this.configService.getStateLogin();
     this.store.subscribe(()=>this.dealProject());
@@ -153,6 +160,7 @@ export class ModularManageComponent implements OnInit {
   changeScope(){
     sessionStorage.setItem('modularScope',this.scope);
     this.data = [];
+    this.selectedId = [];
     this.getList();
     this.setBreadcrumb();
   }
@@ -233,11 +241,45 @@ export class ModularManageComponent implements OnInit {
       sessionStorage.setItem('interfacesId',d['id']);
       // this.store.dispatch(InterfacesActions.getCurInterfaces(d));
       this.router.navigate([{outlets: {'modular': 'analog'}}],{relativeTo: this.route.parent})
+    }else{
+      let id = d['id'];
+      let index = this.selectedId.indexOf(id);
+      if(index>-1){
+        this.selectedId.splice(index,1);
+      }else{
+        this.selectedId.push(id);
+      }
     }
   }
 
   changeManage(e){
     this.manage = !this.manage;
+    this.selectedId = [];
+  }
+
+  deleteInterfaces(e){
+    e.stopPropagation();
+    const modal = this.modalService.confirm({
+      title   : '删除接口',
+      content : '如果该接口下存在模拟数据，模拟数据将被一起删除，确认删除吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.interfacesService.deleteInterfacesInIds(this.project['account'],this.selectedId)
+            .then(()=>{
+              resolve();
+              this.store.dispatch(InterfacesActions.getCurInterfaces());
+            })
+            .catch((err)=>{
+              this._message.create('error',err.message);
+              resolve();
+            })
+        })
+      }
+    })
   }
 
 }

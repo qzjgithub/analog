@@ -48,8 +48,8 @@ const getInterfacesAll = (account)=>{
  */
 const getInterfacesByUrlAndMethod = (account,data)=>{
   let sql = `
-  SELECT * FROM interfaces 
-  WHERE url=$url AND method=$method 
+  SELECT * FROM interfaces
+  WHERE url=$url AND method=$method
   `;
   let param = { url : data['url'], method : data['method']}
   if(data['parent']){
@@ -70,7 +70,7 @@ const getInterfacesByUrlAndMethod = (account,data)=>{
 const getInterfacesById = (account,data)=>{
   let sql = `
 SELECT
-int.* 
+int.*
 `;
   if(data['login']){
     sql += `,
@@ -105,11 +105,39 @@ const addInterfaces = (account,data)=>{
   return dbutil.excuteProjectParam(sql,account,data,'run');
 }
 
+/**
+ * 根据id删除接口
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const deleteInterfacesInIds = (account,data)=>{
+  let sql = `
+  DELETE FROM interfaces
+  WHERE id IN (`+data.join(',')+`);
+  ;`;
+  return dbutil.excuteProjectParam(sql,account,{},'run');
+}
+/**
+ * 根据interfaces的id删除用户关系
+ */
+const deleteInterfacesUserByInterfacesId = (account,data)=>{
+  let sql = `
+  DELETE FROM user_relation
+  WHERE type='interfaces' AND
+  relatedId In (`+data.join(',')+`)
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,{ relatedId: data['id'] },'run');
+}
+
 module.exports = {
   getInterfacesByParent,
   getInterfacesInProject,
   getInterfacesAll,
   getInterfacesByUrlAndMethod,
   getInterfacesById,
-  addInterfaces
+  addInterfaces,
+  deleteInterfacesInIds,
+  deleteInterfacesUserByInterfacesId
 }
