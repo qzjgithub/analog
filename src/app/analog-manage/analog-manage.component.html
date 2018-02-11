@@ -1,3 +1,6 @@
-<p>
-  analog-manage works!
-</p>
+<header>
+  <button nz-button  [nzType]="'primary'" (click)="addAnalog($event)">添加</button>
+</header>
+<aside class="analog-operate">
+  <i class="anticon anticon-rollback" nz-tooltip="返回" (click)="backModular($event)"></i>
+</aside>

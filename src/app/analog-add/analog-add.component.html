@@ -1,0 +1,57 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" class="content-form" style="margin-top: 30px;">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label nz-form-item-required>保存方式</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-select formControlName="saveType" [nzSize]="'large'" [nzMode]="'multiple'" >
+        <nz-option *ngFor="let st of saveType" [nzLabel]="st['text']" [nzValue]="st['value']"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label nz-form-item-required>响应数据类型</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-select formControlName="dataType" [nzSize]="'large'" [nzMode]="'multiple'" >
+        <nz-option *ngFor="let st of dataType" [nzLabel]="st['text']" [nzValue]="st['value']"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label>响应数据状态</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <nz-switch formControlName="active">
+        <span checked>激活</span>
+        <span unchecked>关闭</span>
+      </nz-switch>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label>备注</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input formControlName="comment" [nzRows]="2" [nzType]="'textarea'" [nzPlaceHolder]="''" [nzSize]="'large'">
+      </nz-input>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label nz-form-item-required>数据</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-input formControlName="data" [nzRows]="12" [nzType]="'textarea'" [nzPlaceHolder]="''" [nzSize]="'large'">
+      </nz-input>
+    </div>
+  </div>
+  <div nz-form-item nz-row style="margin-bottom:8px;">
+    <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+      <button nz-button [nzSize]="'large'" [nzType]="'primary'">确定</button>
+      <button nz-button [nzSize]="'large'" (click)="backModular($event)">取消</button>
+    </div>
+  </div>
+</form>

@@ -39,6 +39,15 @@ const getInterfacesSelect = ()=>{
   return dbutil.getSelectByName('method',{})
 }
 
+/**
+ * 得到模拟数据需要的选项
+ */
+const getAnalogSelect = ()=>{
+  return dbutil.getSelectByName('saveType',{})
+    .then((data)=>dbutil.getSelectByName('dataType',data));
+}
+
 module.exports = {
-  getUserSelect,getProjectSelect,getInterfacesSelect
+  getUserSelect,getProjectSelect,getInterfacesSelect,
+  getAnalogSelect
 }

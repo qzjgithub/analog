@@ -1,0 +1,12 @@
+header{
+  display: inline-block;
+}
+.analog-operate{
+  float: right;
+  font-size: 20px;
+  margin-right: 8px;
+}
+.analog-operate .anticon{
+  margin-left: 8px;
+  cursor: pointer;
+}

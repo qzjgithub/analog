@@ -404,7 +404,10 @@ const initSelectSelect = () => {
     { name: 'method', value: 'GET', text: 'GET'},
     { name: 'method', value: 'POST', text: 'POST'},
     { name: 'method', value: 'DELETE', text: 'DELETE'},
-    { name: 'method', value: 'PUT', text: 'PUT'}
+    { name: 'method', value: 'PUT', text: 'PUT'},
+    { name: 'saveType', value: 'text', text: '文本'},
+    { name: 'saveType', value: 'file', text: '文件'},
+    { name: 'dataType', value: 'json', text: 'JSON'}
   ];
   for(let i = 0;i<datas.length;i++){
     addSelect(datas[i]);

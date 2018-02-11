@@ -259,6 +259,9 @@ export class ModularManageComponent implements OnInit {
 
   deleteInterfaces(e){
     e.stopPropagation();
+    if(!this.selectedId.length){
+      this._message.create('warning','请至少选择一条数据')
+    }
     const modal = this.modalService.confirm({
       title   : '删除接口',
       content : '如果该接口下存在模拟数据，模拟数据将被一起删除，确认删除吗？',
@@ -271,7 +274,7 @@ export class ModularManageComponent implements OnInit {
           this.interfacesService.deleteInterfacesInIds(this.project['account'],this.selectedId)
             .then(()=>{
               resolve();
-              this.store.dispatch(InterfacesActions.getCurInterfaces());
+              this.getList();
             })
             .catch((err)=>{
               this._message.create('error',err.message);

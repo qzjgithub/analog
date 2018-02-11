@@ -1,7 +1,7 @@
 /**
  * Created by admin on 2018/2/2.
  */
-import {Injectable, Inject} from "@angular/core";
+import {Injectable} from "@angular/core";
 import * as interfacesService from "../../../service/interfaces/interfaces";
 import { getInterfacesSelect } from "../../../service/selectList/selectList";
 @Injectable()

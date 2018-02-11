@@ -39,6 +39,8 @@ import {INTERFACES_PROVIDERS} from "../control/interfaces/interfaces.service";
 import { InterfacesAddComponent } from './interfaces-add/interfaces-add.component';
 import { InterfacesItemComponent } from './interfaces-item/interfaces-item.component';
 import { AnalogManageComponent } from './analog-manage/analog-manage.component';
+import { AnalogAddComponent } from './analog-add/analog-add.component';
+import {ANALOG_PROVIDERS} from "../control/analog/analog.service";
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -63,6 +65,7 @@ const routes: Routes = [
       {path:'addModular',component: ModularAddComponent , outlet: 'modular' },
       {path:'addInterfaces',component: InterfacesAddComponent , outlet: 'modular' },
       {path:'analog',component: AnalogManageComponent , outlet: 'modular' },
+      {path:'addAnalog',component: AnalogAddComponent , outlet: 'modular' },
     ]},
   ]}
 ]
@@ -96,6 +99,7 @@ const routes: Routes = [
     InterfacesAddComponent,
     InterfacesItemComponent,
     AnalogManageComponent,
+    AnalogAddComponent,
   ],
   entryComponents :[
     ProjectModifyComponent
@@ -116,7 +120,8 @@ const routes: Routes = [
     CONFIG_PROVIDERS,
     PROJECT_PROVIDERS,
     MODULAR_PROVIDERS,
-    INTERFACES_PROVIDERS
+    INTERFACES_PROVIDERS,
+    ANALOG_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

@@ -298,6 +298,7 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
             .then(()=>{
               resolve();
               this.store.dispatch(InterfacesActions.getCurInterfaces({}));
+              this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route});
             })
             .catch((err)=>{
               this._message.create('error',err.message);
