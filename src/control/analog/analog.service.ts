@@ -6,8 +6,31 @@ import * as analogService from "../../../service/analog/analog";
 import { getAnalogSelect } from "../../../service/selectList/selectList";
 @Injectable()
 export class AnalogService{
+  /**
+   * 得到添加选择项
+   * @returns {any}
+   */
   getSelect(){
     return getAnalogSelect();
+  }
+
+  /**
+   * 添加模拟数据
+   * @param account
+   * @param data
+   * @returns {any|undefined}
+   */
+  addAnalog(account,data){
+    return analogService.addAnalog(account,data);
+  }
+
+  /**
+   * 根据接口id获取模拟数据
+   * @param account
+   * @param id
+   */
+  getAnalogByParent(account,id){
+    return analogService.getAnalogByParent(account,id);
   }
 }
 

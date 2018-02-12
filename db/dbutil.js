@@ -540,6 +540,7 @@ const createAnalog = (db) => {
    data TEXT,
    dataType TEXT,
    parent INTEGER,
+   active BOOLEAN,
    comment TEXT,
    creator TEXT,
    createdTime DATE ,

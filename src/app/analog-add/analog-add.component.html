@@ -4,7 +4,7 @@
       <label nz-form-item-required>保存方式</label>
     </div>
     <div nz-form-control nz-col [nzSpan]="14">
-      <nz-select formControlName="saveType" [nzSize]="'large'" [nzMode]="'multiple'" >
+      <nz-select formControlName="saveType" [nzSize]="'large'">
         <nz-option *ngFor="let st of saveType" [nzLabel]="st['text']" [nzValue]="st['value']"></nz-option>
       </nz-select>
     </div>
@@ -14,7 +14,7 @@
       <label nz-form-item-required>响应数据类型</label>
     </div>
     <div nz-form-control nz-col [nzSpan]="14">
-      <nz-select formControlName="dataType" [nzSize]="'large'" [nzMode]="'multiple'" >
+      <nz-select formControlName="dataType" [nzSize]="'large'">
         <nz-option *ngFor="let st of dataType" [nzLabel]="st['text']" [nzValue]="st['value']"></nz-option>
       </nz-select>
     </div>

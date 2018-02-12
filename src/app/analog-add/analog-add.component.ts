@@ -31,6 +31,31 @@ export class AnalogAddComponent implements OnInit {
 
   dataType : Array<any>;
 
+  _submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+    }
+    if (!this.validateForm.dirty || !this.validateForm.valid) return;
+    let value = this.validateForm.value;
+    value['parent'] = "";
+    if(this.interfaces['id']){
+      value['parent'] = this.interfaces['id'];
+    }else{
+      this._message.create('error','接口不明确，请重新进入添加');
+      this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent});
+      return;
+    }
+    value['creator'] = this.login['account'];
+    this.analogService.addAnalog(this.project['account'],value)
+      .then(()=>{
+        this._message.create('success','添加模拟数据成功');
+        this.router.navigate([{outlets: {'modular': 'analog'}}],{relativeTo: this.route.parent});
+      })
+      .catch((err)=>{
+        this._message.create('error',err.message);
+      })
+  }
+
   constructor(
     @Inject(AppStore) private store: Store<AppState>,
     private fb: FormBuilder,
@@ -45,13 +70,21 @@ export class AnalogAddComponent implements OnInit {
     this.project = {};
     this.interfaces = {};
     this.login = this.configService.getStateLogin();
+    this.store.subscribe(()=>this.dealData());
     this.setBreadcrumb();
+    this.getSelect();
+  }
+
+  dealData(){
+    const state = this.store.getState();
+    this.project = state['project']['project'];
+    this.interfaces = state['interfaces']['interfaces'];
   }
 
   ngOnInit() {
     this.validateForm = this.fb.group({
-      saveType : [ null, [ Validators.required ]  ],
-      dataType : [null,[ Validators.required ]],
+      saveType : [ 'text', [ Validators.required ]  ],
+      dataType : ['json',[ Validators.required ]],
       active : [true],
       comment          : [ null ],
       data: [null,[Validators.required]]
@@ -63,7 +96,6 @@ export class AnalogAddComponent implements OnInit {
   }
 
   getSelect() {
-    if (!this.project['account']) return;
     this.analogService.getSelect()
       .then((data) => {
         this.saveType = data['saveType'];

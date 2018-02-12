@@ -4,3 +4,19 @@
 <aside class="analog-operate">
   <i class="anticon anticon-rollback" nz-tooltip="返回" (click)="backModular($event)"></i>
 </aside>
+<nz-collapseset>
+  <nz-collapse *ngFor="let analog of data">
+    <header collapse-title>
+      <div>
+        <i>{{analog['active']}}</i>
+        <i *ngIf="interfaces.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyAnalog($event,analog)"></i>
+        <i *ngIf="interfaces.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteAnalog($event,analog)"></i>
+      </div>
+      <span>{{analog['saveType']}}</span>
+      <span>{{analog['dataType']}}</span>
+      <span>{{getDate(analog['createdTime'])}}</span>
+    </header>
+    <p>{{analog['comment']}}</p>
+    <div><pre>{{analog['data']}}</pre></div>
+  </nz-collapse>
+</nz-collapseset>
