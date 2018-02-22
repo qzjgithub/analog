@@ -1,5 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import * as ConfigActions from '../../control/config/config.action';
+import * as InterfacesActions from '../../control/interfaces/interfaces.action';
 import {AppState} from "../../control/app.reducer";
 import {Store} from "redux";
 import {AppStore} from "../../control/app.store";
@@ -38,6 +39,7 @@ export class AnalogManageComponent implements OnInit {
     this.data = [];
     this.store.subscribe(()=>this.dealData());
     this.setBreadcrumb();
+    // this.getData();
   }
 
   ngOnInit() {
@@ -78,10 +80,39 @@ export class AnalogManageComponent implements OnInit {
   }
 
   backModular(e){
+    sessionStorage.removeItem('interfaceId');
+    this.store.dispatch(InterfacesActions.getCurInterfaces({}));
     this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent});
   }
 
   modifyAnalog(e,data){}
 
-  deleteAnalog(e,data){}
+  deleteAnalog(e,data){
+    e.stopPropagation();
+    if(data['active']){
+      this._message.create('warning','激活状态下的模拟数据不可以删除');
+      return;
+    }
+    const modal = this.modalService.confirm({
+      title   : '删除模拟数据',
+      content : '确认删除此条模拟数据吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.analogService.deleteAnalogById(this.project['account'],data['id'])
+            .then(()=>{
+              resolve();
+              this.getData();
+            })
+            .catch((err)=>{
+              this._message.create('error',err.message);
+              resolve();
+            })
+        })
+      }
+    })
+  }
 }

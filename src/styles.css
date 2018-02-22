@@ -124,3 +124,7 @@ form.person-display .ant-select-arrow{
   align-items: center;
   justify-content: center;
 }
+
+.analog-body .ant-collapse .ant-collapse-item{
+  margin-top:8px;
+}

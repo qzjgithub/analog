@@ -32,6 +32,13 @@ export class AnalogService{
   getAnalogByParent(account,id){
     return analogService.getAnalogByParent(account,id);
   }
+
+  /**
+   * 根据模拟数据id删除模拟数据
+   */
+  deleteAnalogById(account,id){
+    return analogService.deleteAnalogById(account,id);
+  }
 }
 
 export const ANALOG_PROVIDERS: Array<any> = [

@@ -85,7 +85,7 @@ export class AnalogAddComponent implements OnInit {
     this.validateForm = this.fb.group({
       saveType : [ 'text', [ Validators.required ]  ],
       dataType : ['json',[ Validators.required ]],
-      active : [true],
+      active : [false],
       comment          : [ null ],
       data: [null,[Validators.required]]
     });

@@ -28,6 +28,16 @@ const addAnalog = (account,data)=>{
 const getAnalogByParent = (account,id)=>{
   return dbanalog.getAnalogByParent(account,{parent:id});
 }
+
+/**
+ * 根据模拟数据id删除模拟数据
+ * @param account
+ * @param id
+ * @returns {any|Promise}
+ */
+const deleteAnalogById = (account,id)=>{
+  return dbanalog.deleteAnalogById(account,{id:id});
+}
 module.exports = {
-  addAnalog,getAnalogByParent
+  addAnalog,getAnalogByParent,deleteAnalogById
 }

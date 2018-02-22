@@ -49,6 +49,21 @@ const getAnalogByParent = (account,data) => {
   `;
   return dbutil.excuteProjectParam(sql,account,data,'all');
 }
+
+/**
+ * 根据模拟数据id删除模拟数据
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const deleteAnalogById = (account,data) => {
+  let sql = `
+  DELETE FROM analog
+  WHERE id=$id
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,data,'run');
+}
 module.exports = {
-  deleteAnalogInInterfacesIds,addAnalog,getAnalogByParent
+  deleteAnalogInInterfacesIds,addAnalog,getAnalogByParent,deleteAnalogById
 }

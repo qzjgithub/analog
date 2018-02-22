@@ -10,3 +10,22 @@ header{
   margin-left: 8px;
   cursor: pointer;
 }
+.analog-item-operate{
+  float: right;
+  margin-right: 8px;
+}
+.analog-item-operate>i{
+  margin-left:4px;
+}
+.analog-item-operate .status{
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+}
+.analog-item-operate .status.active{
+  background-color: #10f321;
+}
+.analog-item-operate .status.inactive{
+  background-color: #dddddd;
+}
