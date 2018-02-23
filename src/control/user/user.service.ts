@@ -9,10 +9,13 @@ import * as ConfigActions from '../config/config.action';
 import {AppStore} from "../app.store";
 import {Store} from "redux";
 import {AppState} from "../app.reducer";
+import {ConfigService} from "../config/config.service";
 
 @Injectable()
 export class UserService{
-  constructor(@Inject(AppStore) private store: Store<AppState>){}
+  constructor(@Inject(AppStore) private store: Store<AppState>,
+              private configService: ConfigService,
+    ){}
 
   /**
    * 验证登录是否成功
@@ -21,10 +24,27 @@ export class UserService{
    */
   validLogin = (param)=>{
     return new Promise((resolve, reject) => {
-      userService.validLoginUser(param)
-        .then((data) => {
-          this.store.dispatch(ConfigActions.getLogin(data));
-          resolve(data);
+      this.configService.getOpenRemote()
+        .then((url)=>{
+          if(url){
+            axios.post(url+'/analog/login',param)
+              .then((data)=>{
+                this.store.dispatch(ConfigActions.getLogin(data));
+                resolve(data);
+              })
+              .catch((err)=>{
+                reject(err);
+              })
+          }else{
+            userService.validLoginUser(param)
+              .then((data) => {
+                this.store.dispatch(ConfigActions.getLogin(data));
+                resolve(data);
+              })
+              .catch((err)=>{
+                reject(err);
+              })
+          }
         })
         .catch((err)=>{
           reject(err);

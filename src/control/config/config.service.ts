@@ -133,6 +133,58 @@ export class ConfigService{
     config['localService'] = data;
     return this.setConfig(config);
   }
+
+  /**
+   * 测试远程服务连接
+   * @returns {Promise<T>}
+   */
+  /*testAnalog(){
+    return new Promise((resolve, reject)=>{
+      getConfigBack()
+        .then((data) => {
+          axios.get(this.getUrl(data)+'/analog/test')
+            .then((res)=>{
+              resolve(res);
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        })
+        .catch((err)=>{
+          reject(err);
+        });
+    })
+  }*/
+
+  /**
+   * 根据配置信息得到完整路径
+   * @param data
+   * @returns {string}
+   */
+  getUrl(data){
+    let remoterService = data['remoteService'];
+    return remoterService['address']+':'+remoterService['port']+remoterService['prefix'];
+  }
+
+  /**
+   * 远程服务是否开启
+   * @returns {Promise<T>}
+   */
+  getOpenRemote(){
+    return new Promise((resolve, reject)=>{
+      getConfigBack()
+        .then((data) => {
+          if(data['openRemote']){
+            resolve(this.getUrl(data)||true);
+          }else{
+            resolve(false);
+          }
+        })
+        .catch((err)=>{
+          reject(err);
+        });
+    })
+  }
 }
 
 export const CONFIG_PROVIDERS: Array<any> = [
