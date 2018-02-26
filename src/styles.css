@@ -124,7 +124,16 @@ form.person-display .ant-select-arrow{
   align-items: center;
   justify-content: center;
 }
-
+.analog-body .ant-collapse{
+  background-color: transparent;
+  border: 0;
+}
 .analog-body .ant-collapse .ant-collapse-item{
   margin-top:8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.analog-body .ant-collapse .ant-collapse-item:last-child{
+  border-radius: 4px;
 }

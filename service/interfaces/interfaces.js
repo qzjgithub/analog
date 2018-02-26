@@ -49,7 +49,7 @@ const addInterfaces = (account,data)=>{
             .then(()=>dbinterfaces.getInterfacesByUrlAndMethod(account,{url: data['url'],method:data['method'],parent: data['parent']}))
             .then((m)=>{
               if(!m.length) {
-                reject({message: '不可能'});
+                reject({message: '获取失败'});
               }else{
                 let id = m[0]['id'];
                 addInterfacesRelation(account,id,writers,resolve);

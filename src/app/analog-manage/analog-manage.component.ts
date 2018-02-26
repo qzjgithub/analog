@@ -80,7 +80,7 @@ export class AnalogManageComponent implements OnInit {
   }
 
   backModular(e){
-    sessionStorage.removeItem('interfaceId');
+    sessionStorage.removeItem('interfacesId');
     this.store.dispatch(InterfacesActions.getCurInterfaces({}));
     this.router.navigate([{outlets: {'modular': 'modular'}}],{relativeTo: this.route.parent});
   }
