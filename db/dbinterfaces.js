@@ -131,6 +131,38 @@ const deleteInterfacesUserByInterfacesId = (account,data)=>{
   return dbutil.excuteProjectParam(sql,account,{ relatedId: data['id'] },'run');
 }
 
+/**
+ * 根据全路经和方法获取接口
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const getInterfacesByFullPathAndMethod = (account,data)=>{
+  let sql = `
+  SELECT * FROM 
+  interfaces 
+  WHERE fullPath=$fullPath AND 
+  method=$method
+  `;
+  return dbutil.excuteProjectParam(sql,account,data,'all');
+}
+
+/**
+ * 根据正则表达式和方法获取接口
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const getInterfacesByRegAndMethod = (account,data)=>{
+  let sql = `
+  SELECT * FROM 
+  interfaces 
+  WHERE reg IS NOT NULLssss AND 
+  method=$method
+  `;
+  return dbutil.excuteProjectParam(sql,account,data,'all');
+}
+
 module.exports = {
   getInterfacesByParent,
   getInterfacesInProject,
@@ -139,5 +171,6 @@ module.exports = {
   getInterfacesById,
   addInterfaces,
   deleteInterfacesInIds,
-  deleteInterfacesUserByInterfacesId
+  deleteInterfacesUserByInterfacesId,
+  getInterfacesByFullPathAndMethod
 }

@@ -64,6 +64,23 @@ const deleteAnalogById = (account,data) => {
   `;
   return dbutil.excuteProjectParam(sql,account,data,'run');
 }
+
+/**
+ * 根据接口id得到激活状态的模拟数据
+ * @param account
+ * @param data
+ */
+const getActiveAnalogByParent = (account,data) => {
+  let sql = `
+  SELECT * FROM 
+  analog
+  WHERE parent=$parent 
+  AND active IS TRUE
+  ;
+  `;
+  return dbutil.excuteProjectParam(sql,account,data,'all');
+}
 module.exports = {
-  deleteAnalogInInterfacesIds,addAnalog,getAnalogByParent,deleteAnalogById
+  deleteAnalogInInterfacesIds,addAnalog,getAnalogByParent,deleteAnalogById,
+  getActiveAnalogByParent
 }

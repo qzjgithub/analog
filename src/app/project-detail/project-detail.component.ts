@@ -187,6 +187,56 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
   }
 
+  startAnalogService(e){
+    e.stopPropagation();
+    const modal = this.modalService.confirm({
+      title   : '启动项目',
+      content : '请确保此项目的端口不与已启动项目的端口重复，否则将启动失败！',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.projectService.startAnalogService(this.project['account'])
+            .then(()=>{
+              this._message.create('success','启动成功');
+              resolve();
+            })
+            .catch((err)=>{
+              this._message.create('error',err.message);
+              resolve();
+            })
+        })
+      }
+    })
+  }
+
+  stopAnalogService(e){
+    e.stopPropagation();
+    const modal = this.modalService.confirm({
+      title   : '停止项目',
+      content : '确定停止此项目的模拟服务吗？',
+      closable: false,
+      showConfirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        return new Promise((resolve,reject)=>{
+          this.projectService.stopAnalogService(this.project['account'])
+            .then(()=>{
+              this._message.create('success','停止成功');
+              resolve();
+            })
+            .catch((err)=>{
+              this._message.create('error',err.message);
+              resolve();
+            })
+        })
+      }
+    })
+  }
+
   modifyProject(e){
     e.stopPropagation();
     const modal = this.modalService.open({

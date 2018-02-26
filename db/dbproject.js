@@ -224,11 +224,26 @@ const deleteUserRelation = (account) => {
   return dbutil.excuteProjectParam(sql, account, {}, 'run');
 }
 
+/**
+ * 根据项目账号获取项目
+ * @param data
+ * @returns {Promise}
+ */
+const getProjectByAccount = (data) => {
+  let sql = `
+  SELECT * FROM 
+  project 
+  WHERE account=$account
+  ;
+  `;
+  return dbutil.excuteParam(sql, data, 'all');
+}
+
 module.exports = {
   addProject, getValidProject, addProjectUserRelated,
   getPublicProject,getLoginProject,
   getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
   deleteProject,deleteProjectUser,deleteUserRelation,
-  getProjectById
+  getProjectById,getProjectByAccount
 }

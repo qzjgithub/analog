@@ -9,6 +9,7 @@ import {Store} from "redux";
 import {AppStore} from "../app.store";
 
 import * as projectService from "../../../service/project/project";
+import * as simulateService from "../../../service/simulate/cprocess";
 
 
 @Injectable()
@@ -91,6 +92,24 @@ export class ProjectService{
    */
   deleteProject(account,del){
     return projectService.deleteProject(account,del);
+  }
+
+  /**
+   * 启动模拟服务
+   * @param account
+   * @returns {any}
+   */
+  startAnalogService(account){
+    return simulateService.startAnalogService(account);
+  }
+
+  /**
+   * 停止模拟服务
+   * @param account
+   * @returns {any|undefined}
+   */
+  stopAnalogService(account){
+    return simulateService.stopAnalogService(account);
   }
 }
 

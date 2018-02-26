@@ -5,7 +5,8 @@
         <header collapse-title class="baseinfo-header">
           <span>{{project['name']}}</span>
           <span class="baseinfo-operate">
-            <i nz-tooltip="启动" class="anticon anticon-caret-right"></i>
+            <i nz-tooltip="启动" class="anticon anticon-caret-right" (click)="startAnalogService($event)"></i>
+            <i nz-tooltip="停止" class="anticon anticon-poweroff" (click)="stopAnalogService($event)"></i>
             <i *ngIf="project.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyProject($event)"></i>
             <i *ngIf="project.writable==='writer'" nz-tooltip="修改路径" class="anticon anticon-link" (click)="modifyProUrl($event)"></i>
             <i *ngIf="project.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteProject($event,deleteProjectContent,deleteProjectContentFooter)"></i>
@@ -58,8 +59,8 @@
         <header collapse-title class="baseinfo-header">
           <span>{{m['name']}}</span>
           <span class="baseinfo-operate">
-            <i *ngIf="m.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit" (click)="modifyProject($event)"></i>
-            <i *ngIf="m.writable==='writer'" nz-tooltip="修改路径" class="anticon anticon-link" (click)="modifyProUrl($event)"></i>
+            <i *ngIf="m.writable==='writer'" nz-tooltip="修改" class="anticon anticon-edit"></i>
+            <i *ngIf="m.writable==='writer'" nz-tooltip="修改路径" class="anticon anticon-link"></i>
             <i *ngIf="i==(modulars.length-1) && m.writable==='writer'" nz-tooltip="删除" class="anticon anticon-delete" (click)="deleteModular($event,m)"></i>
           </span>
         </header>
