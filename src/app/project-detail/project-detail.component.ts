@@ -237,6 +237,10 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     })
   }
 
+  getProjectStatus(account){
+    return !!window['analogService'][account];
+  }
+
   modifyProject(e){
     e.stopPropagation();
     const modal = this.modalService.open({

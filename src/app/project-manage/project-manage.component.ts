@@ -75,7 +75,7 @@ export class ProjectManageComponent implements OnInit {
           tags.push({ active : item['authority'] === 'public' , text : item['authority'] === 'public' ? '公开' : '私密'});
           let related = this.scope === 'public' ? !!this.related[item['account']] : true;
           tags.push({ active : related , text : related ? '相关' : '不相关'});
-          tags.push({ active : false , text : '未启动'});
+          tags.push({ active : this.getProjectStatus(item['account']) , text : (this.getProjectStatus(item['account'])?'启动':'未启动')});
           item['tags'] = tags;
 
           let content = [];
@@ -93,6 +93,10 @@ export class ProjectManageComponent implements OnInit {
       })
   }
 
+  getProjectStatus(account){
+    return !!window['analogService'][account];
+  }
+
   getDate(data){
     let date = new Date(data);
     return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
@@ -104,7 +108,7 @@ export class ProjectManageComponent implements OnInit {
   }
 
   changeProjectState(data){
-    let m = false;
+    let m = this.getProjectStatus(data['account']);
     this.modalService.confirm({
       title   : '确认'+(m?'启动':'停止')+data.name+'项目吗？',
       content : '请确定项目的端口和路径设置正确。',
@@ -114,7 +118,7 @@ export class ProjectManageComponent implements OnInit {
       cancelText: '取消',
       onOk: () => {
         return new Promise((resovle, reject)=>{
-          this.projectService[m?'startProject':'stopProject'](data.account)
+          this.projectService[m?'stopAnalogService':'startAnalogService'](data.account)
             .then(()=>{
               resovle();
             })

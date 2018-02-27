@@ -84,10 +84,12 @@ process.on('message',(m)=>{
 });
 
 const dealAnalog = (analog)=>{
+  console.log(analog);
   var text,code = 200;
   switch(analog.saveType){
     case 'text':
       try{
+        console.log(analog.data);
         text = JSON.parse(analog.data);
       }catch(err){
         console.log(err);

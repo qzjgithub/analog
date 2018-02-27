@@ -17,7 +17,20 @@ const addAnalog = (account,data)=>{
     comment: data['comment'],
     creator: data['creator']
   };
-  return dbanalog.addAnalog(account,d);
+    if(data['active']){
+      return new Promise((resolve,reject)=>{
+      dbanalog.setInactiveByParent(account,{ parent: data['parent']})
+        .then(()=>dbanalog.addAnalog(account,d))
+        .then(()=>{
+          resolve();
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+      })
+    }else{
+      return dbanalog.addAnalog(account,d);
+    }
 }
 
 /**

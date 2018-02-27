@@ -80,7 +80,24 @@ const getActiveAnalogByParent = (account,data) => {
   `;
   return dbutil.excuteProjectParam(sql,account,data,'all');
 }
+
+/**
+ * 根据接口id设置模拟数据取消模拟数据激活状态
+ * @param account
+ * @param data
+ * @returns {Promise}
+ */
+const setInactiveByParent = (account,data)=>{
+  let sql = `
+  UPDATE analog SET 
+  active=0 
+  WHERE 
+  parent=$parent AND active=1 
+  `;
+  return dbutil.excuteProjectParam(sql,account,data,'run');
+}
+
 module.exports = {
   deleteAnalogInInterfacesIds,addAnalog,getAnalogByParent,deleteAnalogById,
-  getActiveAnalogByParent
+  getActiveAnalogByParent,setInactiveByParent
 }
