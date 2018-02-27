@@ -31,8 +31,64 @@ const startAnalogService = (account)=>{
               return;
             }
           }
-          const service = cp.fork('service/simulate/httpservice.js');
-          service.send({port:data['port'],account: data['account']});
+          const service = cp.fork('service/simulate/analogService.js');
+          service.on('message',(m)=>{
+            console.log(m);
+            switch(m.type){
+              case 'fullPath':
+                dbinterfaces.getInterfacesByFullPathAndMethod(m.account,{ fullPath: m.url,method: m.method})
+                  .then((data)=>{
+                    service.send({
+                      type: 'fullPath',
+                      data: data
+                    });
+                  })
+                  .catch((err)=>{
+                    service.send({
+                      type: 'fullPath',
+                      err: err
+                    });
+                  })
+                break;
+              case 'reg':
+                dbinterfaces.getInterfacesByRegAndMethod(m.account,{ method: m.method })
+                  .then((data)=>{
+                    service.send({
+                      type: 'reg',
+                      data: data
+                    });
+                  })
+                  .catch((err)=>{
+                    service.send({
+                      type: 'reg',
+                      err: err
+                    });
+                  })
+                break;
+              case 'analog':
+                dbanalog.getActiveAnalogByParent(m.account,{parent: m.parent})
+                  .then((data)=>{
+                    service.send({
+                      type: 'analog',
+                      data: data
+                    });
+                  })
+                  .catch((err)=>{
+                    service.send({
+                      type: 'analog',
+                      err: err
+                    });
+                  })
+                break;
+              default:
+                console.log(m);
+            }
+          });
+          service.send({
+            type: 'start',
+            port: data['port'],
+            account: data['account']
+          });
           analogService[data['account']] = {
             project: data,
             service: service

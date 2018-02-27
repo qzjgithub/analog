@@ -63,18 +63,6 @@ const route = (request, response, account)=>{
     back(text,code,res);
   });
 }
-
-const getActiveAnalog = (account,interfaces,res)=>{
-  dbanalog.getActiveAnalogByParent(account,{parent: interfaces.id}).then((intdata)=>{
-    dealIntdata(intdata,res);
-  })
-    .catch((err)=>{
-      let text = {err:"无模拟数据"};
-      let code = 400;
-      back(text,code,res);
-    })
-}
-
 const dealIntdata = (intdata,res)=>{
   var text,code = 200;
   switch(intdata.saveType){
@@ -99,6 +87,18 @@ const dealIntdata = (intdata,res)=>{
   console.log(code);
   back(text,code,res);
 }
+const getActiveAnalog = (account,interfaces,res)=>{
+  dbanalog.getActiveAnalogByParent(account,{parent: interfaces.id}).then((intdata)=>{
+    dealIntdata(intdata,res);
+  })
+    .catch((err)=>{
+      let text = {err:"无模拟数据"};
+      let code = 400;
+      back(text,code,res);
+    })
+}
+
+
 
 const back = (text,code,res)=>{
   console.log(code);

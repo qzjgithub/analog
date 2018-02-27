@@ -75,7 +75,7 @@ const getActiveAnalogByParent = (account,data) => {
   SELECT * FROM 
   analog
   WHERE parent=$parent 
-  AND active IS TRUE
+  AND active=1
   ;
   `;
   return dbutil.excuteProjectParam(sql,account,data,'all');

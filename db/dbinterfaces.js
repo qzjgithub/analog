@@ -157,7 +157,7 @@ const getInterfacesByRegAndMethod = (account,data)=>{
   let sql = `
   SELECT * FROM 
   interfaces 
-  WHERE reg IS NOT NULLssss AND 
+  WHERE reg IS NOT NULL AND reg!='' AND 
   method=$method
   `;
   return dbutil.excuteProjectParam(sql,account,data,'all');
@@ -172,5 +172,6 @@ module.exports = {
   addInterfaces,
   deleteInterfacesInIds,
   deleteInterfacesUserByInterfacesId,
-  getInterfacesByFullPathAndMethod
+  getInterfacesByFullPathAndMethod,
+  getInterfacesByRegAndMethod
 }
