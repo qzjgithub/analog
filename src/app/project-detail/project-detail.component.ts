@@ -59,7 +59,6 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
   }
 
   dealData(){
-    console.log('dealData');
     this.dealProject();
     this.dealModulars();
     this.dealInterfaces();
@@ -93,7 +92,6 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
                 })
               }
               data['writable'] = writer;
-              console.log('1');
               this.store.dispatch(ProjectActions.getCurProject(data));
             })
             .catch((err)=>{
@@ -129,7 +127,6 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
         if(this.login['role']==='admin'||this.project['writable']==='writer'){
           modular['writable'] = 'writer';
         }
-        console.log('2');
         this.store.dispatch(ModularActions.getParentModular(modular));
         if(modular['parent']){
           this.getModular(modular['parent']);
@@ -158,7 +155,6 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
                   interfaces['writable'] = 'writer';
                 }
               }
-              console.log('3');
               this.store.dispatch(InterfacesActions.getCurInterfaces(interfaces));
             }
           })

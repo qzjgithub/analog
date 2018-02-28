@@ -3,6 +3,7 @@
  */
 import {Injectable, Inject} from "@angular/core";
 import {getConfigBack, initSystem, setConfig} from '../../../service/config/config';
+import * as simulateService from '../../../service/simulate/cprocess';
 import {Store} from "redux";
 import {AppStore} from "../app.store";
 import {AppState} from "../app.reducer";
@@ -132,6 +133,21 @@ export class ConfigService{
     let config = this.getStateConfig();
     config['localService'] = data;
     return this.setConfig(config);
+  }
+
+  /**
+   * 启动本地服务
+   */
+  startLocalService = ()=>{
+    return simulateService.startLocalService();
+  }
+
+  /**
+   * 关闭本地服务
+   * @returns {any}
+     */
+  stopLocalService = ()=>{
+    return simulateService.stopLocalService();
   }
 }
 

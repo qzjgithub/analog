@@ -9,3 +9,4 @@ const dbinterfaces = require('../db/dbinterfaces');
 const dbanalog = require('../db/dbanalog');
 
 var analogService = {};
+var localService;

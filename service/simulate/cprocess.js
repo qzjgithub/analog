@@ -119,6 +119,46 @@ const stopAnalogService = (account) => {
   });
 }
 
+/**
+ * 启动本地服务
+ */
+const startLocalService = () => {
+  localService = cp.spawn(process.argv[0], ['service/simulate/localService.js'], {
+    detached: false
+  });
+  return new Promise((resolve,reject)=>{
+    localService.stdout.on('data',(data)=>{
+      console.log(data);
+      let result = '';
+      try{
+        result = JSON.parse(data);
+      }catch(err){
+        result = data.toString();
+      }
+      console.log(result);
+      if(result['result']=='success'){
+        resolve();
+      }else if(result['result']=='fail'){
+        reject(result);
+      }
+    });
+  });
+}
+
+/**
+ * 关闭本地服务
+ */
+const stopLocalService = () => {
+  return new Promise((resolve,reject)=>{
+    if(localService){
+      localService.kill();
+      localService = null;
+      resolve();
+    }else{
+      reject({message: '无本地服务启动信息'});
+    }
+  });
+}
 module.exports = {
-  startAnalogService,stopAnalogService
+  startAnalogService,stopAnalogService,startLocalService,stopLocalService
 }

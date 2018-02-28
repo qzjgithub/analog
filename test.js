@@ -77,7 +77,7 @@ const removeDir = (prefix,name) => {
 }
 
 removeDir('data/','test');*/
-const fs = require('fs');
+/*const fs = require('fs');
 const removeDir = (prefix,name,level,theres) => {
   let path = prefix.join('') + name;
   console.log(path);
@@ -125,4 +125,39 @@ removeDir(['data/'],'a',0)
   })
   .catch((err)=>{
     console.log(err.message);
-  })
+  })*/
+const fs = require('fs');
+var num = 0;
+
+fs.readFile('config/config.json',(err,data)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log('{"result":"ok"}');
+    process.exit(1);
+    num++;
+  }
+});
+process.stdin.on('data',(data)=>{
+  let text = data.toString();
+  console.log(text);
+})
+
+/*
+process.stdout.on('data',(data)=>{
+  console.log(new String(data));
+  //process.exit(1);
+  //subprocess.stdin.write('parent in');
+});
+
+process.stderr.on('data', (data) => {
+  console.log(`ps stderr: ${data}`);
+});
+
+process.on('close', (code) => {
+  if (code !== 0) {
+    console.log(`test 进程退出码：${code}`);
+  }
+  //subprocess.stdin.end();
+});
+*/

@@ -29,6 +29,23 @@ export class LocalServerComponent implements OnInit {
       .then((data)=>{
         this._message.create('success','本地服务设置成功');
         this.validateForm.reset(this.validateForm.value);
+        if(this.validateForm.value['localServer']){
+          this.configService.startLocalService()
+          .then(()=>{
+            this._message.create('success','本地服务开启成功');
+          })
+          .catch((err)=>{
+            this._message.create('error','本地服务开启失败');
+          })
+        }else{
+          this.configService.stopLocalService()
+            .then(()=>{
+              this._message.create('success','本地服务关闭成功');
+            })
+            .catch((err)=>{
+              console.log(err);
+            })
+        }
       })
       .catch((err)=>{
         this.reset();
@@ -45,7 +62,7 @@ export class LocalServerComponent implements OnInit {
   ngOnInit() {
     let remote = this.getLocalServer();
     this.validateForm = this.fb.group({
-      localServer : [ false ],
+      localServer : [ !!window['localService']  ],
       port : [ remote['port'], [ Validators.required ] ],
       prefix : [ remote['prefix'] ]
     });
@@ -64,7 +81,7 @@ export class LocalServerComponent implements OnInit {
   reset(){
     let remote = this.getLocalServer();
     this.validateForm.reset({
-      localServer: false,
+      localServer: !!window['localService'],
       port : remote['port'],
       prefix : remote['prefix']
     })
