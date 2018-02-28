@@ -10,36 +10,46 @@ import {AppStore} from "../app.store";
 
 import * as projectService from "../../../service/project/project";
 import * as simulateService from "../../../service/simulate/cprocess";
+import {ConfigService} from "../config/config.service";
 
 
 @Injectable()
 export class ProjectService{
-  constructor(@Inject(AppStore) private store: Store<AppState>){}
+  constructor(private configService: ConfigService){}
 
   /**
    * 得到项目选项
    * @returns {any}
    */
   getSelect = (param)=>{
-    if(param['role'] ==='admin'){
-      return new Promise((resolve,reject)=>{
-        getProjectSelect()
-          .then((data)=>{
-            getUserList()
-              .then((users)=>{
-                data['users'] = users;
-                resolve(data);
-              })
-              .catch((err)=>{
-                reject(err);
-              })
-          })
-          .catch((err)=>{
-            reject(err);
-          })
-      })
-    }else{
-      return getProjectSelect();
+    if(this.configService.getStateOpenRemote()){
+      if(param['role']==='admin'){
+
+      }else{
+
+      }
+    } else
+    {
+      if(param['role'] ==='admin'){
+        return new Promise((resolve,reject)=>{
+          getProjectSelect()
+            .then((data)=>{
+              getUserList()
+                .then((users)=>{
+                  data['users'] = users;
+                  resolve(data);
+                })
+                .catch((err)=>{
+                  reject(err);
+                })
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        })
+      }else{
+        return getProjectSelect();
+      }
     }
   }
 

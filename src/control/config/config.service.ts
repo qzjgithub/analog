@@ -25,6 +25,9 @@ export class ConfigService{
     return config['config'];
   }
 
+  getStateOpenRemote = ()=>{
+    return this.getStateConfig()['openRemote'];
+  }
   /**
    * 得到state中的login
    * @returns {any}
