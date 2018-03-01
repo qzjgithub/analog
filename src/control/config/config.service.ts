@@ -7,6 +7,7 @@ import * as simulateService from '../../../service/simulate/cprocess';
 import {Store} from "redux";
 import {AppStore} from "../app.store";
 import {AppState} from "../app.reducer";
+import axios from 'axios';
 
 import * as ConfigActions from './config.action';
 import {getConfigState} from "./config.reducer";
@@ -25,9 +26,16 @@ export class ConfigService{
     return config['config'];
   }
 
-  getStateOpenRemote = ()=>{
-    return this.getStateConfig()['openRemote'];
+  /**
+   * 得到请求地址
+   * @param data
+   * @returns {string}
+     */
+  getUrl(data){
+    let rs = data['remoteService'];
+    return 'http://'+rs['address']+':'+rs['port']+rs['prefix'];
   }
+
   /**
    * 得到state中的login
    * @returns {any}
@@ -151,6 +159,22 @@ export class ConfigService{
      */
   stopLocalService = ()=>{
     return simulateService.stopLocalService();
+  }
+
+  /**
+   * 测试远程服务是否可连接
+   */
+  testAnalog = ()=>{
+    let config = this.getStateConfig();
+    return new Promise((resolve,reject) =>{
+      axios.get(this.getUrl(config)+'/analog/test')
+        .then(()=>{
+          resolve();
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    });
   }
 }
 

@@ -11,6 +11,7 @@ import {AppStore} from "../../../control/app.store";
 import {getConfigState} from "../../../control/config/config.reducer";
 import {ConfigService} from "../../../control/config/config.service";
 import {NzMessageService} from "ng-zorro-antd";
+import {ActivatedRoute, Router} from "@angular/router";
 import {enableProdMode} from '@angular/core';
 enableProdMode();
 
@@ -37,6 +38,18 @@ export class RemoteServerComponent implements OnInit {
       .then((data)=>{
         this._message.create('success','远程服务设置成功');
         this.validateForm.reset(this.validateForm.value);
+        if(this.validateForm.value['remoteServer']){
+          this.configService.testAnalog()
+            .then(()=>{
+              this._message.create('success','远程服务连接测试成功');
+              if(this.pattern==='config'){
+                this.router.navigate(['loginManage']);
+              }
+            })
+            .catch((err)=>{
+              this._message.create('error','远程服务连接测试失败');
+            })
+        }
       })
       .catch((err)=>{
         this.reset();
@@ -46,7 +59,9 @@ export class RemoteServerComponent implements OnInit {
   constructor(@Inject(AppStore) private store: Store<AppState>,
               private fb: FormBuilder,
               private configService: ConfigService,
-              private _message: NzMessageService) {
+              private _message: NzMessageService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {

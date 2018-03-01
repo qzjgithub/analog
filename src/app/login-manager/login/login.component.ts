@@ -3,6 +3,7 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../../control/user/user.service";
 import {Router, ActivatedRoute} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd";
+import {ConfigService} from "../../../control/config/config.service";
 
 @Component({
   selector: 'login',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private _message: NzMessageService,
               private userService: UserService,
+              private configService: ConfigService,
               private route: ActivatedRoute,
               private router: Router) {
   }
@@ -47,6 +49,7 @@ export class LoginComponent implements OnInit {
       account: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ]
     });
+    this.configService.clearLogin();
   }
 
   gotoRegister(){

@@ -7,6 +7,7 @@ import {Injectable, Inject} from "@angular/core";
 import {AppState} from "../app.reducer";
 import {Store} from "redux";
 import {AppStore} from "../app.store";
+import axios from 'axios';
 
 import * as projectService from "../../../service/project/project";
 import * as simulateService from "../../../service/simulate/cprocess";
@@ -22,11 +23,35 @@ export class ProjectService{
    * @returns {any}
    */
   getSelect = (param)=>{
-    if(this.configService.getStateOpenRemote()){
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
       if(param['role']==='admin'){
-
+        return new Promise((resolve,reject)=>{
+          axios.get(this.configService.getUrl(config)+'/analog/user')
+            .then((users)=>{
+              axios.get(this.configService.getUrl(config)+'/analog/project/select')
+                .then((data)=>{
+                  data['users'] = users;
+                  resolve(data);
+                })
+                .catch((err)=>{
+                  reject(err);
+                })
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        });
       }else{
-
+        return new Promise((resolve,reject)=>{
+          axios.get(this.configService.getUrl(config)+'/analog/project/select')
+            .then((data)=>{
+              resolve(data);
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        });
       }
     } else
     {
