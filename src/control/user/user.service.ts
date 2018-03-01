@@ -9,10 +9,13 @@ import * as ConfigActions from '../config/config.action';
 import {AppStore} from "../app.store";
 import {Store} from "redux";
 import {AppState} from "../app.reducer";
+import {ConfigService} from "../config/config.service";
+import axios from 'axios';
 
 @Injectable()
 export class UserService{
-  constructor(@Inject(AppStore) private store: Store<AppState>){}
+  constructor(@Inject(AppStore) private store: Store<AppState>,
+              private configService: ConfigService){}
 
   /**
    * 验证登录是否成功
@@ -21,14 +24,26 @@ export class UserService{
    */
   validLogin = (param)=>{
     return new Promise((resolve, reject) => {
-      userService.validLoginUser(param)
-        .then((data) => {
-          this.store.dispatch(ConfigActions.getLogin(data));
-          resolve(data);
-        })
-        .catch((err)=>{
-          reject(err);
-        })
+      let config = this.configService.getStateConfig();
+      if(config['openRemote']){
+        axios.post(this.configService.getUrl(config)+'/user/login',param)
+          .then((data) => {
+            this.store.dispatch(ConfigActions.getLogin(data));
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      }else{
+        userService.validLoginUser(param)
+          .then((data) => {
+            this.store.dispatch(ConfigActions.getLogin(data));
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      }
     });
   }
 
@@ -37,7 +52,20 @@ export class UserService{
    * @returns {any}
    */
   getSelect = () =>{
-    return getUserSelect();
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user/select')
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+      });
+    }else{
+      return getUserSelect();
+    }
   }
 
   /**
@@ -45,7 +73,20 @@ export class UserService{
    * @returns {any}
    */
   add = (data) =>{
-    return userService.addUser(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.post(this.configService.getUrl(config)+'/user',data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.addUser(data);
+    }
   }
 
   /**
@@ -54,7 +95,20 @@ export class UserService{
    * @returns {any}
    */
   validExist = (data) => {
-    return userService.validExistUser(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user/exist?account='+data['account'])
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.validExistUser(data);
+    }
   }
 
   /**
@@ -63,7 +117,20 @@ export class UserService{
    * @returns {any}
    */
   modifyPwd = (data) => {
-    return userService.modifyPwdUser(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.put(this.configService.getUrl(config)+'/user/password',data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.modifyPwdUser(data);
+    }
   }
 
   /**
@@ -72,7 +139,20 @@ export class UserService{
    * @returns {any}
    */
   getUserById = (data) => {
-    return userService.getUserById(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user/'+data['id'])
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.getUserById(data);
+    }
   }
 
   /**
@@ -81,7 +161,20 @@ export class UserService{
    * @returns {Promise<T>}
    */
   modifyUser = (data) => {
-    return userService.modifyUser(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.put(this.configService.getUrl(config)+'/user',data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.modifyUser(data);
+    }
   }
 
   /**
@@ -90,7 +183,20 @@ export class UserService{
    * @returns {any}
    */
   modifyPwdWithOld = (data) => {
-    return userService.modifyPwdWithOld(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.put(this.configService.getUrl(config)+'/user/oldPwd',data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.modifyPwdWithOld(data);
+    }
   }
 
   /**
@@ -98,7 +204,20 @@ export class UserService{
    * @returns {any|undefined}
    */
   getUserList = () => {
-    return userService.getUserList();
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user')
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.getUserList();
+    }
   }
 
   /**
@@ -108,14 +227,40 @@ export class UserService{
   resetPwd = (data) => {
     const state = this.store.getState();
     let pwd = state['config']['config']['defaultPwd'];
-    return userService.modifyPwdUser({id: data, active: false, password: pwd})
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.put(this.configService.getUrl(config)+'/user/reset',{id: data, active: false, password: pwd})
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.modifyPwdUser({id: data, active: false, password: pwd});
+    }
   }
 
   /**
    * 根据用户account得到用户的名字
    */
   getUserByAccount = (data) => {
-    return userService.getUserByAccount(data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user/account?account='+data['account'])
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.getUserByAccount(data);
+    }
   }
 
   /**
@@ -123,7 +268,20 @@ export class UserService{
    * @param account
    */
   getWritableUser = (account)=>{
-    return userService.getWritableUser(account);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+'/user/writer?account='+account)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return userService.getWritableUser(account);
+    }
   }
 
 }

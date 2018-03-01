@@ -3,6 +3,14 @@
 /**
  * Module dependencies.
  */
+  console.log(global);
+global['dbutil'] = require('../../db/dbutil');
+global['dbuser'] = require('../../db/dbuser');
+global['dbproject'] = require('../../db/dbproject');
+global['dbmodular'] = require('../../db/dbmodular');
+global['dbinterfaces'] = require('../../db/dbinterfaces');
+global['dbanalog'] = require('../../db/dbanalog');
+
 var app = require('./app');
 var debug = require('debug')('analog:server');
 var http = require('http');
@@ -10,6 +18,7 @@ var fs = require('fs');
 var service = {};
 
 var testAnalog = require('../../routes/testAnalog');
+var userRoute = require('../../routes/user-route');
 
 /**
  * Get port from environment and store in Express.
@@ -38,6 +47,7 @@ function initServer(){
 
   let prefix = service['prefix'];
   app.use(prefix+'/analog/test',testAnalog);
+  app.use(prefix+'/analog/user',userRoute);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {

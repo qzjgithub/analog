@@ -49,7 +49,8 @@ export class LoginComponent implements OnInit {
       account: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ]
     });
-    this.configService.clearLogin();
+    sessionStorage.removeItem('userId');
+    //this.configService.clearLogin();
   }
 
   gotoRegister(){

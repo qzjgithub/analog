@@ -26,7 +26,6 @@ export class UserManageComponent implements OnInit {
     @Inject(AppStore) private store: Store<AppState>,
     private _message: NzMessageService,
     private modalService: NzModalService,
-    private configService: ConfigService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router

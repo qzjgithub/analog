@@ -365,7 +365,11 @@ const createSelect = (db) => {
  * 添加选项表
  * @param db
  */
-const addSelect = (data) => {
+const addSelect = (datas,index) => {
+  if(index >= datas.length){
+    return;
+  }
+  let data = datas[index];
   let sqls = `
   INSERT INTO select_list VALUES(
     $name ,
@@ -380,8 +384,14 @@ const addSelect = (data) => {
 
   sql(getRootDB()).then((db)=>{
     let stm = db.prepare(sqls);
-    stm.run(obj_data,function(err,data){
+    stm.run(obj_data,function(err,dd){
       db.close();
+      if(err){
+        console.log(err);
+      }else{
+        index++;
+        addSelect(datas,index);
+      }
     });
     stm.finalize();
   });
@@ -409,9 +419,7 @@ const initSelectSelect = () => {
     { name: 'saveType', value: 'file', text: '文件'},
     { name: 'dataType', value: 'json', text: 'JSON'}
   ];
-  for(let i = 0;i<datas.length;i++){
-    addSelect(datas[i]);
-  }
+  addSelect(datas,0);
 }
 
 /**
@@ -590,10 +598,10 @@ const createUserRelation = (db) => {
  */
 const selectProjectLeader = (param)=>{
   let sql = `
-  SELECT * FROM user_relation 
-  WHERE 
-  userAccount='`+param['leader']+`' 
-  AND type='project' 
+  SELECT * FROM user_relation
+  WHERE
+  userAccount='`+param['leader']+`'
+  AND type='project'
   AND relation='leader'
   `;
   return excuteProjectParam(sql,param['account'],{},'all');

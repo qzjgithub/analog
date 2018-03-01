@@ -33,7 +33,7 @@ export class ConfigService{
      */
   getUrl(data){
     let rs = data['remoteService'];
-    return 'http://'+rs['address']+':'+rs['port']+rs['prefix'];
+    return 'http://'+rs['address']+':'+rs['port']+rs['prefix']+'/analog';
   }
 
   /**
@@ -167,7 +167,7 @@ export class ConfigService{
   testAnalog = ()=>{
     let config = this.getStateConfig();
     return new Promise((resolve,reject) =>{
-      axios.get(this.getUrl(config)+'/analog/test')
+      axios.get(this.getUrl(config)+'/test')
         .then(()=>{
           resolve();
         })

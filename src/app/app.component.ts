@@ -3,6 +3,7 @@ import {ConfigService} from "../control/config/config.service";
 import {Store} from "redux";
 import {AppState} from "../control/app.reducer";
 import {AppStore} from "../control/app.store";
+import axios from 'axios';
 
 import * as ConfigActions from '../control/config/config.action';
 import {getConfigState} from "../control/config/config.reducer";
@@ -30,6 +31,11 @@ export class AppComponent {
               @Inject(AppStore) private store: Store<AppState>,
               private router: Router,
               private configService: ConfigService){
+    axios.interceptors.response.use(function (response) {
+      return response.data;
+    }, function (error) {
+      return Promise.reject((error.response && error.response.data)||error);
+    })
     store.subscribe(()=>this.updateInitFlag());
     configService.getConfig();
   }
