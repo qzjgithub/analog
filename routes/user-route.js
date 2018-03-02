@@ -100,7 +100,7 @@ router.get('/account', function(req, res, next) {
 });
 
 router.get('/writer', function(req, res, next) {
-  userService.getWritableUser(req.query)
+  userService.getWritableUser(req.query['account'])
     .then((data) => {
       res.status(200).send(data);
     })

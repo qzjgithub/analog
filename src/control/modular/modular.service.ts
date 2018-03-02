@@ -3,8 +3,11 @@
  */
 import {Injectable, Inject} from "@angular/core";
 import * as modularService from "../../../service/modular/modular";
+import {ConfigService} from "../config/config.service";
+import axios from 'axios';
 @Injectable()
 export class ModularService{
+  constructor(private configService: ConfigService){}
 
   /**
    * 添加模块
@@ -12,7 +15,20 @@ export class ModularService{
    * @param data
      */
   addModular = (account,data) => {
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.post(this.configService.getUrl(config)+`/modular/${account}`,data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
       return modularService.addModular(account,data);
+    }
   }
 
   /**
@@ -22,7 +38,21 @@ export class ModularService{
    * @returns {any}
    */
   getModular = (account,data) =>{
-    return modularService.getModular(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)
+          +`/modular/${account}?parent=${data['parent']||''}&login=${data['login']}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return modularService.getModular(account,data);
+    }
   }
 
   /**
@@ -31,7 +61,21 @@ export class ModularService{
    * @param data
      */
   getModularById = (account,data)=>{
-    return modularService.getModularById(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)
+            +`/modular/${account}/${data['id']}&login=${data['login']}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return modularService.getModularById(account,data);
+    }
   }
 
   /**
@@ -41,7 +85,21 @@ export class ModularService{
    * @returns {any|undefined}
      */
   deleteModular = (account,data)=>{
-    return modularService.deleteModular(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.delete(this.configService.getUrl(config)
+            +`/modular/${account}/${data['id']}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return modularService.deleteModular(account,data);
+    }
   }
 }
 

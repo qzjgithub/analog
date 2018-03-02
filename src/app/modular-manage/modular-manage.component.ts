@@ -209,6 +209,7 @@ export class ModularManageComponent implements OnInit {
       this.data = [];
       this.store.dispatch(ModularActions.backLastModular());
       this.setBreadcrumb();
+      this.getList();
     }
   }
 
