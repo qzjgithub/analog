@@ -4,53 +4,11 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var userService = require('../service/user/user');
+var projectService = require('../service/project/project');
 var selectService = require('../service/selectList/selectList');
 
-router.post('/login', function(req, res, next) {
-  console.log(req.body);
-  userService.validLoginUser(req.body)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err)=>{
-      console.log(err);
-      res.status(400).send(err);
-    })
-});
-
 router.post('/', function(req, res, next) {
-  userService.addUser(req.body)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err)=>{
-      res.status(400).send(err);
-    })
-});
-
-router.put('/password', function(req, res, next) {
-  userService.modifyPwdUser(req.body)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err)=>{
-      res.status(400).send(err);
-    })
-});
-
-router.put('/reset', function(req, res, next) {
-  userService.modifyPwdUser(req.body)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err)=>{
-      res.status(400).send(err);
-    })
-});
-
-router.put('/oldPwd', function(req, res, next) {
-  userService.modifyPwdWithOld(req.body)
+  projectService.addProject(req.body)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -60,7 +18,28 @@ router.put('/oldPwd', function(req, res, next) {
 });
 
 router.put('/', function(req, res, next) {
-  userService.modifyUser(req.body)
+  projectService.modifyProject(req.body)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+    })
+});
+
+router.delete('/:account', function(req, res, next) {
+  projectService.deleteProject(req.params['account'],req.body)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+    })
+});
+
+router.get('/:account/relation', function(req, res, next) {
+  console.log(req.params);
+  projectService.getLoginRelation(req.params['account'],req.query)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -70,7 +49,7 @@ router.put('/', function(req, res, next) {
 });
 
 router.get('/select', function(req, res, next) {
-  selectService.getUserSelect()
+  selectService.getProjectSelect()
     .then((data) => {
       res.status(200).send(data);
     })
@@ -79,8 +58,8 @@ router.get('/select', function(req, res, next) {
     })
 });
 
-router.get('/exist', function(req, res, next) {
-  userService.validExistUser(req.query)
+router.get('/leader', function(req, res, next) {
+  projectService.getLeaderProject(req.query)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -89,8 +68,8 @@ router.get('/exist', function(req, res, next) {
     })
 });
 
-router.get('/account', function(req, res, next) {
-  userService.getUserByAccount(req.query)
+router.get('/related', function(req, res, next) {
+  projectService.getRelatedProject(req.query)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -99,18 +78,8 @@ router.get('/account', function(req, res, next) {
     })
 });
 
-router.get('/writer', function(req, res, next) {
-  userService.getWritableUser(req.query)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err)=>{
-      res.status(400).send(err);
-    })
-});
-
-router.get('/:id', function(req, res, next) {
-  userService.getUserById(req.params)
+router.get('/public', function(req, res, next) {
+  projectService.getPublicProject(req.query)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -120,7 +89,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-  userService.getUserList()
+  projectService.getProjectById(req.query)
     .then((data) => {
       res.status(200).send(data);
     })

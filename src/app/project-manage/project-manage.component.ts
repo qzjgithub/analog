@@ -110,7 +110,7 @@ export class ProjectManageComponent implements OnInit {
   changeProjectState(data){
     let m = this.getProjectStatus(data['account']);
     this.modalService.confirm({
-      title   : '确认'+(m?'启动':'停止')+data.name+'项目吗？',
+      title   : '确认'+(m?'停止':'启动')+data.name+'项目吗？',
       content : '请确定项目的端口和路径设置正确。',
       closable: false,
       showConfirmLoading: true,
@@ -123,8 +123,8 @@ export class ProjectManageComponent implements OnInit {
               resovle();
             })
             .catch((err)=>{
-              this._message.create('error',err.mesage);
-              reject();
+              this._message.create('error',err.message);
+              resovle();
             })
         })
       }
