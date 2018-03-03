@@ -4,14 +4,31 @@
 import {Injectable} from "@angular/core";
 import * as analogService from "../../../service/analog/analog";
 import { getAnalogSelect } from "../../../service/selectList/selectList";
+import axios from 'axios';
+import {ConfigService} from "../config/config.service";
 @Injectable()
 export class AnalogService{
+
+  constructor(private configService: ConfigService){}
   /**
    * 得到添加选择项
    * @returns {any}
    */
   getSelect(){
-    return getAnalogSelect();
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/analog/select`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return getAnalogSelect();
+    }
   }
 
   /**
@@ -21,7 +38,20 @@ export class AnalogService{
    * @returns {any|undefined}
    */
   addAnalog(account,data){
-    return analogService.addAnalog(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.post(this.configService.getUrl(config)+`/analog/${account}`,data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return analogService.addAnalog(account,data);
+    }
   }
 
   /**
@@ -30,14 +60,40 @@ export class AnalogService{
    * @param id
    */
   getAnalogByParent(account,id){
-    return analogService.getAnalogByParent(account,id);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/analog/${account}?parent=${id}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return analogService.getAnalogByParent(account,id);
+    }
   }
 
   /**
    * 根据模拟数据id删除模拟数据
    */
   deleteAnalogById(account,id){
-    return analogService.deleteAnalogById(account,id);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.delete(this.configService.getUrl(config)+`/analog/${account}/${id}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return analogService.deleteAnalogById(account,id);
+    }
   }
 }
 

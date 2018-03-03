@@ -21,6 +21,8 @@ var testAnalog = require('../../routes/testAnalog');
 var userRoute = require('../../routes/user-route');
 var projectRoute = require('../../routes/project-route');
 var modularRoute = require('../../routes/modular-route');
+var interfacesRoute = require('../../routes/interfaces-route');
+var analogRoute = require('../../routes/analog-route');
 
 /**
  * Get port from environment and store in Express.
@@ -52,6 +54,8 @@ function initServer(){
   app.use(prefix+'/analog/user',userRoute);
   app.use(prefix+'/analog/project',projectRoute);
   app.use(prefix+'/analog/modular',modularRoute);
+  app.use(prefix+'/analog/interfaces',interfacesRoute);
+  app.use(prefix+'/analog/analog',analogRoute);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {

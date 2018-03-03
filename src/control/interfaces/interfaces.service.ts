@@ -4,8 +4,12 @@
 import {Injectable} from "@angular/core";
 import * as interfacesService from "../../../service/interfaces/interfaces";
 import { getInterfacesSelect } from "../../../service/selectList/selectList";
+import {ConfigService} from "../config/config.service";
+import axios from 'axios';
 @Injectable()
 export class InterfacesService{
+
+  constructor(private configService: ConfigService){}
   /**
    * 根据模块id得到接口信息
    * @param account
@@ -13,7 +17,20 @@ export class InterfacesService{
    * @returns {any}
    */
   getInterfacesByParent(account,data){
-    return interfacesService.getInterfacesByParent(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/interfaces/${account}?parent=${data['parent']||''}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.getInterfacesByParent(account,data);
+    }
   }
 
   /**
@@ -22,7 +39,20 @@ export class InterfacesService{
    * @returns {any}
    */
   getInterfacesAll(account){
-    return interfacesService.getInterfacesAll(account);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/interfaces/${account}/all`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.getInterfacesAll(account);
+    }
   }
 
   /**
@@ -31,7 +61,20 @@ export class InterfacesService{
    * @returns {any}
    */
   getSelect(){
-    return getInterfacesSelect();
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/interfaces/select`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return getInterfacesSelect();
+    }
   }
 
   /**
@@ -40,7 +83,20 @@ export class InterfacesService{
    * @param data
    */
   addInterfaces(account, data){
-    return interfacesService.addInterfaces(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.post(this.configService.getUrl(config)+`/interfaces/${account}`,data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.addInterfaces(account,data);
+    }
   }
 
   /**
@@ -50,7 +106,20 @@ export class InterfacesService{
    * @returns {any}
    */
   getFullPathByModularId(account,id){
-    return interfacesService.getFullPathByModularId(account,id,null,null);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)+`/interfaces/${account}/fullPath?id=${id}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.getFullPathByModularId(account,id,null,null);
+    }
   }
 
   /**
@@ -59,7 +128,21 @@ export class InterfacesService{
    * @param data
    */
   getInterfacesById(account,data){
-    return interfacesService.getInterfacesById(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.get(this.configService.getUrl(config)
+          +`/interfaces/${account}/list?id=${data['id']}&login=${data['login']}`)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.getInterfacesById(account,data);
+    }
   }
 
   /**
@@ -69,7 +152,21 @@ export class InterfacesService{
    * @returns {any}
      */
   deleteInterfacesInIds(account,data){
-    return interfacesService.deleteInterfacesInIds(account,data);
+    let config = this.configService.getStateConfig();
+    if(config['openRemote']){
+      return new Promise((resolve, reject) => {
+        axios.put(this.configService.getUrl(config)
+            +`/interfaces/${account}`,data)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      });
+    }else{
+      return interfacesService.deleteInterfacesInIds(account,data);
+    }
   }
 
 }
