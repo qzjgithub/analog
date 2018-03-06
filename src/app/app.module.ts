@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
+import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgZorroAntdModule} from "ng-zorro-antd";
 import {LocationStrategy, HashLocationStrategy} from "@angular/common";
@@ -109,6 +110,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     NgZorroAntdModule.forRoot(),
     RouterModule.forRoot(routes)

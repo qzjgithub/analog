@@ -24,7 +24,7 @@ const addProject = (data) => {
   );
   `;
   data.valid = true;
-  data.createdTime = new Date();
+  data.createdTime = data.createdTime || new Date();
   return dbutil.excuteParam(sql, data, 'run');
 }
 
@@ -50,6 +50,21 @@ const addProjectUserRelated = (data)=>{
     $projectAccount ,
     $relation
   );
+  `;
+  return dbutil.excuteParam(sql, data, 'run');
+}
+
+/**
+ * 修改项目用户关系
+ * @param data
+ */
+const modifyProjectUserRelated = (data)=>{
+  let sql = `
+  UPDATE project_user SET
+    relation=$relation
+   WHERE userAccount=$userAccount
+   AND projectAccount=$projectAccount
+  ;
   `;
   return dbutil.excuteParam(sql, data, 'run');
 }
@@ -95,14 +110,14 @@ const getPublicProject = ()=>{
  */
 const getProjectById = (data) => {
   let sql = `
-  SELECT 
+  SELECT
   p.* ,
   (SELECT ur.name FROM user ur WHERE ur.account=p.creator) AS creatorName,
   u.name AS leader,
   u.account AS leaderAccount,
-  u.id AS userId 
-  FROM project p,project_user pu,user u 
-  WHERE p.id=$id 
+  u.id AS userId
+  FROM project p,project_user pu,user u
+  WHERE p.id=$id
   AND p.account=pu.projectAccount
   AND pu.userAccount=u.account
   AND pu.relation='leader'
@@ -165,7 +180,7 @@ const modifyProject = (data) => {
     url=$url ,
     authority=$authority ,
     comment=$comment
-   WHERE id=$id
+   WHERE account=$account
   ;
   `;
   return dbutil.excuteParam(sql, data, 'run');
@@ -231,8 +246,8 @@ const deleteUserRelation = (account) => {
  */
 const getProjectByAccount = (data) => {
   let sql = `
-  SELECT * FROM 
-  project 
+  SELECT * FROM
+  project
   WHERE account=$account
   ;
   `;
@@ -245,5 +260,6 @@ module.exports = {
   getLeaderProject,getRelatedProject,
   modifyProject,getLoginRelation,
   deleteProject,deleteProjectUser,deleteUserRelation,
-  getProjectById,getProjectByAccount
+  getProjectById,getProjectByAccount,
+  modifyProjectUserRelated
 }

@@ -237,6 +237,32 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     return !!window['analogService'][account];
   }
 
+  getRemoteStatus(){
+    let config = this.configService.getStateConfig();
+    return config['openRemote'];
+  }
+
+  beginDownload(e){
+    e.stopPropagation();
+    let account = this.project['account'];
+    this.projectService.getLocalProjectExists(account)
+    .then((data)=>{
+      //if(!data['db']&&!data['fs']){
+        this.projectService.downloadProject(account)
+          .then(()=>this.projectService.downloadProjectFiles(account))
+          .then(()=>{
+            this._message.create('success','项目下载成功');
+          })
+          .catch((err)=>{
+            this._message.create('error',err.message);
+          })
+      //}
+    })
+    .catch((err)=>{
+      this._message.create('error',err.message);
+    })
+  }
+
   modifyProject(e){
     e.stopPropagation();
     const modal = this.modalService.open({

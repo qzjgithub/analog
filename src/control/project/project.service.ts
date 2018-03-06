@@ -7,16 +7,18 @@ import {Injectable, Inject} from "@angular/core";
 import {AppState} from "../app.reducer";
 import {Store} from "redux";
 import {AppStore} from "../app.store";
+import {HttpClient} from "@angular/common/http";
 import axios from 'axios';
 
 import * as projectService from "../../../service/project/project";
 import * as simulateService from "../../../service/simulate/cprocess";
 import {ConfigService} from "../config/config.service";
+import {Observable} from "rxjs/Observable";
 
 
 @Injectable()
 export class ProjectService{
-  constructor(private configService: ConfigService){}
+  constructor(private configService: ConfigService,private http: HttpClient){}
 
   /**
    * 得到项目选项
@@ -254,6 +256,123 @@ export class ProjectService{
       });
     }else{
       return simulateService.stopAnalogService(account);
+    }
+  }
+
+  //Blob请求
+  requestBlob(url:any,data?:any):Observable<any>{
+    return this.http.request("get",url,{body: data, observe: 'response',responseType:'blob'});
+  }
+  //Blob文件转换下载
+  downFile(result,fileName,fileType?){
+    var data=result.body;
+    var blob = new Blob([data], {type: fileType||data.type});
+    var objectUrl = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.setAttribute('style', 'display:none');
+    a.setAttribute('href', objectUrl);
+    a.setAttribute('download', fileName);
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  testDown(account){
+    let url = this.configService.getUrl(this.configService.getStateConfig())+`/project/${account}/download`;
+    this.requestBlob(url).subscribe(result => {
+      //this.downFile(result,fileName,fileType||"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      this.downFile(result,'storage.db');
+    })
+  }
+
+  /**
+   * 得到本地项目在项目中的存在情况
+   * @param account
+   * @returns {any}
+     */
+  getLocalProjectExists = (account)=>{
+    return projectService.getProjectExists(account);
+  }
+
+  /**
+   * 同步项目基本信息
+   * @param account
+     */
+  downloadProject = (account)=>{
+    let config = this.configService.getStateConfig();
+    let prefix = this.configService.getUrl(config);
+    return new Promise((resolve, reject) => {
+      axios.get(`${prefix}/project/${account}`)
+        .then((data) => {
+          if(data['length']){
+            projectService.writeProject(account,data[0])
+            .then(()=>{
+              axios.get(`${prefix}/project/${account}/projectUser`)
+                .then((users) => {
+                  projectService.writeProjectUser(account,users,0,null)
+                    .then(() => {
+                      resolve();
+                    })
+                    .catch((err)=>{
+                      reject({message:'添加项目用户失败',result:'addProjectUserFailed'});
+                    })
+                })
+                .catch((err)=>{
+                  reject({message:'获取项目用户失败',result:'projectUserFailed'});
+                })
+            }).catch((err)=>{
+              reject(err);
+            })
+          }else{
+            reject({message:'未找到项目内容'})
+          }
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    });
+  }
+
+  /**
+   * 下载远程文件
+   * @param account
+     */
+  downloadProjectFiles = (account)=>{
+    let config = this.configService.getStateConfig();
+    return new Promise((resolve, reject) => {
+      axios.get(this.configService.getUrl(config)+`/project/${account}/files`)
+        .then((files) => {
+          this.writeProjectFile(account,files,0,resolve);
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    });
+  }
+
+  /**
+   * 写文件内容
+   * @param account
+   * @param files
+   * @param index
+   * @param theres
+     */
+  writeProjectFile = (account,files,index,theres)=>{
+    if(index>=files.length){
+      theres();
+    }else{
+      let fileName = files[0];
+      let url = this.configService.getUrl(this.configService.getStateConfig())
+        +`/project/${account}/file?fileName=${fileName}`;
+      this.requestBlob(url).subscribe(result => {
+        projectService.writeFile(account,fileName,result)
+        .then(()=>{
+          index++;
+          this.writeProjectFile(account,files,index,theres);
+        })
+        .catch((err)=>{
+          theres({result:'writeFileFailed',message:'写文件失败'})
+        })
+      })
     }
   }
 }

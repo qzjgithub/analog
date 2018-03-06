@@ -39,7 +39,6 @@ export class AnalogManageComponent implements OnInit {
     this.data = [];
     this.store.subscribe(()=>this.dealData());
     this.setBreadcrumb();
-    // this.getData();
   }
 
   ngOnInit() {

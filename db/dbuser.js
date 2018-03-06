@@ -4,8 +4,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const dbutil = require('./dbutil');
 
-let login = {};
-
 /**
  * 验证是否登录成功
  * @param data
@@ -207,8 +205,38 @@ const addUserRelation = (account,data)=>{
   return dbutil.excuteProjectParam(sql,account,{},'run');
 }
 
+/**
+ * 得到某项目下的所有相关用户
+ * @param account
+ */
+const getProjectUser = (account) => {
+  let sql = `
+  SELECT
+  *
+  FROM project_user
+  WHERE projectAccount=$projectAccount
+  ;
+  `;
+  return dbutil.excuteParam(sql, {projectAccount: account}, 'all');
+}
+
+/**
+ * 根据精确信息得到项目用户
+ * @param data
+ */
+const getProjectUserExact = (data)=>{
+  let sql = `
+  SELECT
+  *
+  FROM project_user
+  WHERE projectAccount=$projectAccount
+  AND userAccount=$userAccount
+  ;
+  `;
+  return dbutil.excuteParam(sql, data, 'all');
+}
+
 module.exports = {
-  login,
   getLoginUser,
   addUser,
   getValidUser,
@@ -220,5 +248,7 @@ module.exports = {
   getUserByAccount,
   getWritableAccount,
   getUserInAccount,
-  addUserRelation
+  addUserRelation,
+  getProjectUser,
+  getProjectUserExact
 }

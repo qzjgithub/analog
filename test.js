@@ -126,7 +126,7 @@ removeDir(['data/'],'a',0)
   .catch((err)=>{
     console.log(err.message);
   })*/
-const fs = require('fs');
+/*const fs = require('fs');
 var num = 0;
 
 fs.readFile('config/config.json',(err,data)=>{
@@ -141,7 +141,7 @@ fs.readFile('config/config.json',(err,data)=>{
 process.stdin.on('data',(data)=>{
   let text = data.toString();
   console.log(text);
-})
+})*/
 
 /*
 process.stdout.on('data',(data)=>{
@@ -161,3 +161,24 @@ process.on('close', (code) => {
   //subprocess.stdin.end();
 });
 */
+
+var fs=require('fs');
+
+/*var fileReadStream=fs.createReadStream('config/config.json');
+
+fileReadStream.on('data',function(data){
+  console.log(data.toString().length);
+  console.log(data.toString());
+});
+
+fileReadStream.on('end',function(){
+  console.log("readStream end");
+});*/
+
+/*fs.readdir('data/test',(err,files)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log(files[0]);
+  }
+});*/
