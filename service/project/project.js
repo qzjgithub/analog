@@ -301,7 +301,7 @@ const getFiles = (account) => {
  */
 const getFileContent = (account,fileName) => {
   return new Promise((resolve,reject)=>{
-    let frs = fs.createReadStream(`data/${account}/${fileName}`);
+    let frs = fs.createReadStream(`data/${account}/${fileName}`,{ flags:"r",encoding:null,mode:0o666 });
     frs.on('data',(data)=>{
       resolve(data);
     });
@@ -317,7 +317,7 @@ const getFileContent = (account,fileName) => {
  */
 const writeFile = (account,fileName,data)=>{
   return new Promise((resolve,reject)=>{
-    let fws = fs.createWriteStream(`data/${account}/${fileName}`);
+    let fws = fs.createWriteStream(`data/${account}/${fileName}`,{flags: 'a',encoding: null,mode: 0o666 });
     fws.write(data);
     fws.on('close',()=>{
       resolve();

@@ -2,7 +2,9 @@
  * Created by admin on 2018/1/9.
  */
 const fs = require('fs');
-const configPath = 'config/config.json';
+// var configPath = __dirname.substring(0,__dirname.lastIndexOf('\\')) + '/config/config.json';
+var configPath = fs.existsSync('resources') ? 'resources/app/config/config.json': 'config/config.json';
+console.log(configPath);
 
 /**
  * 初始化系统
