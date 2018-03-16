@@ -322,17 +322,22 @@ const writeLocalFile = (account,fileName,data)=>{
       fs.mkdirSync(path.join(rootPath,`data/${account}`));
     }
     console.log('write file 2');
-    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'a',encoding: null,mode: 0o666 });
+    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'w',encoding: null,mode: 0o666 });
     console.log('write file 3');
     console.log(data);
-    fws.write(new Blob(data));
+    /*let reader = new FileReader();
+    reader.readAsArrayBuffer(data);
+    reader.onload = function (e) {
+        console.info(reader.result);
+        fws.write(reader.result);
+        console.log('write file 4');
+        fws.end('This is the end\n');
+    }*/
+    fws.write(new Buffer(data));
     console.log('write file 4');
-    /*fws.on('close',()=>{
-      resolve();
-    })*/
     fws.end('This is the end\n');
     fws.on('finish', () => {
-      console.error('All writes are now complete.');
+      console.log('All writes are now complete.');
       resolve();
     });
   });
@@ -345,7 +350,7 @@ const writeRemoteFile = (account,fileName,data)=>{
       fs.mkdirSync(path.join(rootPath,`data/${account}`));
     }
     console.log('write file 2');
-    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'a',encoding: null,mode: 0o666 });
+    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'w',encoding: null,mode: 0o666 });
     console.log('write file 3');
     console.log(data);
     fws.write(new Buffer(data.data));

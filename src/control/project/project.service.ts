@@ -404,15 +404,18 @@ export class ProjectService{
       let fileName = files[0];
       let url = this.configService.getUrl(this.configService.getStateConfig())
         +`/project/${account}/file?fileName=${fileName}`;
-      this.requestBlob(url).subscribe(result => {
-        projectService.writeLocalFile(account,fileName,result['body'])
+      axios.get(url).then(result => {
+        projectService.writeLocalFile(account,fileName,result)
         .then(()=>{
           index++;
           this.writeProjectFile(account,files,index,theres);
         })
         .catch((err)=>{
-          theres({result:'writeFileFailed',message:'写文件失败'})
+          theres({result:'writeFileFailed',message:'写文件失败'});
         })
+      })
+      .catch((err)=>{
+        theres({result:'getFileFailed',message:'获取文件失败'});
       })
     }
   }

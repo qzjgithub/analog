@@ -135,7 +135,7 @@ router.get('/:account/files', function(req, res, next) {
 router.get('/:account/file', function(req, res, next) {
   return projectService.getFileContent(req.params['account'],req.query['fileName'])
     .then((data) => {
-      res.status(200).send(data);
+      res.status(200).send(Array.from(data));
     })
     .catch((err)=>{
       res.status(400).send(err);
