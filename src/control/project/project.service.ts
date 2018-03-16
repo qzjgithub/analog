@@ -263,6 +263,15 @@ export class ProjectService{
   requestBlob(url:any,data?:any):Observable<any>{
     return this.http.request("get",url,{body: data, observe: 'response',responseType:'blob'});
   }
+
+  postFile(url:any,data?:any):Observable<any>{
+  let params={
+      "filelen":"1",//文件长度，预留，填常量“1”
+      "filetype":"db",
+      "base64fill":data
+    }
+    return this.http.request('post',url, {body: data});
+  }
   //Blob文件转换下载
   downFile(result,fileName,fileType?){
     var data=result.body;
@@ -332,6 +341,38 @@ export class ProjectService{
     });
   }
 
+  uploadProject = (account)=>{
+    let config = this.configService.getStateConfig();
+    let prefix = this.configService.getUrl(config);
+    return new Promise((resolve, reject) => {
+      projectService.getProjectByAccount(account)
+      .then((project)=>{
+        if(project.length){
+          project = project[0];
+          axios.post(`${prefix}/project/${account}/write`,project)
+            .then(() => projectService.getProjectUser(account))
+            .then((projectUsers)=>{
+              axios.post(`${prefix}/project/${account}/writeUser`,projectUsers)
+                .then(()=>{
+                  resolve();
+                })
+                .catch((err)=>{
+                  reject(err);
+                })
+            })
+            .catch((err)=>{
+              reject(err);
+            })
+        }else{
+            reject({message:'未找到项目内容'})
+          }
+      })
+      .catch((err)=>{
+        reject(err);
+      })
+    })
+  }
+
   /**
    * 下载远程文件
    * @param account
@@ -364,7 +405,7 @@ export class ProjectService{
       let url = this.configService.getUrl(this.configService.getStateConfig())
         +`/project/${account}/file?fileName=${fileName}`;
       this.requestBlob(url).subscribe(result => {
-        projectService.writeFile(account,fileName,result)
+        projectService.writeLocalFile(account,fileName,result['body'])
         .then(()=>{
           index++;
           this.writeProjectFile(account,files,index,theres);
@@ -374,6 +415,57 @@ export class ProjectService{
         })
       })
     }
+  }
+
+
+  uploadProjectFiles = (account)=>{
+    let config = this.configService.getStateConfig();
+    return new Promise((resolve, reject) => {
+     projectService.getFiles(account)
+        .then((files) => {
+          this.uploadProjectFile(account,files,0,resolve);
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    });
+  }
+
+  uploadProjectFile = (account,files,index,theres)=>{
+    if(index>=files.length){
+      theres();
+    }else{
+      let fileName = files[0];
+      let url = this.configService.getUrl(this.configService.getStateConfig())
+        +`/project/${account}/file`;
+      projectService.getFileContent(account,fileName)
+        .then((content)=>{
+          this.postFile(url+'?fileName='+fileName,content)
+            .subscribe(() => {
+              index++;
+              this.uploadProjectFile(account,files,index,theres);
+            })
+            /*.catch((err)=>{
+              theres(err);
+            })*/
+        })
+        .catch((err)=>{
+          theres(err);
+        })
+    }
+  }
+
+  getRemoteProjectExists = (account)=>{
+    let config = this.configService.getStateConfig();
+    return new Promise((resolve, reject) => {
+      axios.get(this.configService.getUrl(config)+`/project/${account}/exists`)
+        .then((files) => {
+          resolve();
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+    });
   }
 }
 

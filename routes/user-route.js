@@ -4,11 +4,12 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var userService = require('../service/user/user');
+
+var userService = require(path.join(__dirname,'../service/user/user'));
 var selectService = require('../service/selectList/selectList');
 
 router.post('/login', function(req, res, next) {
-  console.log(req.body);
+  console.log('enter request');
   userService.validLoginUser(req.body)
     .then((data) => {
       res.status(200).send(data);

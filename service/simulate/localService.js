@@ -1,29 +1,29 @@
 #!/usr/bin/env node
+const path = require('path');
 
-/**
- * Module dependencies.
- */
-  console.log(global);
+global['rootPath'] = path.join(__dirname,'../../');
 global['dbutil'] = require('../../db/dbutil');
 global['dbuser'] = require('../../db/dbuser');
 global['dbproject'] = require('../../db/dbproject');
 global['dbmodular'] = require('../../db/dbmodular');
 global['dbinterfaces'] = require('../../db/dbinterfaces');
 global['dbanalog'] = require('../../db/dbanalog');
-
-var app = require('./app');
+console.log(path.join(rootPath, 'service/simulate/app'))
+var app = require(path.join(rootPath, 'service/simulate/app'));
+console.log('b')
 var debug = require('debug')('analog:server');
+console.log('c')
 var http = require('http');
+console.log('d')
 var fs = require('fs');
-var service = {};
 
+var service = {};
 var testAnalog = require('../../routes/testAnalog');
 var userRoute = require('../../routes/user-route');
 var projectRoute = require('../../routes/project-route');
 var modularRoute = require('../../routes/modular-route');
 var interfacesRoute = require('../../routes/interfaces-route');
 var analogRoute = require('../../routes/analog-route');
-
 /**
  * Get port from environment and store in Express.
  */
@@ -143,7 +143,7 @@ function onListening() {
  */
 function getConfig(){
   //console.log("enter local service");
-  fs.readFile('config/config.json',(err,data)=>{
+  fs.readFile(path.join(rootPath,'config/config.json'),(err,data)=>{
     if(err){
       console.log('{"result":"fail","message":"read config file failed"}');
       process.exit(1);

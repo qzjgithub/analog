@@ -1,13 +1,19 @@
 /**
  * Created by qiuzhujun on 2018/2/27.
  */
+console.log(0)
 var express = require('express');
+console.log(1)
 var path = require('path');
+console.log(2)
 var favicon = require('serve-favicon');
+console.log(3)
 var logger = require('morgan');
+console.log(4)
 var cookieParser = require('cookie-parser');
+console.log(5)
 var bodyParser = require('body-parser');
-
+console.log(6)
 /*
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -25,6 +31,10 @@ app.set('view engine', 'html');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+/*app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));*/
+app.use(express.json({limit: '5mb'}));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../dist')));
 

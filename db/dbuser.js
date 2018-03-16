@@ -9,11 +9,11 @@ const dbutil = require('./dbutil');
  * @param data
  */
 const getLoginUser = (data) => {
+  console.log('enter dbuser');
   let sql = `
   SELECT * FROM user WHERE account=$account AND password=$password;
   `;
   data.password = dbutil.passEncrypt(data.password);
-  console.log(data);
   return dbutil.excuteParam(sql, data, 'all');
 }
 /**

@@ -7,6 +7,41 @@ var path = require('path');
 var projectService = require('../service/project/project');
 var selectService = require('../service/selectList/selectList');
 
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
+router.post('/:account/write', function(req, res, next) {
+  projectService.writeProject(req.params['account'],req.body)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+    })
+});
+
+router.post('/:account/writeUser', function(req, res, next) {
+  projectService.writeProjectUser(req.params['account'],req.body,0,null)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+    })
+});
+
+router.post('/:account/file', function(req, res, next) {
+  console.log(req.query['fileName']);
+  // res.status(200).send('ok');
+  projectService.writeRemoteFile(req.params['account'],req.query['fileName'],req.body)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+    })
+});
+
 router.post('/', function(req, res, next) {
   projectService.addProject(req.body)
     .then((data) => {
@@ -90,7 +125,6 @@ router.get('/:account/exists', function(req, res, next) {
 router.get('/:account/files', function(req, res, next) {
   return projectService.getFiles(req.params['account'])
     .then((data) => {
-      console.log('route file:s'+data.join(','));
       res.status(200).send(data);
     })
     .catch((err)=>{

@@ -34,7 +34,7 @@ export class ProjectModifyComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
     }
     if (!this.validateForm.dirty || !this.validateForm.valid) return;
-    this.projectService.modifyProject(Object.assign({},this.validateForm.value,{id: this._project.id}))
+    this.projectService.modifyProject(Object.assign({},this.validateForm.value,{account: this._project.account}))
       .then(()=>{
         this.store.dispatch(ProjectActions.getCurProject(Object.assign({},this._project,this.validateForm.value)));
         this._message.create('success','项目修改成功');

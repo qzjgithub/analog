@@ -177,7 +177,7 @@ const modifyProject = (data) => {
   UPDATE project SET
     name=$name ,
     port=$port ,
-    url=$url ,
+    ${data['url']?'url=$url ,':''}
     authority=$authority ,
     comment=$comment
    WHERE account=$account

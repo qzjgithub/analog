@@ -3,6 +3,7 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 
 /**
  * 验证项目是否存在
@@ -283,11 +284,10 @@ const writeProjectUser = (account,data,index, theres)=>{
  */
 const getFiles = (account) => {
   return new Promise((resolve,reject)=>{
-    fs.readdir(`data/${account}`,(err,files)=>{
+    fs.readdir(path.join(rootPath,`data/${account}`),(err,files)=>{
       if(err){
         reject(err);
       }else{
-        console.log('route file:s'+files.join(','));
         resolve(files);
       }
     });
@@ -301,7 +301,7 @@ const getFiles = (account) => {
  */
 const getFileContent = (account,fileName) => {
   return new Promise((resolve,reject)=>{
-    let frs = fs.createReadStream(`data/${account}/${fileName}`,{ flags:"r",encoding:null,mode:0o666 });
+    let frs = fs.createReadStream(path.join(rootPath,`data/${account}/${fileName}`),{ flags:"r",encoding:null,mode:0o666 });
     frs.on('data',(data)=>{
       resolve(data);
     });
@@ -315,13 +315,49 @@ const getFileContent = (account,fileName) => {
  * @param data
  * @returns {Promise}
  */
-const writeFile = (account,fileName,data)=>{
+const writeLocalFile = (account,fileName,data)=>{
   return new Promise((resolve,reject)=>{
-    let fws = fs.createWriteStream(`data/${account}/${fileName}`,{flags: 'a',encoding: null,mode: 0o666 });
-    fws.write(data);
-    fws.on('close',()=>{
+    console.log('write file 1');
+    if(!fs.existsSync(path.join(rootPath,`data/${account}`))){
+      fs.mkdirSync(path.join(rootPath,`data/${account}`));
+    }
+    console.log('write file 2');
+    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'a',encoding: null,mode: 0o666 });
+    console.log('write file 3');
+    console.log(data);
+    fws.write(new Blob(data));
+    console.log('write file 4');
+    /*fws.on('close',()=>{
       resolve();
-    })
+    })*/
+    fws.end('This is the end\n');
+    fws.on('finish', () => {
+      console.error('All writes are now complete.');
+      resolve();
+    });
+  });
+}
+
+const writeRemoteFile = (account,fileName,data)=>{
+  return new Promise((resolve,reject)=>{
+    console.log('write file 1');
+    if(!fs.existsSync(path.join(rootPath,`data/${account}`))){
+      fs.mkdirSync(path.join(rootPath,`data/${account}`));
+    }
+    console.log('write file 2');
+    let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'a',encoding: null,mode: 0o666 });
+    console.log('write file 3');
+    console.log(data);
+    fws.write(new Buffer(data.data));
+    console.log('write file 4');
+    /*fws.on('close',()=>{
+      resolve();
+    })*/
+    fws.end('This is the end\n');
+    fws.on('finish', () => {
+      console.error('All writes are now complete.');
+      resolve();
+    });
   });
 }
 
@@ -333,5 +369,6 @@ module.exports = {
   downloadProject,getProjectExists,
   getProjectByAccount,getProjectUser,
   writeProject,writeProjectUser,
-  getFiles,getFileContent,writeFile
+  getFiles,getFileContent,
+  writeLocalFile,writeRemoteFile
 }

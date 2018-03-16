@@ -2,6 +2,7 @@
  * Created by admin on 2017/11/6.
  */
 const cp = require('child_process');
+const path = require('path');
 
 /*const n = cp.fork(`${__dirname}/httpservice.js`);
 n.send({port:8090});
@@ -31,7 +32,7 @@ const startAnalogService = (account)=>{
               return;
             }
           }
-          const service = cp.fork('service/simulate/analogService.js');
+          const service = cp.fork(path.join(rootPath,'service/simulate/analogService.js'));
           service.on('message',(m)=>{
             console.log(m);
             switch(m.type){
@@ -123,7 +124,7 @@ const stopAnalogService = (account) => {
  * 启动本地服务
  */
 const startLocalService = () => {
-  localService = cp.spawn(process.argv[0], ['service/simulate/localService.js'], {
+  localService = cp.spawn('node', [path.join(rootPath,'service/simulate/localService.js')], {
     detached: false
   });
   return new Promise((resolve,reject)=>{

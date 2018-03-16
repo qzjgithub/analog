@@ -6,6 +6,7 @@
  */
 const validLoginUser = (data) => {
   return new Promise((resolve, reject)=>{
+    console.log('enter service');
     dbuser.getLoginUser(data)
       .then((data) => {
         if(data.length){

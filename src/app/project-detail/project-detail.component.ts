@@ -242,6 +242,28 @@ export class ProjectDetailComponent implements OnInit,OnDestroy  {
     return config['openRemote'];
   }
 
+  beginUpload(e){
+    e.stopPropagation();
+    let account = this.project['account'];
+    this.configService.testAnalog()
+    .then(()=>this.projectService.getRemoteProjectExists(account))
+    .then((data)=>{
+      //if(!data['db']&&!data['fs']){
+        this.projectService.uploadProject(account)
+          .then(()=>this.projectService.uploadProjectFiles(account))
+          .then(()=>{
+            this._message.create('success','项目上传成功');
+          })
+          .catch((err)=>{
+            this._message.create('error',err.message);
+          })
+      //}
+    })
+    .catch((err)=>{
+      this._message.create('error',err.message);
+    })
+  }
+
   beginDownload(e){
     e.stopPropagation();
     let account = this.project['account'];

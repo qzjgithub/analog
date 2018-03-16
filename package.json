@@ -25,6 +25,7 @@
     "aws-sdk": "^2.179.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "connect-multiparty": "^2.1.0",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "crypto": "^1.0.1",

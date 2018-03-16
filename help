@@ -45,7 +45,7 @@ npm run-script packager
 
 
 
-打包命令：electron-packager ./ electron --platform=win32 --arch=x64 --version 1.6.2
+打包命令：electron-packager ./ electron --platform=win32 --arch=x64 --version 1.6.2 --overwrite
 打包命令：electron-packager ./ electron --platform=darwin --arch=x64 --version 1.6.2
 
 Ele + ang

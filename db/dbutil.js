@@ -4,7 +4,8 @@
 const sqlite3 = require('sqlite3').verbose();
 const crypto = require('crypto');
 const fs = require('fs');
-const dbroot = 'data/';
+const path = require('path');
+const dbroot = path.join(rootPath,'data/');
 const system_name = 'ISS-QZJ';
 
 /**
@@ -56,11 +57,13 @@ const sql = (db) => {
  * @param data
  */
 const excuteParam = (sqlStr, data, method) => {
+  console.log('enter dbutil');
   let obj_data = {};
   for(let key in data){
     obj_data['$'+key] = data[key];
   }
-
+  console.log(__dirname);
+  console.log('dbutil rootPath: '+rootPath);
   return new Promise((resolve , reject) => {
     sql(getRootDB())
       .then((db) => {
@@ -120,6 +123,7 @@ const excuteProjectParam = (sqlStr,account, data, method) => {
  * @param name
  */
 const createDir = (name) => {
+  name = path.join(rootPath,name);
   if(!fs.existsSync(name)){
     fs.mkdirSync(name);
   }
