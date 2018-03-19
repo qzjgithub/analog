@@ -1,8 +1,6 @@
 /**
  * Created by admin on 2018/1/23.
  */
-const sqlite3 = require('sqlite3').verbose();
-const dbutil = require('./dbutil');
 
 /**
  * 添加一个项目
