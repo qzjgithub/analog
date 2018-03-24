@@ -46,9 +46,10 @@ const addProjectUserRelated = (data)=>{
   INSERT INTO project_user VALUES(
     $userAccount ,
     $projectAccount ,
-    $relation
+    $relation 
   );
   `;
+  data['follow'] = false;
   return dbutil.excuteParam(sql, data, 'run');
 }
 
@@ -59,7 +60,7 @@ const addProjectUserRelated = (data)=>{
 const modifyProjectUserRelated = (data)=>{
   let sql = `
   UPDATE project_user SET
-    relation=$relation
+    relation=$relation 
    WHERE userAccount=$userAccount
    AND projectAccount=$projectAccount
   ;

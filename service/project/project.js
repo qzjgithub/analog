@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const messageService = require('../message/message');
 
 /**
  * 验证项目是否存在
@@ -42,7 +43,11 @@ const addProject = (data) => {
       .then(() => dbproject.addProject(data))
       .then(() => dbproject.addProjectUserRelated(related))
       .then(() => dbutil.initProject(Object.assign({},data,{leader: leader})))
-      .then(() => resolve())
+      .then(() => {
+        resolve();
+        messageService.generateMessage( { sender: 'system', projectAccount: data['account'], userAccount: sessionLogin['account']} ,'add', 1)
+          .then((message) => messageService.contactMessageUser(message));
+      })
       .catch((err) => reject(err));
   })
 }
@@ -343,21 +348,19 @@ const writeLocalFile = (account,fileName,data)=>{
   });
 }
 
+/**
+ * 写由远程下载得到的文件
+ * @param account
+ * @param fileName
+ * @param data
+ */
 const writeRemoteFile = (account,fileName,data)=>{
   return new Promise((resolve,reject)=>{
-    console.log('write file 1');
     if(!fs.existsSync(path.join(rootPath,`data/${account}`))){
       fs.mkdirSync(path.join(rootPath,`data/${account}`));
     }
-    console.log('write file 2');
     let fws = fs.createWriteStream(path.join(rootPath,`data/${account}/${fileName}`),{flags: 'w',encoding: null,mode: 0o666 });
-    console.log('write file 3');
-    console.log(data);
     fws.write(new Buffer(data.data));
-    console.log('write file 4');
-    /*fws.on('close',()=>{
-      resolve();
-    })*/
     fws.end('This is the end\n');
     fws.on('finish', () => {
       console.error('All writes are now complete.');

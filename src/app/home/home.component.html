@@ -14,6 +14,7 @@
         <li nz-menu-item (click)="loginout($event)">退出</li>
       </ul>
     </nz-dropdown>
+    <i class="anticon anticon-notification" style="float:right;" [routerLink]="['/home',{ outlets:{content:'message'} }]"></i>
   </nz-header>
   <nz-layout>
     <nz-sider [nzWidth]="200" style="background:#fff">

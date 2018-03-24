@@ -182,3 +182,10 @@ fileReadStream.on('end',function(){
     console.log(files[0]);
   }
 });*/
+const test = async ()=>{
+  let a = await new Promise((resolve,reject)=>{
+    resolve(1);
+  });
+  console.log(a);
+}
+test();

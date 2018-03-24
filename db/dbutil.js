@@ -194,6 +194,7 @@ const initSystem = () => {
       .then((db) => createProjectUser(db))
       .then((db) => createSelect(db))
       .then((db) => createMessage(db))
+      .then((db) => createMessageUser(db))
       .then((db) => addAdminUser(db))
       .then((db) => {
         initSelectSelect();
@@ -378,7 +379,25 @@ const createMessage = (db) => {
   content TEXT NOT NULL,
   resType TEXT,
   resResult TEXT,
-  createdTime DATE,
+  createdTime DATE
+  );
+  `;
+  return new Promise((resolve, reject) => {
+    db.run(sql, (err) => {
+      if (!err) {
+        resolve(db);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+const createMessageUser = (db) => {
+  const sql = `
+  CREATE TABLE IF NOT EXISTS message_user(
+  recipient TEXT,
+  messageId INTEGER,
   read BOOLEAN
   );
   `;
@@ -609,6 +628,7 @@ const createUserRelation = (db) => {
   type TEXT,
   relatedId INTEGER,
   relation TEXT,
+  follow BOOLEAN,
   FOREIGN KEY(userAccount) REFERENCES user(account)
   );
   `;
@@ -649,14 +669,16 @@ const addLeaderRelation = (param) => {
     $userAccount ,
     $type ,
     $relatedId ,
-    $relation
+    $relation ,
+    $follow
   );
   `;
   let data = {
     userAccount: param['leader'],
     type: 'project',
     relatedId: '',
-    relation: 'leader'
+    relation: 'leader',
+    follow: true
   }
   let obj_data = {};
   for (let key in data) {

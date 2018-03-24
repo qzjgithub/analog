@@ -18,10 +18,6 @@ const onRequest = (request, response) => {
 
   console.log(account);
   process.send({ type: 'fullPath', account: account ,url: request.url ,method: method});
-
-  /*response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Hello World");
-  response.end();*/
 }
 
 service = http.createServer(onRequest);

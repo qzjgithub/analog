@@ -42,6 +42,7 @@ import { InterfacesItemComponent } from './interfaces-item/interfaces-item.compo
 import { AnalogManageComponent } from './analog-manage/analog-manage.component';
 import { AnalogAddComponent } from './analog-add/analog-add.component';
 import {ANALOG_PROVIDERS} from "../control/analog/analog.service";
+import { MessageComponent } from './message/message.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'loginManage',pathMatch: 'full' },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'checkUser',component: CheckUserComponent },
   { path: 'home',component: HomeComponent ,children:[
     {path:'',component: ProjectManageComponent , outlet: 'content' },
+    {path:'messge',component: MessageComponent , outlet: 'content' },
     {path:'person',component: PersonCenterComponent , outlet: 'content' },
     {path:'personPwd',component: PersonPasswordComponent , outlet: 'content' },
     {path:'user',component: UserManageComponent , outlet: 'content' },
@@ -101,6 +103,7 @@ const routes: Routes = [
     InterfacesItemComponent,
     AnalogManageComponent,
     AnalogAddComponent,
+    MessageComponent,
   ],
   entryComponents :[
     ProjectModifyComponent
