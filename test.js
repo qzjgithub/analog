@@ -182,6 +182,7 @@ fileReadStream.on('end',function(){
     console.log(files[0]);
   }
 });*/
+/*
 const test = async ()=>{
   let a = await new Promise((resolve,reject)=>{
     resolve(1);
@@ -189,3 +190,27 @@ const test = async ()=>{
   console.log(a);
 }
 test();
+*/
+const p1 = () =>{
+  return new Promise((resolve,reject)=>{
+    console.log("p1");
+    resolve(1);
+  })
+}
+const p2 = () =>{
+  return new Promise((resolve,reject)=>{
+    console.log("p2");
+    resolve(2);
+  })
+}
+
+let arr = [];
+arr.push(p1());
+arr.push(p2());
+Promise.all(arr)
+  .then((values)=>{
+    console.log(values);
+  })
+  .catch((err)=>{
+    console.log(err);
+  })

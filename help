@@ -75,3 +75,13 @@ npm install @types/angular@latest --save-dev
 
 sqlite3 命令
 .open E:\\study\\eleang\\analog\\data\\common.db
+
+async/await
+babel-core
+babel-loader
+babel-preset-env
+babel-preset-es2015
+babel-preset-stage-0
+babel-preset-stage-3
+require("babel-core/register");
+require("babel-polyfill");
